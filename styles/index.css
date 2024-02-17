@@ -1,0 +1,80 @@
+:root {
+	--background: #151515;
+	--section-background: #232323;
+	--sidebar-width: 20rem;
+	--border-radius: 2rem;
+	--padding: 1rem;
+  }
+  
+  body {
+	background: var(--background);
+	padding: var(--padding);
+	top: 0px;
+	left: 0px;
+	box-sizing: border-box;
+  }
+  
+  header {
+	background: var(--section-background);
+	border-radius: var(--border-radius);
+	padding: var(--padding);
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+  }
+  header h1 {
+	font-family: system-ui;
+	width: max-content;
+	color: white;
+  }
+  
+  content {
+	display: flex;
+	width: 100%;
+	align-items: flex-start;
+	justify-content: space-between;
+  }
+  
+  aside {
+	float: left;
+	width: var(--sidebar-width);
+  }
+  aside div {
+	background: var(--section-background);
+	margin-top: var(--padding);
+	padding: var(--padding);
+	border-radius: var(--border-radius);
+	box-sizing: border-box;
+	color: white;
+  }
+  aside div div {
+	border-radius: calc(var(--border-radius) - var(--padding));
+	padding: var(--padding);
+	box-sizing: border-box;
+	background: cyan;
+  }
+  aside img {
+	width: 1rem;
+	height: 1rem;
+  }
+  main {
+	margin-top: var(--padding);
+	background: var(--section-background);
+	padding: var(--padding);
+	border-radius: var(--border-radius);
+	box-sizing: border-box;
+	color: white;
+	width: calc(100vw - 5rem - var(--sidebar-width));
+  }
+  
+  @media only screen and (width < 750px) {
+	content {
+	  display: grid;
+	}
+	aside {
+	  width: 100%;
+	}
+	main {
+	  width: 100%;
+	}
+  }
