@@ -1,80 +1,174 @@
+@import url("./fonts/cairo_play.css");
 :root {
 	--background: #151515;
 	--section-background: #232323;
 	--sidebar-width: 20rem;
 	--border-radius: 2rem;
 	--padding: 1rem;
-  }
-  
-  body {
+}
+
+body {
 	background: var(--background);
 	padding: var(--padding);
 	top: 0px;
 	left: 0px;
 	box-sizing: border-box;
-  }
-  
-  header {
+	font-family: "Cairo Play";
+}
+
+header {
 	background: var(--section-background);
 	border-radius: var(--border-radius);
 	padding: var(--padding);
 	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-  }
-  header h1 {
-	font-family: system-ui;
+}
+header img {
+	width: 138px;
+	height: 138px;
+}
+header h1 {
 	width: max-content;
 	color: white;
-  }
-  
-  content {
+	font-size: 5rem;
+	height: 138px;
+	line-height: 138px;
+    margin: 0px;
+    font-weight: 900;
+}
+
+content {
 	display: flex;
 	width: 100%;
 	align-items: flex-start;
 	justify-content: space-between;
-  }
-  
-  aside {
+}
+
+aside {
 	float: left;
 	width: var(--sidebar-width);
-  }
-  aside div {
+}
+aside section {
 	background: var(--section-background);
 	margin-top: var(--padding);
 	padding: var(--padding);
 	border-radius: var(--border-radius);
 	box-sizing: border-box;
 	color: white;
-  }
-  aside div div {
+}
+aside section div {
 	border-radius: calc(var(--border-radius) - var(--padding));
-	padding: var(--padding);
+	padding: calc( var(--padding) / 2 );
 	box-sizing: border-box;
-	background: cyan;
-  }
-  aside img {
+	background: var(--background);
+	margin-top: var(--padding);
+}
+aside section div:first-of-type {
+	margin-top: 0px;
+}
+aside section div div {
+	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
+	padding: calc( var(--padding) / 4 );
+	box-sizing: border-box;
+	background: var(--section-background);
+	margin-top: calc( var(--padding) / 2 );
+}
+aside section div div:first-child {
+	margin-top: 0px;
+}
+aside img {
 	width: 1rem;
 	height: 1rem;
-  }
-  main {
+}
+main {
+	width: calc(100vw - (var(--padding) * 4) - var(--sidebar-width) - var(--scrollbar-width));
+}
+main > *:not(aside) {
 	margin-top: var(--padding);
 	background: var(--section-background);
 	padding: var(--padding);
 	border-radius: var(--border-radius);
 	box-sizing: border-box;
 	color: white;
-	width: calc(100vw - 5rem - var(--sidebar-width));
-  }
-  
-  @media only screen and (width < 750px) {
+	width: 100%;
+}
+
+@media only screen and (width < 750px) {
 	content {
-	  display: grid;
+		display: grid;
 	}
 	aside {
-	  width: 100%;
+		width: 100%;
 	}
 	main {
-	  width: 100%;
+		width: 100%;
 	}
-  }
+	header h1 {
+		font-size: clamp(50px, 11vw, 5rem);
+	}
+
+	aside section div {
+		display: block;
+	}
+}
+
+p {
+	margin: 0px;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+	transition: color 400ms;
+	text-align: center;
+}
+
+aside section div a {
+	background: #e06767;
+	transition: backgrouns 400ms;
+	width: 100%;
+	display: block;
+
+	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
+	padding: calc( var(--padding) / 4 );
+	box-sizing: border-box;
+	margin-top: calc( var(--padding) / 2 );
+}
+aside section div a:first-child {
+	margin-top: 0px;
+}
+
+aside section div a:hover {
+	background: #ffb3b3;
+}
+
+aside section div a:hover a {
+	color: black;
+}
+
+
+footer {
+	background: var(--section-background);
+	border-radius: var(--border-radius);
+	padding: var(--padding);
+	box-sizing: border-box;
+	/* display: flex;
+	align-items: top; */
+}
+
+footer img {
+	width: 69px;
+	height: 69px;
+}
+
+footer h1 {
+	font-size: 2.5rem;
+	padding: 0px;
+	height: 69px;
+	line-height: 69px;
+	margin: 0px;
+}
+
+div.title {
+	display: flex;
+	align-items: center;
+}

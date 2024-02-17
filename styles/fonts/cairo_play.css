@@ -1,0 +1,45 @@
+@font-face {
+	font-family: "Cairo Play";
+	src: url("./cairo_play/CairoPlay-VariableFont.ttf");
+}
+
+
+
+@font-face {
+	font-family: "Cairo Play black";
+	src: url("./cairo_play/static/CairoPlay-Black.ttf");
+}
+
+
+
+@font-face {
+	font-family: "Cairo Play extralight";
+	src: url("./cairo_play/static/CairoPlay-ExtraLight.ttf");
+}
+@font-face {
+	font-family: "Cairo Play light";
+	src: url("./cairo_play/static/CairoPlay-Light.ttf");
+}
+@font-face {
+	font-family: "Cairo Play medium";
+	src: url("./cairo_play/static/CairoPlay-Medium.ttf");
+}
+@font-face {
+	font-family: "Cairo Play regular";
+	src: url("./cairo_play/static/CairoPlay-Regular.ttf");
+}
+
+
+
+@font-face {
+	font-family: "Cairo Play semibold";
+	src: url("./cairo_play/static/CairoPlay-SemiBold.ttf");
+}
+@font-face {
+	font-family: "Cairo Play bold";
+	src: url("./cairo_play/static/CairoPlay-Bold.ttf");
+}
+@font-face {
+	font-family: "Cairo Play extrabold";
+	src: url("./cairo_play/static/CairoPlay-ExtraBold.ttf");
+}
