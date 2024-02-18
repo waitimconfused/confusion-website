@@ -35,42 +35,39 @@ export default new class {
 	}
 
 	reloadAside(){
-		let asideData = {
-			"Recent Projects": [
-				{type: "link", href:"/projects/view/confusion/", text: "Confusion"},
-				{type: "link", href:"/projects/view/faker_banker/", text: "Faker Banker"},
-				{type: "link", href:"/projects/view/asterisk/", text: "Asterisk"}
-			],
-			"Project Showcase": [
-				{type: "text", text: "Nothing's Here!"}
-			]
-		};
-
-		Object.keys(asideData).forEach((sectionName) => {
-			let sectionElement = document.createElement("section");
-			this.aside.appendChild(sectionElement);
-
-			let headerElement = document.createElement("h1");
-			headerElement.innerText = sectionName;
-			sectionElement.appendChild(headerElement);
-
-			let contentsElement = document.createElement("div");
-			sectionElement.appendChild(contentsElement);
-
-			let sectionContent = asideData[sectionName];
-			sectionContent.forEach((contentData) => {
-				if(contentData.type == "link"){
-					let content = document.createElement("a");
-					content.href = contentData.href;
-					content.innerText = contentData.text;
-					contentsElement.appendChild(content);
-				}else if(contentData.type == "text"){
-					let content = document.createElement("p");
-					content.innerText = contentData.text;
-					contentsElement.appendChild(content);
-				}
-			});
-		});
+		function makeHttpObject() {
+			try {return new XMLHttpRequest();}
+			catch (error) {}
+			try {return new ActiveXObject("Msxml2.XMLHTTP");}
+			catch (error) {}
+			try {return new ActiveXObject("Microsoft.XMLHTTP");}
+			catch (error) {}
+		
+			throw new Error("Could not create HTTP request object.");
+		}
+		
+		var request = makeHttpObject();
+		request.open("GET", "/index.html", true);
+		request.send(null);
+		request.onreadystatechange = function() {
+			if (request.readyState == 4){
+				let html = request.responseText;
+		
+				let iframe = document.createElement("iframe");
+				iframe.style.display = "none";
+				document.body.appendChild(iframe);
+		
+				let iframeDocument = iframe.contentWindow.document;
+		
+				iframeDocument.body.innerHTML = html;
+		
+				let iframeAside = iframeDocument.getElementsByTagName("aside")[0];
+		
+				document.getElementsByTagName("aside")[0].innerHTML = iframeAside.innerHTML;
+		
+				iframe.remove();
+			}
+		}
 	}
 
 	reloadFooter(){
