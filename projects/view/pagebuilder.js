@@ -1,6 +1,7 @@
 export default new class {
 	stylesheet = null;
 	header = null;
+	headerContent = {};
 
 	content = null;
 
@@ -36,8 +37,9 @@ export default new class {
 	reloadAside(){
 		let asideData = {
 			"Recent Projects": [
-				{type: "link", href:"../../../", text: "Confusion Homepage"},
-				{type: "link", href:"/projects/view/faker_banker/", text: "Faker Banker"}
+				{type: "link", href:"/projects/view/confusion/", text: "Confusion"},
+				{type: "link", href:"/projects/view/faker_banker/", text: "Faker Banker"},
+				{type: "link", href:"/projects/view/asterisk/", text: "Asterisk"}
 			],
 			"Project Showcase": [
 				{type: "text", text: "Nothing's Here!"}
@@ -72,11 +74,25 @@ export default new class {
 	}
 
 	reloadFooter(){
-		let preexistingFooter = document.getElementsByTagName("footer")[0];
-		preexistingFooter?.remove();
+		while(document.getElementsByTagName("footer")[0]){
+			document.getElementsByTagName("footer")[0]?.remove();
+		}
+		let footer = document.createElement("footer");
+		this.main.appendChild(footer);
+
+		let icon = document.createElement("img");
+		icon.src = this.headerContent.icon;
+		footer.appendChild(icon);
+
+		let title = document.createElement("h1");
+		title.innerText = this.headerContent.title;
+		footer.appendChild(title);
 	}
 
 	setHeader(content={icon:"", title:""}){
+
+		this.headerContent = content;
+
 		let div = document.createElement("div");
 		div.className = "title";
 		this.header.appendChild(div);
@@ -98,6 +114,8 @@ export default new class {
 		pageIcon.type = "image/*";
 		pageIcon.href = content.icon;
 		document.head.appendChild(pageIcon);
+
+		this.reloadFooter();
 	}
 
 	addSection(content={title:"", content:""}){
@@ -111,5 +129,7 @@ export default new class {
 		let p = document.createElement("p");
 		p.innerHTML = content.content.replaceAll("\n", "<br>");
 		section.appendChild(p);
+
+		this.reloadFooter();
 	}
 }
