@@ -119,6 +119,7 @@ main section img {
 	}
 	aside {
 		width: 100%;
+		position: relative;
 	}
 	main {
 		width: 100%;
