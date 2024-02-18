@@ -111,9 +111,10 @@ main section img {
 
 
 
-@media only screen and (width < 900px) {
+@media only screen and (width < 750px) {
 	content {
-		display: grid;
+		display: flex;
+		flex-direction: column;
 	}
 	aside {
 		width: 100%;
@@ -127,6 +128,8 @@ main section img {
 
 	aside section div {
 		display: block;
+		max-height: 10rem;
+		overflow: auto;
 	}
 }
 
