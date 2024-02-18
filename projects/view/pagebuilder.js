@@ -18,6 +18,12 @@ export default new class {
 		this.stylesheet.href = "../../../styles/index.css";
 		document.head.appendChild(this.stylesheet);
 
+		let meta = document.createElement("meta");
+		meta.name = "viewport";
+		meta.content = "width = device-width, initial-scale = 1.";
+		document.head.appendChild(meta);
+		// <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+
 		this.header = document.createElement("header");
 		document.body.appendChild(this.header);
 
