@@ -1,26 +1,9 @@
-export var header = new class {
+builder.header({
+	icon: "/assets/favicon.png",
+	title: "Faker Banker"
+});
 
-	title = "";
-	icon = "";
-	links = [];
-
-	#element = null;
-
-	setTitle(title=""){
-		this.title = title;
-	}
-
-
-	reload(){
-
-		if(this.#element == null){
-			this.#element = document.createElement("div");
-			this.#element.className = "header";
-			document.body.prepend(this.#element);
-
-			this.#element.innerText = this.title;
-		}
-
-	}
-
-}
+builder.addSection({
+	title: "Hello World!",
+	content: "huvsrijfp"
+})
