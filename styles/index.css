@@ -52,8 +52,6 @@ aside {
 	box-sizing: border-box;
 	width: 0px;
 	transition: width 400ms;
-    position: sticky;
-    top: 0px;
 }
 aside section {
 	background: var(--section-background);
@@ -119,7 +117,6 @@ main section img {
 	}
 	aside {
 		width: 100%;
-		position: initial;
 	}
 	main {
 		width: 100%;
@@ -130,6 +127,13 @@ main section img {
 
 	aside section div {
 		display: block;
+	}
+}
+
+@media only screen and (width > 899px) {
+	aside {
+		position: sticky;
+		top: 0px;
 	}
 }
 
