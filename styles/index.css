@@ -67,6 +67,8 @@ aside section div {
 	box-sizing: border-box;
 	background: var(--background);
 	margin-top: var(--padding);
+	overflow: auto;
+	max-height: calc(1rem + 3rem * 4);
 }
 aside section div:first-of-type {
 	margin-top: 0px;
