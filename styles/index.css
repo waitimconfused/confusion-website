@@ -9,7 +9,12 @@
 	color-scheme: dark;
 }
 
+html {
+	padding: 0px;
+	margin: 0px;
+}
 body {
+	margin: 0px;
 	background: var(--background);
 	padding: var(--padding);
 	top: 0px;
@@ -23,6 +28,10 @@ header {
 	border-radius: var(--border-radius);
 	padding: var(--padding);
 	box-sizing: border-box;
+	display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-direction: row-reverse;
 }
 header img {
 	width: 138px;
@@ -51,7 +60,10 @@ aside {
 	min-width: var(--sidebar-width);
 	box-sizing: border-box;
 	width: 0px;
-	transition: width 400ms;
+	height: calc(100vh - var(--padding) * 2);
+    overflow: auto;
+	border-radius: var(--border-radius);
+    margin-top: var(--padding);
 }
 aside section {
 	background: var(--section-background);
@@ -60,6 +72,12 @@ aside section {
 	border-radius: var(--border-radius);
 	box-sizing: border-box;
 	color: white;
+}
+aside section:first-of-type {
+	margin-top: 0px;
+}
+aside::-webkit-scrollbar {
+	display: none;
 }
 aside section div {
 	border-radius: calc(var(--border-radius) - var(--padding));
@@ -116,10 +134,12 @@ main section img {
 @media only screen and (width < 750px) {
 	content {
 		display: flex;
-		flex-direction: column;
+		flex-direction: column-reverse;
 	}
 	aside {
 		width: 100%;
+		max-height: none;
+		height: auto;
 	}
 	main {
 		width: 100%;
@@ -138,7 +158,7 @@ main section img {
 @media only screen and (width > 899px) {
 	aside {
 		position: sticky;
-		top: 0px;
+		top: var(--padding);
 	}
 }
 
@@ -149,19 +169,21 @@ p {
 a {
 	color: white;
 	text-decoration: none;
-	transition: color 400ms;
-	text-align: center;
-}
-
-aside section div a {
-	background: #e06767;
 	transition: background 400ms, color 400ms;
-	width: 100%;
+	text-align: center;
+	background: #e06767;
 	display: block;
 
 	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
-	padding: calc( var(--padding) / 4 );
+	padding: calc( var(--padding) / 2 );
 	box-sizing: border-box;
+	margin-top: calc( var(--padding) );
+}
+
+aside section div a {
+	width: 100%;
+	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
+	padding: calc( var(--padding) / 4 );
 	margin-top: calc( var(--padding) / 2 );
 }
 aside section div a:first-child {
@@ -184,8 +206,7 @@ footer {
 	border-radius: var(--border-radius);
 	padding: var(--padding);
 	box-sizing: border-box;
-	/* display: flex;
-	align-items: top; */
+	margin-top: var(--padding);
 }
 
 footer img {

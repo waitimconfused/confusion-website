@@ -27,20 +27,23 @@ export default new class {
 		this.header = document.createElement("header");
 		document.body.appendChild(this.header);
 
+		let demoButton = document.createElement("a");
+		demoButton.innerText = "Try It";
+		this.header.appendChild(demoButton);
+
 		this.content = document.createElement("content");
 		document.body.appendChild(this.content);
 
 		this.aside = document.createElement("aside");
 		this.content.appendChild(this.aside);
-		this.reloadAside();
+		this.createAside();
+		this.createFooter();
 
 		this.main = document.createElement("main");
 		this.content.appendChild(this.main);
-
-		this.reloadFooter();
 	}
 
-	reloadAside(){
+	createAside(){
 		function makeHttpObject() {
 			try {return new XMLHttpRequest();}
 			catch (error) {}
@@ -76,20 +79,43 @@ export default new class {
 		}
 	}
 
-	reloadFooter(){
-		while(document.getElementsByTagName("footer")[0]){
-			document.getElementsByTagName("footer")[0]?.remove();
-		}
+	createFooter(){
 		let footer = document.createElement("footer");
-		this.main.appendChild(footer);
+		document.body.appendChild(footer);
 
-		let icon = document.createElement("img");
-		icon.src = this.headerContent.icon;
-		footer.appendChild(icon);
-
-		let title = document.createElement("h1");
-		title.innerText = this.headerContent.title;
-		footer.appendChild(title);
+		function makeHttpObject() {
+			try {return new XMLHttpRequest();}
+			catch (error) {}
+			try {return new ActiveXObject("Msxml2.XMLHTTP");}
+			catch (error) {}
+			try {return new ActiveXObject("Microsoft.XMLHTTP");}
+			catch (error) {}
+		
+			throw new Error("Could not create HTTP request object.");
+		}
+		
+		var request = makeHttpObject();
+		request.open("GET", "/index.html", true);
+		request.send(null);
+		request.onreadystatechange = function() {
+			if (request.readyState == 4){
+				let html = request.responseText;
+		
+				let iframe = document.createElement("iframe");
+				iframe.style.display = "none";
+				document.body.appendChild(iframe);
+		
+				let iframeDocument = iframe.contentWindow.document;
+		
+				iframeDocument.body.innerHTML = html;
+		
+				let iframeAside = iframeDocument.getElementsByTagName("footer")[0];
+		
+				footer.innerHTML = iframeAside.innerHTML;
+		
+				iframe.remove();
+			}
+		}
 	}
 
 	setHeader(content={icon:"", title:""}){
@@ -117,8 +143,6 @@ export default new class {
 		pageIcon.type = "image/*";
 		pageIcon.href = content.icon;
 		document.head.appendChild(pageIcon);
-
-		this.reloadFooter();
 	}
 
 	addSection(content={title:"", content:""}){
@@ -132,7 +156,5 @@ export default new class {
 		let p = document.createElement("p");
 		p.innerHTML = content.content.replaceAll("\n", "<br>");
 		section.appendChild(p);
-
-		this.reloadFooter();
 	}
 }

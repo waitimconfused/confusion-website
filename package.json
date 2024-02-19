@@ -3,15 +3,25 @@
 	"scripts": {
 		"host": "node server.ast.js"
 	},
-
-	"index": {
+	"index.html": {
 		"asideContent": {
 			"Recent Projects": [
-				{"type": "link", "text": "Confusion Homepage", "href": "./"},
-				{"type": "link", "text":"Confusion Homepage", "href": "./"}
+				{
+					"type": "link",
+					"text": "Confusion Homepage",
+					"href": "./"
+				},
+				{
+					"type": "link",
+					"text": "Confusion Homepage",
+					"href": "./"
+				}
 			],
 			"Project Showcase": [
-				{"type": "text", "text": "Nothing's Here!"}
+				{
+					"type": "text",
+					"text": "Nothing's Here!"
+				}
 			]
 		}
 	}
