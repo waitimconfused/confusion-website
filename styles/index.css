@@ -152,7 +152,7 @@ main section img {
 		width: 100%;
 	}
 	header h1 {
-		font-size: clamp(0px, 11vw, 2.5rem);
+		font-size: clamp(0px, 7.5vw, 5rem);
 	}
 
 	aside section div {
