@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"scripts": {
-		"host": "node server.ast.js"
+		"host": "nodemon server.ast.js"
 	},
 	"index.html": {
 		"asideContent": {

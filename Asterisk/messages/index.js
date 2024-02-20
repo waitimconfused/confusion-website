@@ -35,8 +35,10 @@ export function write(type="", message, data){
 
 	let terminalWidth = process.stdout.columns;
 
-	let beforeTitle = " ".repeat( Math.floor(terminalWidth / 2 - messageTitle.length / 2) );
-	let afterTitle = " ".repeat( Math.floor(terminalWidth / 2 - messageTitle.length / 2) );
+	let titleLength = messageTitle.length % terminalWidth;
+
+	let beforeTitle = " ".repeat( Math.floor(terminalWidth / 2 - titleLength / 2) );
+	let afterTitle = " ".repeat( Math.floor(terminalWidth / 2 - titleLength / 2) );
 	let header = beforeTitle + messageTitle + afterTitle;
 	while(header.length < terminalWidth) header += " ";
 	let end = " ".repeat(terminalWidth);

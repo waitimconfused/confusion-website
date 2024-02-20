@@ -24,6 +24,7 @@ body {
 }
 
 header {
+	position: relative;
 	background: var(--section-background);
 	border-radius: var(--border-radius);
 	padding: var(--padding);
@@ -31,6 +32,13 @@ header {
 	display: flex;
     align-items: flex-end;
     justify-content: space-between;
+}
+header a {
+	position: absolute;
+	min-width: max-content;
+	bottom: var(--padding);
+	right: var(--padding);
+	border-radius: calc(var(--border-radius) - var(--padding) ) !important;
 }
 header img {
 	width: 138px;

@@ -141,7 +141,10 @@ export default new class {
 		document.head.appendChild(pageIcon);
 
 		let demoButton = document.createElement("a");
+		let projectPath = window.location.href.split("/")[window.location.href.split("/").length - 2];
 		demoButton.innerText = "Try It";
+		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
+		demoButton.href = `/projects/demo/${projectPath}/`;
 		this.header.appendChild(demoButton);
 	}
 
