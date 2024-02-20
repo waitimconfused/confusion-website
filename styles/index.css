@@ -165,7 +165,7 @@ p {
 	margin: 0px;
 }
 
-a {
+a:not([stylize=false]) {
 	color: white;
 	text-decoration: none;
 	transition: background 400ms, color 400ms;
@@ -179,23 +179,19 @@ a {
 	margin-top: calc( var(--padding) );
 }
 
-aside section div a {
+aside section div a:not([stylize=false]) {
 	width: 100%;
 	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
 	padding: calc( var(--padding) / 4 );
 	margin-top: calc( var(--padding) / 2 );
 }
-aside section div a:first-child {
+aside section div a:not([stylize=false]):first-child {
 	margin-top: 0px;
 }
 
-a:hover,
-a:active {
+a:not([stylize=false]):hover,
+a:not([stylize=false]):active {
 	background: #ffb3b3;
-}
-
-a:hover,
-a:active {
 	color: black;
 }
 
