@@ -31,7 +31,6 @@ header {
 	display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    flex-direction: row-reverse;
 }
 header img {
 	width: 138px;
@@ -60,7 +59,7 @@ aside {
 	min-width: var(--sidebar-width);
 	box-sizing: border-box;
 	width: 0px;
-	height: calc(100vh - var(--padding) * 2);
+	max-height: calc(100vh - var(--padding) * 2);
     overflow: auto;
 	border-radius: var(--border-radius);
     margin-top: var(--padding);
@@ -155,7 +154,7 @@ main section img {
 	}
 }
 
-@media only screen and (width > 899px) {
+@media only screen and (width > 900px) {
 	aside {
 		position: sticky;
 		top: var(--padding);
@@ -190,13 +189,13 @@ aside section div a:first-child {
 	margin-top: 0px;
 }
 
-aside section div a:hover,
-aside section div a:active {
+a:hover,
+a:active {
 	background: #ffb3b3;
 }
 
-aside section div a:hover,
-aside section div a:active {
+a:hover,
+a:active {
 	color: black;
 }
 

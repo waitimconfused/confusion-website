@@ -27,10 +27,6 @@ export default new class {
 		this.header = document.createElement("header");
 		document.body.appendChild(this.header);
 
-		let demoButton = document.createElement("a");
-		demoButton.innerText = "Try It";
-		this.header.appendChild(demoButton);
-
 		this.content = document.createElement("content");
 		document.body.appendChild(this.content);
 
@@ -143,6 +139,10 @@ export default new class {
 		pageIcon.type = "image/*";
 		pageIcon.href = content.icon;
 		document.head.appendChild(pageIcon);
+
+		let demoButton = document.createElement("a");
+		demoButton.innerText = "Try It";
+		this.header.appendChild(demoButton);
 	}
 
 	addSection(content={title:"", content:""}){
