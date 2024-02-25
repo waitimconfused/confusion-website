@@ -1,4 +1,4 @@
-import page from "../pagebuilder.js";
+import page from "./pagebuilder.js";
 
 page.new();
 

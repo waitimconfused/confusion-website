@@ -18,27 +18,7 @@
 
 		<content>
 
-			<aside>
-
-				<section>
-					<h1>Project Showcase</h1>
-					<div>
-						<div>
-							<p>Nothing's Here!</p>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<h1>Newly Updated</h1>
-					<div>
-						<a href="/projects/view/confusion/">Confusion</a>
-						<a href="/projects/view/faker_banker/">Faker Banker</a>
-						<a href="/projects/view/asterisk/">Asterisk</a>
-						<a href="/projects/view/beep/">beep!</a>
-					</div>
-				</section>
-			</aside>
+			<aside></aside>
 
 			<main>
 				<section>
@@ -74,19 +54,16 @@
 
 		</content>
 
-		<footer>
-			<div class="title">
-				<img src="/assets/favicon.png">
-				<h1>Confusion</h1>
-			</div>
-
-			<div>
-				<a href="https://github.com/Dev-384/confusion-website" target="_blank" stylize="false">
-					<img src="/assets/github/github-mark-white.svg">
-				</a>
-			</div>
-		</footer>
+		<footer></footer>
 
 	</body>
+
+	<script type="module">
+		import aside from "/components/generate/aside.js";
+		import footer from "/components/generate/footer.js";
+
+		aside();
+		footer();
+	</script>
 
 </html>

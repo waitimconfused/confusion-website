@@ -1,3 +1,6 @@
+import aside from "/components/generate/aside.js";
+import footer from "/components/generate/footer.js";
+
 export default new class {
 	stylesheet = null;
 	header = null;
@@ -22,7 +25,6 @@ export default new class {
 		meta.name = "viewport";
 		meta.content = "width = device-width, initial-scale = 1.";
 		document.head.appendChild(meta);
-		// <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
 
 		this.header = document.createElement("header");
 		document.body.appendChild(this.header);
@@ -32,86 +34,14 @@ export default new class {
 
 		this.aside = document.createElement("aside");
 		this.content.appendChild(this.aside);
-		this.createAside();
-		this.createFooter();
+
+		this.footer = document.createElement("footer");
+		document.body.appendChild(this.footer);
+		aside();
+		footer();
 
 		this.main = document.createElement("main");
 		this.content.appendChild(this.main);
-	}
-
-	createAside(){
-		function makeHttpObject() {
-			try {return new XMLHttpRequest();}
-			catch (error) {}
-			try {return new ActiveXObject("Msxml2.XMLHTTP");}
-			catch (error) {}
-			try {return new ActiveXObject("Microsoft.XMLHTTP");}
-			catch (error) {}
-		
-			throw new Error("Could not create HTTP request object.");
-		}
-		
-		var request = makeHttpObject();
-		request.open("GET", "/index.html", true);
-		request.send(null);
-		request.onreadystatechange = function() {
-			if (request.readyState == 4){
-				let html = request.responseText;
-		
-				let iframe = document.createElement("iframe");
-				iframe.style.display = "none";
-				document.body.appendChild(iframe);
-		
-				let iframeDocument = iframe.contentWindow.document;
-		
-				iframeDocument.body.innerHTML = html;
-		
-				let iframeAside = iframeDocument.getElementsByTagName("aside")[0];
-		
-				document.getElementsByTagName("aside")[0].innerHTML = iframeAside.innerHTML;
-		
-				iframe.remove();
-			}
-		}
-	}
-
-	createFooter(){
-		let footer = document.createElement("footer");
-		document.body.appendChild(footer);
-
-		function makeHttpObject() {
-			try {return new XMLHttpRequest();}
-			catch (error) {}
-			try {return new ActiveXObject("Msxml2.XMLHTTP");}
-			catch (error) {}
-			try {return new ActiveXObject("Microsoft.XMLHTTP");}
-			catch (error) {}
-		
-			throw new Error("Could not create HTTP request object.");
-		}
-		
-		var request = makeHttpObject();
-		request.open("GET", "/index.html", true);
-		request.send(null);
-		request.onreadystatechange = function() {
-			if (request.readyState == 4){
-				let html = request.responseText;
-		
-				let iframe = document.createElement("iframe");
-				iframe.style.display = "none";
-				document.body.appendChild(iframe);
-		
-				let iframeDocument = iframe.contentWindow.document;
-		
-				iframeDocument.body.innerHTML = html;
-		
-				let iframeAside = iframeDocument.getElementsByTagName("footer")[0];
-		
-				footer.innerHTML = iframeAside.innerHTML;
-		
-				iframe.remove();
-			}
-		}
 	}
 
 	setHeader(content={icon:"", title:""}){
@@ -141,10 +71,10 @@ export default new class {
 		document.head.appendChild(pageIcon);
 
 		let demoButton = document.createElement("a");
-		let projectPath = window.location.href.split("/")[window.location.href.split("/").length - 2];
+		let projectPath = window.location.href.split("/")[window.location.href.split("/").length - 1];
 		demoButton.innerText = "Try It";
 		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
-		demoButton.href = `/projects/demo/${projectPath}/`;
+		demoButton.href = `/projects/demo/${projectPath}`;
 		this.header.appendChild(demoButton);
 	}
 
