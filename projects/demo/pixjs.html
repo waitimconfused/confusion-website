@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="./pixjs/style.css">
+def async get(path="")
+	def response = await fetch(path)
+	def contents = await response.text()
+	def b64moduleData = "data:text/javascript;base64," + btoa(contents)
+	def module = await import(b64moduleData)
+	return module;
+
+import game from runtime
+
+console.log(game);
+
+
+def built(game, window)
+	# Comment
+	def type = game:block.type;
+	# When the block is first built, set the variant to "default"
+	game:block.variant = "default"
+	game:player.inventory.removeItem(type)
+	console.log("Built block")
+
+def action(game, window)
+	console.log("Block was interacted with")
+
+game:block.built = built
+
+<script src="./pixjs.js" type="module"></script>

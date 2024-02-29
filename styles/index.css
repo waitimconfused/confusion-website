@@ -205,6 +205,11 @@ a:not([stylize=false]):active {
 	background: #ffb3b3;
 	color: black;
 }
+a:visited,
+a:active,
+a:link {
+	color: white;
+}
 
 
 footer {
@@ -231,4 +236,16 @@ footer h1 {
 div.title {
 	display: flex;
 	align-items: center;
+}
+
+
+
+
+@media (prefers-color-scheme: light) {
+	html {
+		filter: invert(95%) hue-rotate(180deg);
+	}
+	img, video, iframe {
+		filter: invert(95%) hue-rotate(180deg);
+	}
 }
