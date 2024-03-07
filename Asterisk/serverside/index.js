@@ -3,17 +3,43 @@ import * as FILES from "../files/index.js";
 import * as MESSAGE from "../messages/index.js";
 import http from "node:http";
 
+/**
+ * SERVER-SIDE
+ * 
+ * The port number that the server is hosted on
+ * 
+ * When opening a local server, use `Ast.serverside.open(<PORT>);`
+*/
 export var port = 0;
 
-export function open(portNumber = 3000){
+/**
+ * SERVER-SIDE
+ * 
+ * Open a port on the current machine, on any specified port number
+ * 
+ * Example:
+ * ```js
+ * Ast.serverside.open(8080);
+ * 
+ * // Server opened on port "8080"
+ * // To view: http://localhost:8080
+ * ```
+*/
+export function open(portNumber=8080){
 	port = portNumber;
 
 	http.createServer(onRequest).listen(portNumber);
 
 	MESSAGE.code("server-open", portNumber);
 }
-
-export var onRequest = function(request=http.IncomingMessage, response=http.ServerResponse){
+/**
+ * SERVER-SIDE
+ * 
+ * INTERNAL FUNCTION
+ * 
+ * Handling server requests
+*/
+export function onRequest(request=http.IncomingMessage, response=http.ServerResponse){
 
 	let isAPI = false;
 

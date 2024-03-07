@@ -1,5 +1,5 @@
 {
-	"server-open":"Server opened on port \"%d\"",
+	"server-open":"Server opened on port \"%d\"\nTo view: http://localhost:%d",
 
 	"404": "Error: \"404 Not Found\".\n\nNo file found at path: \"%d\"",
 	"404-dir": "Error: \"404 Not Found\".\n\nClient requested directory \"%d\". Failed to provide HTML file",

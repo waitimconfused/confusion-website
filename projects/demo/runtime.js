@@ -1,3 +1,22 @@
+function getObjectValue_fromKeys(object={}, keys=[""]){
+
+	let value = keys.reduce((obj, key) => (obj || {})[key], object);
+  
+	return value;
+  }
+  function setObjectValue_fromKeys(object={}, keys=[""], newValue=""){
+  
+	keys.reduce((obj, key, index, keys) => {
+	  if (index === keys.length - 1) {
+		obj[key] = newValue; // set new value
+	  } else {
+		return (obj || {})[key];
+	  }
+	}, object);
+  
+	return object;
+  }
+
 var player = new class {
 	inventory = {
 		items: [],
@@ -5,6 +24,9 @@ var player = new class {
 			let indexOfItem = this.items.indexOf(item);
 			if(indexOfItem == -1) return;
 			this.items.splice(indexOfItem, 1);
+		},
+		set: function(key, value){
+			this = setObjectValue_fromKeys(this, key.split("."), value);
 		}
 	}
 }
@@ -19,11 +41,15 @@ var block = new class {
 		interact: function(){}
 	}
 
+	set(key, value){
+		this = setObjectValue_fromKeys(this, key.split("."), value);
+	}
+
 	constructor(posX=0, posY=0, layer=0){
 
 	}
 
-}(0, 0, 0)
+}(0, 0, 0);
 
 export var game = {
 	

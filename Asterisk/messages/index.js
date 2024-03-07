@@ -26,12 +26,19 @@ const styles = {
 		Gray: "\x1b[100m"
 	}
 };
-
-export function write(type="", message, data){
+/**
+ * SERVER-SIDE
+ * 
+ * Create a terminal log
+ * 
+ * @param { string } header The desired header of the log (anything)
+ * @param { string } message The content of the message
+*/
+export function write(header="", message){
 
 	let timestamp = Date.now();
 
-	let messageTitle = " "+timestamp+" - "+type+" ";
+	let messageTitle = " "+timestamp+" - "+header+" ";
 
 	let terminalWidth = process.stdout.columns;
 
@@ -39,11 +46,11 @@ export function write(type="", message, data){
 
 	let beforeTitle = " ".repeat( Math.floor(terminalWidth / 2 - titleLength / 2) );
 	let afterTitle = " ".repeat( Math.floor(terminalWidth / 2 - titleLength / 2) );
-	let header = beforeTitle + messageTitle + afterTitle;
-	while(header.length < terminalWidth) header += " ";
+	let headerSection = beforeTitle + messageTitle + afterTitle;
+	while(headerSection.length < terminalWidth) headerSection += " ";
 	let end = " ".repeat(terminalWidth);
 
-	console.log(styles.background.Green+styles.foreground.Black + header + styles.reset);
+	console.log(styles.background.Green+styles.foreground.Black + headerSection + styles.reset);
 
 	if(typeof message == "string") message = message.split("\n");
 
@@ -54,8 +61,16 @@ export function write(type="", message, data){
 	console.log(end + styles.reset + "\n");
 }
 
+/**
+ * SERVER-SIDE
+ * 
+ * Like `write()` but with preset messages, and using data to "fill in the blanks" 
+
+ * @param { string } code The desired type of the log (see: `/Asterisk/messages/index.json`)
+ * @param { string } data Message data
+*/
 export function code(code="", data){
 	let message = messageData[code].replaceAll("%d", data);
-	write(code, message, data);
+	write(code, message);
 	return message;
 }

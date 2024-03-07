@@ -1,6 +1,8 @@
 import Graph from "./display/graph.js";
+import Node from "./display/nodes.js";
 export var globalGraph = new Graph;
 import { keyPressed } from "./keyboard.js";
+import { Pane } from 'https://cdn.skypack.dev/tweakpane';
 
 export var camera = {
 	zoom: 3,
@@ -17,6 +19,10 @@ var escapePressed = false;
 
 graphUpdate();
 
+var optionsPane = new Pane({ title: 'Node Options' });
+var focusedNode = null;
+var focusedNode_prev = null;
+
 function graphUpdate(){
 
 	if(escapePressed == true && !keyPressed("escape")){
@@ -25,6 +31,11 @@ function graphUpdate(){
 		redraw = !redraw;
 		escapePressed = true;
 	}
+	
+	if(focusedNode !== focusedNode_prev && focusedNode !== null) {
+		veiwNode(focusedNode);
+	}
+	focusedNode_prev = focusedNode;
 
 	if(!lastCalledTime) {
 		lastCalledTime = Date.now();
@@ -81,3 +92,51 @@ window.addEventListener('wheel', (e) => {
 window.addEventListener("gesturestart", (e) => e.preventDefault(), {passive: false});
 window.addEventListener("gesturechange", (e) => e.preventDefault(), {passive: false});
 window.addEventListener("gestureend", (e) => e.preventDefault(), {passive: false});
+
+export function applyFocus(node){
+	focusedNode = node;
+}
+
+function veiwNode(node=new Node){
+
+	optionsPane.dispose();
+	optionsPane = new Pane({ title: 'Node Options' });
+
+	let options = structuredClone(node.display);
+
+	Object.keys(options).forEach((item) => {
+		if(typeof options[item] == "function") return;
+		if(typeof options[item] == "object") return;
+		if(item == "x" || item == "y") return;
+
+		let title = `${item}`;
+		title = title.replaceAll("_", " ");
+		title = title.toLowerCase();
+		title = title.split(" ");
+		title = title.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+		title = title.join(" ");
+
+		optionsPane.addBinding(options, item, { label: title });
+	});
+
+	optionsPane.addBlade({
+		view: 'separator',
+	});
+
+	const saveButton = optionsPane.addButton({
+		title: 'Save'
+	});
+	saveButton.on('click', () => {
+		options.x = node.display.x;
+		options.y = node.display.y;
+		node.display = options;
+		focusedNode = null;
+	});
+
+	optionsPane.addButton({
+		title: 'Remove Node'
+	})
+	.on('click', () => {
+		node.remove();
+	});
+}

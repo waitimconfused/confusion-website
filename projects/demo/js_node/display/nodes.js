@@ -1,27 +1,27 @@
-import { globalGraph, calcDistance, camera, cameraTo } from "../index.js";
+import { globalGraph, calcDistance, camera, cameraTo, applyFocus } from "../index.js";
 import { keyPressed, mouse } from "../keyboard.js";
 import { showFile } from "../files/show.js";
 import { getFileOptions } from "../files/options.js";
 
 export default class Node {
-	title = "Untitled Node";
 	display = {
 		x: 0,
 		y: 0,
 		radius: 10,
-		colour: "red",
-		fileIcon: "?"
+		title: "Untitled Node",
+		colour: "#ff0000",
+		glyph: "?"
 	};
 	children = [];
 	parents = [];
 	isClicked = false;
-	constructor(title=this.title, graph=globalGraph){
+	constructor(title=this.display.title, graph=globalGraph){
 		graph.addNode(this);
 
-		this.title = title;
+		this.display.title = title;
 		if(title.match(/\..+$/g)?.length > 0){
 			this.display.colour = getFileOptions(title).data?.colour || "purple";
-			this.display.fileIcon = getFileOptions(title).data?.text || "?";
+			this.display.glyph = getFileOptions(title).data?.text || "?";
 		}
 
 		this.moveTo(
@@ -30,8 +30,8 @@ export default class Node {
 		);
 		return this;
 	}
-	setTitle(title=this.title){
-		this.title = title || this.title;
+	setTitle(title=this.display.title){
+		this.display.title = title || this.display.title;
 		return this;
 	}
 	connectTo(node=new Node){
@@ -75,16 +75,13 @@ export default class Node {
 	}
 	script(){
 
-		if(this.isHovering() && keyPressed("backspace")){
-			this.remove();
-		}
-
 		if(this.isClicked){
 
 			this.moveTo(
 				mouse.position.x - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
 				mouse.position.y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
 			);
+			applyFocus(this);
 
 			if(mouse.click_l == false){
 				this.isClicked = false;
@@ -151,8 +148,8 @@ export default class Node {
 			context.shadowColor = 'black';
 			context.lineWidth = 5;
 			context.shadowBlur = 0;
-			context.strokeText(this.title, textX, textY);
-			context.fillText(this.title, textX, textY);
+			context.strokeText(this.display.title, textX, textY);
+			context.fillText(this.display.title, textX, textY);
 			context.fillStyle = this.display.colour;
 			globalGraph.canvas.style.cursor = "click";
 		}
@@ -168,8 +165,8 @@ export default class Node {
 		context.textAlign = 'center';
 		context.shadowBlur = 0;
 		context.lineWidth = this.display.radius * camera.zoom / 10;
-		context.strokeText(this.display.fileIcon, displayX, displayY);
-		context.fillText(this.display.fileIcon, displayX, displayY);
+		context.strokeText(this.display.glyph, displayX, displayY);
+		context.fillText(this.display.glyph, displayX, displayY);
 		context.closePath();
 
 		return this;
