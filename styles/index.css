@@ -178,19 +178,25 @@ p {
 
 a:not([stylize=false]) {
 	color: white;
+	text-decoration: underline;
+	transition: background 400ms, color 400ms;
+	text-align: center;
+	/* background: #e06767; */
+	
+	text-decoration-color: #e06767;
+}
+
+aside a {
+	display: block;
+}
+aside section div a:not([stylize=false]) {
+
+	color: white;
 	text-decoration: none;
 	transition: background 400ms, color 400ms;
 	text-align: center;
 	background: #e06767;
-	display: block;
-
-	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
-	padding: calc( var(--padding) / 2 );
-	box-sizing: border-box;
-	margin-top: calc( var(--padding) );
-}
-
-aside section div a:not([stylize=false]) {
+	box-sizing: border-box;;
 	width: 100%;
 	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
 	padding: calc( var(--padding) / 4 );
@@ -202,6 +208,11 @@ aside section div a:not([stylize=false]):first-child {
 
 a:not([stylize=false]):hover,
 a:not([stylize=false]):active {
+	text-decoration-color: #ffb3b3;
+}
+
+aside section div aa:not([stylize=false]):hover,
+aside section div aa:not([stylize=false]):active {
 	background: #ffb3b3;
 	color: black;
 }

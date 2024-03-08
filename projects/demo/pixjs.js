@@ -39,9 +39,9 @@ let styledJavaScript = stylize(str, JavaScript_stylesheet);
 document.body.innerHTML += "<div>"+styledJavaScript+"</div>";
 
 async function doimport(contents="") {
-  let b64moduleData = "data:text/javascript;base64," + btoa(contents);
-  let module = await import(b64moduleData);
-  return module;
+	let b64moduleData = "data:text/javascript;base64," + btoa(contents);
+	let module = await import(b64moduleData);
+	return module;
 }
 
 let module = await doimport(str);

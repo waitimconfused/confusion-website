@@ -1,6 +1,7 @@
 {
-	"type": "module",
-	"scripts": {
-		"host": "nodemon server.ast.js"
-	}
+    "type": "module",
+    "scripts": {
+        "ast-host": "nodemon host.ast.js",
+        "ast-build": "node build.ast.js"
+    }
 }
