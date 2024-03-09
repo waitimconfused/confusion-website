@@ -3,6 +3,8 @@ import * as FILES from "../files/index.js";
 import * as MESSAGE from "../messages/index.js";
 import http from "node:http";
 
+var SERVER = null;
+
 /**
  * SERVER-SIDE
  * 
@@ -28,7 +30,8 @@ export var port = 0;
 export function open(portNumber=8080){
 	port = portNumber;
 
-	http.createServer(onRequest).listen(portNumber);
+	SERVER = http.createServer(onRequest);
+	SERVER.listen(portNumber);
 
 	MESSAGE.code("server-open", portNumber);
 }
@@ -40,6 +43,14 @@ export function open(portNumber=8080){
  * Handling server requests
 */
 export function onRequest(request=http.IncomingMessage, response=http.ServerResponse){
+
+	let ip = request.connection.remoteAddress;
+
+	if (ip == "::1") {
+		ip = "::ffff:127.0.0.1";
+	}
+
+	ip = ip.split(":")[3];
 
 	let isAPI = false;
 
@@ -59,7 +70,7 @@ export function onRequest(request=http.IncomingMessage, response=http.ServerResp
 		request.on("end", function() {
 			body = JSON.parse(body || "{}");
 	
-			let API_response = API.handleRequest(body, req_url);
+			let API_response = API.handleRequest(body, req_url, ip);
 			let API_responseString = JSON.stringify(API_response.content || {response: 200});
 			response.writeHead(200, { "Content-Type": "plain/text" });
 			

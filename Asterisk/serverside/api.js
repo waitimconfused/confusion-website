@@ -39,7 +39,7 @@ export function createEndpoint(callback=(data={})=>{return data}, name="/my_api"
  * An inbetween from client api call to server response
  * Finding the correct api to use, and returning the api's data
 */
-export function handleRequest(data, endpoint=""){
+export function handleRequest(data, endpoint="", ip){
 
 	if(!data){
 		return {
@@ -54,7 +54,7 @@ export function handleRequest(data, endpoint=""){
 
 	return {
 		type: api.type,
-		content: api.callback(data)
+		content: api.callback(data, ip)
 	};
 }
 

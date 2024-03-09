@@ -4,6 +4,7 @@ import fs, { readFileSync } from "node:fs";
 import node_path from "node:path";
 
 const relativeOutput = "./";
+const startingFile = "https://raw.githubusercontent.com/Dev-384/confusion-website/main/server.ast.js"
 
 function createFolder(path){
 	if(!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
@@ -37,10 +38,12 @@ async function recursiveImport(mainFilePath="", relativePath){
 	});
 }
 
-recursiveImport("https://raw.githubusercontent.com/Dev-384/confusion-website/main/server.ast.js", "./");
+recursiveImport(startingFile, "./");
 
-let serverFile = await readFileFromURL("https://raw.githubusercontent.com/Dev-384/confusion-website/main/server.ast.js")
-createFile(relativeOutput+"/server.ast.js", serverFile);
+if(!fs.existsSync(relativeOutput+"/server.ast.js")){
+	let serverFile = await readFileFromURL(startingFile)
+	createFile(relativeOutput+"/server.ast.js", serverFile);
+}
 
 var json = fs.existsSync(relativeOutput+"/package.json")?readFileSync(relativeOutput+"/package.json"):"{}";
 json = JSON.parse(json);
