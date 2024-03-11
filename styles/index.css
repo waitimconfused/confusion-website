@@ -57,6 +57,37 @@ header h1 {
     font-weight: 900;
 }
 
+p, div.code {
+	font-size: 16px;
+}
+div.code {
+	position: relative;
+	display: inline-block;
+	font-family: monospace;
+	font-weight: normal;
+	border: 1px solid hsl(225 calc( 1 * 6.3%) 12.5% / 1);
+	background: hsl(220 calc( 1 * 6.5%) 18%);
+	padding: 0.5rem;
+	border-radius: calc(var(--border-radius) - var(--padding));
+}
+div.code.block[lang] {
+	white-space: pre;
+}
+div.code.block[lang]::before {
+	content: attr(lang);
+	background-color: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	display: block;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	padding: 0.5rem 2rem;
+	box-sizing: border-box;
+	border-top-left-radius: calc(var(--border-radius) - var(--padding) - 1px);
+	border-top-right-radius: calc(var(--border-radius) - var(--padding) - 1px);
+}
+div.code.block { display: block; }
+
 content {
 	display: flex;
 	width: 100%;
@@ -74,10 +105,12 @@ aside {
     overflow: auto;
 	border-radius: var(--border-radius);
     margin-top: var(--padding);
+	display: flex;
+	flex-direction: column;
+    gap: var(--padding);
 }
 aside section {
 	background: var(--section-background);
-	margin-top: var(--padding);
 	padding: var(--padding);
 	border-radius: var(--border-radius);
 	box-sizing: border-box;
@@ -117,10 +150,13 @@ aside img {
 }
 main {
 	width: 100%;
+	margin-top: var(--padding);
+	display: flex;
+	flex-direction: column;
+    gap: var(--padding);
 }
 main section,
 main footer {
-	margin-top: var(--padding);
 	background: var(--section-background);
 	padding: var(--padding);
 	border-radius: var(--border-radius);

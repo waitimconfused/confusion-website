@@ -44,7 +44,7 @@ export default new class {
 		this.content.appendChild(this.main);
 	}
 
-	setHeader(content={icon:"", title:""}){
+	setHeader(content={icon:"", title:"", tryItButton:true}){
 
 		this.headerContent = content;
 
@@ -73,11 +73,13 @@ export default new class {
 		let urlParams = new URLSearchParams(window.location.search);
 		let projectName = urlParams.get('project');
 
-		let demoButton = document.createElement("a");
-		demoButton.innerText = "Try It";
-		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
-		demoButton.href = `/projects/demo?project=${projectName}`;
-		this.header.appendChild(demoButton);
+		if(content.tryItButton){
+			let demoButton = document.createElement("a");
+			demoButton.innerText = "Try It";
+			demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
+			demoButton.href = `/projects/demo?project=${projectName}`;
+			this.header.appendChild(demoButton);
+		}
 	}
 
 	addSection(content={title:"", content:""}){
