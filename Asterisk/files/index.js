@@ -32,6 +32,10 @@ export function get(path=""){
 		if(path.startsWith(".") == false) path = "." + path;
 	}
 
+	if(path.includes("?")){
+		path = path.split("?")[0];
+	}
+
 	if(visibility == false) return {
 		type: "text/plain",
 		content: MESSAGES.code("403", path)

@@ -1,1 +1,57 @@
-<h1>No Project Selected</h1>
+<script type="module">
+
+	const urlParams = new URLSearchParams(window.location.search);
+	const projectName = urlParams.get('project');
+	
+	loadProject(projectName);
+
+	import page from "./pagebuilder.js";
+
+	async function loadProject(project){
+		if(!project){
+			document.body.innerHTML = "<iframe src='/404.html' style='position:fixed;top:0px;left:0px;width:100vw;height:100vh;border:none;outline:none;'></iframe>";
+			return;
+		}
+
+		if(project == "confusion") window.location.href = "/";
+
+		let projectName = project
+			.split("_")
+			.join(" ")
+			.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+		
+		let response = await fetch(`./markdown/${project}.md`);
+
+		let markdown = await response.text();
+
+		let h1 = markdown.split(/^# {0,}(.*)/g)[1];
+
+		page.new();
+
+		page.setHeader({
+			icon: "/assets/favicon.png",
+			title: h1
+		});
+
+		let sections = markdown.replace(/^# {0,}(.*)/g, "");
+		sections = sections.replace(/^(\s*)/g, "");
+		sections = sections.split("## ");
+
+		sections.forEach((content) => {
+			content = content.replace(/^(\s*)/g, "");
+			if(!content) return;
+
+			let h2 = content.split(/^(\S*)/g)[1];
+			h2 = h2.replace(/^(\s*)/g, "");
+			let p = content.split(/^(\S*)/g)[2];
+			p = p.replace(/^(\s*)/g, "");
+			p = p.replaceAll("\n", "<br>");
+			console.log(`<div><h1>${h1}</h1><p>${p}</p></div>`);
+
+			page.addSection({
+				title: h2,
+				content: p
+			});
+		})
+	}
+</script>
