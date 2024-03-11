@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<title>Confusion</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,45 +8,57 @@
 	</head>
 
 	<body>
-		<header>
-			<div class="title">
-				<img src="/assets/favicon.png">
-				<h1>Confusion</h1>
-			</div>
-		</header>
+		<script type="module">
 
-		<content>
-
-			<aside></aside>
-
-			<main>
-				<section>
-					<h1>What is this place?</h1>
-					<p>Have you ever had an idea, but no where to put it? What about multiple projects, stored with no organization?</p>
-					<br>
-					<p><strong>THIS</strong> is a place for those kinds of things. Random projects, that don't have to make sense!</p>
-				</section>
-
-				<section>
-					<h1>How</h1>
-					<p>
-						Confiusion is just a place to keep strange, bizarre projects, 100% open source on <a href="https://github.com/Dev-384/confusion-website" target="_blank">Github</a>
-					</p>
-				</section>
-			</main>
-
-		</content>
-
-		<footer></footer>
-
+			import page from "./projects/pagebuilder.js";
+	
+			loadProject("confusion");
+	
+			async function loadProject(project){
+				if(!project){
+					document.body.innerHTML = "<iframe src='/404.html' style='position:fixed;top:0px;left:0px;width:100vw;height:100vh;border:none;outline:none;'></iframe>";
+					return;
+				}
+	
+				let projectName = project
+					.split("_")
+					.join(" ")
+					.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+				
+				let response = await fetch(`./projects/markdown/${project}.md`);
+	
+				let markdown = await response.text();
+	
+				let h1 = markdown.split(/^# {0,}(.*)/g)[1];
+	
+				page.new();
+	
+				page.setHeader({
+					icon: "/assets/favicon.png",
+					title: h1
+				});
+	
+				let sections = markdown.replace(/^# {0,}(.*)/g, "");
+				sections = sections.replace(/^(\s*)/g, "");
+				sections = sections.split("## ");
+	
+				sections.forEach((content) => {
+					content = content.replace(/^(\s*)/g, "");
+					if(!content) return;
+	
+					let h2 = content.split(/^([\S ]*)/g)[1];
+					h2 = h2.replace(/^(\s*)/g, "");
+					let p = content.split(/^([\S ]*)/g)[2];
+					p = p.replace(/^(\s*)/g, "");
+					p = p.replace(/(\s*)$/g, "");
+					p = p.replaceAll("\n", "<br>");
+	
+					page.addSection({
+						title: h2,
+						content: p
+					});
+				})
+			}
+		</script>
 	</body>
-
-	<script type="module">
-		import aside from "/components/generate/aside.js";
-		import footer from "/components/generate/footer.js";
-
-		aside();
-		footer();
-	</script>
-
 </html>
