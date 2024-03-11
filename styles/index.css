@@ -296,3 +296,21 @@ div.title {
 		filter: invert(95%) hue-rotate(180deg);
 	}
 }
+footer {
+	position: relative;
+}
+footer .link {
+	position: absolute;
+	bottom: var(--padding);
+	right: var(--padding);
+	padding-right: calc(26.6px + var(--padding) / 2);
+}
+
+footer .link img {
+	width: 26.6px;
+	height: 26.6px;
+	bottom: 0px;
+	position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
