@@ -1,18 +1,24 @@
-<link rel="icon" type="image/*" href="/assets/favicon.png">
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="icon" type="image/*" href="/assets/favicon.png">
+	</head>
+	<body>
+		<script type="module">
 
-<script type="module">
+			const urlParams = new URLSearchParams(window.location.search);
+			const projectName = urlParams.get('project');
+			
+			loadProject(projectName);
 
-	const urlParams = new URLSearchParams(window.location.search);
-	const projectName = urlParams.get('project');
-	
-	loadProject(projectName);
+			import page from "./pagebuilder.js";
 
-	import page from "./pagebuilder.js";
+			async function loadProject(project){
+				let src = "/404.html";
+				if(project) src = `./demo/${project}.html`;
 
-	async function loadProject(project){
-		let src = "/404.html";
-		if(project) src = `./demo/${project}.html`;
-
-		document.body.innerHTML = `<iframe src="${src}" style="position:fixed;top:0px;left:0px;width:100vw;height:100vh;border:none;outline:none;"></iframe>`;
-	}
-</script>
+				document.body.innerHTML = `<iframe src="${src}" style="position:fixed;top:0px;left:0px;width:100vw;height:100vh;border:none;outline:none;"></iframe>`;
+			}
+		</script>
+	</body>
+</html>

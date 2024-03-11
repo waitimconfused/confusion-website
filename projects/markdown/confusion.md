@@ -9,4 +9,4 @@ Have you ever had an idea, but no where to put it? What about multiple projects,
 
 ## How
 
-Confiusion is just a place to keep strange, bizarre projects, 100% open source on <a href="https://github.com/Dev-384/confusion-website" target="_blank">Github</a><script>window.location.href = "/"</script>
+Confiusion is just a place to keep strange, bizarre projects, 100% open source on <a href="https://github.com/Dev-384/confusion-website" target="_blank">Github</a>
