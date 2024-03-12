@@ -1,5 +1,5 @@
-import convert from "./pixjs/convert.js";
-import { Stylesheet, stylize } from "./pixjs/style.js";
+import convert from "./convert.js";
+import { Stylesheet, stylize } from "./style.js";
 
 let original = document.body.innerText;
 let str = convert(document.body.innerText);

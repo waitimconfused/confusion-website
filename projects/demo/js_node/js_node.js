@@ -1,5 +1,5 @@
-import Node from "./js_node/display/nodes.js";
-import { readFile } from "./js_node/files/index.js";
+import Node from "./display/nodes.js";
+import { readFile } from "./files/index.js";
 
 const addNode = document.createElement("button");
 addNode.innerText = "Create Node";

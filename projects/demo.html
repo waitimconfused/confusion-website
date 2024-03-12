@@ -15,9 +15,10 @@
 
 			async function loadProject(project){
 				let src = "/404.html";
-				if(project) src = `./demo/${project}.html`;
+				if(project) src = `./demo/${project}/index`;
+				window.location.href = src;
 
-				document.body.innerHTML = `<iframe src="${src}" style="position:fixed;top:0px;left:0px;width:100vw;height:100vh;border:none;outline:none;"></iframe>`;
+				// document.body.innerHTML = `<iframe src="${src}" style="position:fixed;top:0px;left:0px;width:100vw;height:100vh;border:none;outline:none;"></iframe>`;
 			}
 		</script>
 	</body>

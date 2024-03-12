@@ -46,9 +46,9 @@ export function get(path=""){
 		if(fs.existsSync(path+".htm")) path += ".htm";
 	}
 
-	if(fs.existsSync(path) == false) return {
-		type: "text/plain",
-		content: MESSAGES.code("404", path),
+	if(fs.existsSync(path) == false){
+		MESSAGES.code("404", path)
+		return get("/404");
 	}
 
 	if(path.endsWith("/")){

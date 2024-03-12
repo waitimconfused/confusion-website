@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="theme-color" content="#415A77">
+		<title>Faker Banker</title>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@100..900&display=swap');
+
+			body {
+				padding: 0px;
+				margin: 0px;
+				background-color: #0D1B2A;
+				color: #E0E1DD;
+				font-family: "Inter";
+				min-height: 100vmin;
+				touch-action:pan-y;
+			}
+			header {
+				background-color: #415A77;
+				margin: 0px;
+				box-sizing: border-box;
+				padding: 2rem;
+				display: flex;
+				gap: 2rem;
+				justify-content: center;
+				align-items: center;
+			}
+			header h1 {
+				width: 8rem;
+			}
+			header svg {
+				width: 113px;
+				fill: #778DA9;
+			}
+			a, button {
+				padding: 0.5rem;
+				background-color: #778DA9;
+				border-radius: 13.13px;
+				border: 5.25px solid #415A77;
+				width: calc(100% / 2);
+				text-align: right;
+				color: inherit;
+				text-decoration: none;
+				font-size: 25px;
+				font-weight: bold;
+				position: relative;
+				top: 0px;
+				left: 0px;
+				transition: all 100ms ease-in-out;
+			}
+			a:before, button:before {
+				content: "";
+				position: absolute;
+				bottom: calc(-5px - 5.25px);
+				right: calc(-5px - 5.25px);
+				background-color: #415A77;
+				border: 5.25px solid #415A77;
+				border-radius: 13.13px;
+				width: 100%;
+				height: 100%;
+				z-index: -1;
+				transition: inherit;
+			}
+			a:active, button:active {
+				top: 2.5px;
+				left: 2.5px;
+			}
+			a:active:before, button:active:before {
+				bottom: calc(0px - 5.25px);
+				right: calc(0px - 5.25px);
+			}
+			main {
+				box-sizing: border-box;
+				padding: 2rem;
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+				justify-content: center;
+				align-items: center;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>Bank of Elephant</h1>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+				<!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+				<path d="M64 32C28.7 32 0 60.7 0 96v32H576V96c0-35.3-28.7-64-64-64H64zM576 224H0V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V224zM112 352h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm112 16c0-8.8 7.2-16 16-16H368c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z"/>
+			</svg>
+		</header>
+
+		<main>
+			<a href="./create">Create</a>
+			<a href="./transfer">Transfer</a>
+			<button>Transfer</button>
+		</main>
+		
+		<script>
+			if (window.navigator.standalone) {
+				document.write("<style>#maindiv{padding-top:20px;background-color: #D83F3F}</style>");
+				//or
+				$("#maindiv").addClass("standalone");
+			}
+		</script>
+	</body>
+</html>
