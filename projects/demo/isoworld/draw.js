@@ -29,7 +29,6 @@ export function drawBlock(x=0, y=0, z=0){
 	let spriteWidth = tileSize;
 	let spriteHeight = tileSize;
 	if(svg){
-		console.log(svg);
 		// let boundingBox = svg.getBBox();
 		spriteWidth = svg.width;
 		spriteHeight = svg.height;
