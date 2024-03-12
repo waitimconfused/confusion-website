@@ -1,15 +1,33 @@
 import * as fs from "node:fs";
 import * as MESSAGES from "../messages/index.js";
 import TYPES from "./types.json" assert {type: "json"};
+import exp from "node:constants";
 
 export var visibility = true;
 
+export var page_404 = "/404.html";
+
+/**
+ * Disable the ability to return files to any client
+ */
 export function hide(){
 	visibility = false;
 }
+/**
+ * Enable the ability to return files to any client (default)
+ */
 export function show(){
-
 	visibility = true;
+}
+/**
+ * SERVER-SIDE
+ * 
+ * If a file can not be found, return a 404 page, in its place.
+ * 
+ * @param { string } path path to file the 404 page
+ */
+export function regester404(path=page_404){
+	page_404 = path
 }
 /**
  * SERVER-SIDE
@@ -48,7 +66,7 @@ export function get(path=""){
 
 	if(fs.existsSync(path) == false){
 		MESSAGES.code("404", path)
-		return get("/404");
+		return get(page_404);
 	}
 
 	if(path.endsWith("/")){
