@@ -32,7 +32,7 @@ window.addEventListener('wheel', (e) => {
 	if (e.ctrlKey) {
 		e.preventDefault();
 		if(e.target !== canvas) return undefined;
-		camera.scale = Math.max(camera.scale - e.deltaY / 25, 0.1);
+		camera.scale = Math.max(camera.scale - e.deltaY / 25, 0.5);
 	} else {
 		if(e.target !== canvas) return undefined;
 		e.preventDefault();
@@ -41,15 +41,16 @@ window.addEventListener('wheel', (e) => {
 
 }, {passive: false});
 
-
 document.onkeydown = (e) => {
 	if(e.ctrlKey && (e.key == "-" || e.key == "_")) {
 		e.preventDefault();
 		camera.scale -= 0.5;
+		camera.scale = Math.max(camera.scale, 0.5);
 	}
 	if(e.ctrlKey && (e.key == "=" || e.key == "+")) {
 		e.preventDefault();
 		camera.scale += 0.5;
+		camera.scale = Math.max(camera.scale, 0.5);
 	}
 	if(e.ctrlKey && (e.key == "0")) {
 		e.preventDefault();
