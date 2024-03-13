@@ -2,10 +2,6 @@ import { canvas } from "./index.js";
 
 const assetDIV = loadAssets();
 
-const ErrorImage = document.createElement("img");
-ErrorImage.src = "/assets/img_not_found.png";
-assetDIV.appendChild(ErrorImage);
-
 export function loadAssets(){
 	if(document.querySelectorAll("div#assets").length == 0){
 		let assetDIV = document.createElement("div");
@@ -81,16 +77,7 @@ export function image(
 			DestinationXPos, DestinationYPos,
 			DestinationWidth, DestinationHeight,
 		);
-	}catch {
-		// context.drawImage(
-		// 	ErrorImage,
-
-		// 	0, 0, ErrorImage.width, ErrorImage.height,
-
-		// 	Math.floor(DestinationXPos), Math.floor(DestinationYPos),
-		// 	Math.floor(DestinationWidth), Math.floor(DestinationHeight),
-		// );
-	}
+	}catch {}
 	context.restore();
 	context.globalAlpha = 1;
 }
