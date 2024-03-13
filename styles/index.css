@@ -74,7 +74,7 @@ div.code.block[lang] {
 	white-space: pre;
 }
 div.code.block[lang]::before {
-	content: attr(lang);
+	content: "File";
 	background-color: rgba(0, 0, 0, 0.5);
 	position: absolute;
 	display: block;
@@ -87,6 +87,8 @@ div.code.block[lang]::before {
 	border-top-right-radius: calc(var(--border-radius) - var(--padding) - 1px);
 }
 div.code.block { display: block; }
+div.code.block[lang=md]::before { content: "Markdown"; }
+div.code.block[lang=js]::before { content: "Javascript"; }
 
 content {
 	display: flex;
@@ -280,9 +282,27 @@ footer h1 {
 	margin: 0px;
 }
 
-div.title {
+.title {
 	display: flex;
 	align-items: center;
+}
+
+a.title { text-decoration: none; width: min-content; }
+a.title h1 { position: relative; }
+a.title h1:after {
+	content: "";
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 4px;
+    left: 0px;
+    bottom: 10px;
+    background-color: transparent;
+	transition: all ease-out 300ms;
+}
+a.title:hover h1:after {
+    bottom: 14px;
+    background-color: #e06767;
 }
 
 
@@ -292,7 +312,7 @@ div.title {
 	html {
 		filter: invert(95%) hue-rotate(180deg);
 	}
-	img, video, iframe {
+	img, video, iframe, code, div.code {
 		filter: invert(95%) hue-rotate(180deg);
 	}
 }
