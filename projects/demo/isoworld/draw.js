@@ -1,13 +1,13 @@
 import { camera, canvas, tileSize } from "./index.js";
 import { image } from "./image.js";
 import { Point2D, XYZ_iso } from "./points.js";
-import { getBlock, indexFromXYZ, world } from "./world.js";
+import { getBlock, indexFromXYZ, world, worldHeight } from "./world.js";
 
 const tileOffsets = {
-	"house_south": new Point2D(-19, -15),
-	"windmill_building": new Point2D(-22, -19),
-	"windmill_blade[1]": new Point2D(5, -40),
-	"windmill_blade[2]": new Point2D(3.9, -43),
+	"tree_round-big": new Point2D(-18, -22),
+	"tree_round-small": new Point2D(-28, -24),
+	"tree_pointy-big": new Point2D(-24, -20),
+	"tree_pointy-small": new Point2D(-33, -22),
 }
 
 export function drawBlock(x=0, y=0, z=0){
