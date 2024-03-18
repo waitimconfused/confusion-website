@@ -1,12 +1,14 @@
 import { drawBlock } from "./draw.js";
-import { Point2D } from "./points.js";
-import { getBlock, worldHeight, worldLength, worldWidth } from "./world.js";
+import { Point2D, XYZ_iso } from "./points.js";
+import { worldHeight, worldLength, worldWidth } from "./world.js";
 
 export const canvas = document.getElementById("screen");
 
 export var tileSize = 90;
 
 export var camera = new Point2D(0, 0);
+let worldCenter = XYZ_iso(worldWidth, worldLength, worldHeight);
+camera.moveTo(-worldCenter.x, -worldCenter.y)
 camera.scale = 2;
 const originalScale = JSON.parse(JSON.stringify(camera.scale));
 
@@ -55,6 +57,6 @@ document.onkeydown = (e) => {
 	if(e.ctrlKey && (e.key == "0")) {
 		e.preventDefault();
 		camera.scale = originalScale;
-		camera.moveTo(0, 0);
+		camera.moveTo(-worldCenter.x, -worldCenter.y)
 	}
 };

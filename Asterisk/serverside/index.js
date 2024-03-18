@@ -89,6 +89,7 @@ export function onRequest(request=http.IncomingMessage, response=http.ServerResp
 		let fileContent = file.content;
 		
 		if(typeof fileType) response.setHeader("Content-Type", fileType);
+		response.statusCode = file.status;
 		response.end( fileContent );
 	}
 }

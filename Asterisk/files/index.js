@@ -56,7 +56,8 @@ export function get(path=""){
 
 	if(visibility == false) return {
 		type: "text/plain",
-		content: MESSAGES.code("403", path)
+		content: MESSAGES.code("403", path),
+		status: 403
 	};
 
 	if(path.split(/(\w*\.\w*)$/).length == 1 && !path.endsWith("/")){
@@ -65,8 +66,10 @@ export function get(path=""){
 	}
 
 	if(fs.existsSync(path) == false){
-		MESSAGES.code("404", path)
-		return get(page_404);
+		MESSAGES.code("404", path);
+		let content404 = get(page_404);
+		content404.status = 404;
+		return content404;
 	}
 
 	if(path.endsWith("/")){
@@ -81,11 +84,13 @@ export function get(path=""){
 		if(message == "") return {
 			type: "text/plain",
 			content: MESSAGES.code("404-dir", path),
+			status: 404
 		};
 
 		return {
 			type: "text/html",
-			content: message
+			content: message,
+			status: 200
 		};
 	}
 
@@ -97,7 +102,8 @@ export function get(path=""){
 
 	return {
 		type: content_type,
-		content: fileContent
+		content: fileContent,
+		status: 200,
 	};
 
 }

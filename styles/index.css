@@ -167,14 +167,26 @@ main footer {
 	width: 100%;
 }
 
+main section {
+	opacity: 0;
+	animation: load 400ms forwards;
+}
+@keyframes load {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
 main section img {
-	display: flex;
-	width: 100%;
-	height: 10rem;
-	object-fit: cover;
-	object-position: center top;
-	box-sizing: border-box;
-	border-radius: calc(var(--border-radius) - var(--padding));
+    display: inline-flex;
+    float: left;
+    width: max-content;
+    max-width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    object-position: center center;
+    box-sizing: border-box;
+    border-radius: calc(var(--border-radius) - var(--padding));
+    max-height: 20rem;
 }
 
 
