@@ -64,7 +64,10 @@ export function getFileOptions(fileName=""){
 
 	let fileExtensionsRegex = new RegExp(`(${fileExtensions.join("|")})$`, "g");
 
-	let fileExtension = getRegexGroups(fileExtensionsRegex, fileName)[0][0];
+	let fileExtension = getRegexGroups(fileExtensionsRegex, fileName)[0];
+	if(fileExtension) fileExtension = fileExtension[0]
+	else fileExtension = ".html"
+
 	return {
 		data: fileOptions[fileExtension],
 		extension: fileExtension

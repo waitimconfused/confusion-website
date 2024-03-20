@@ -133,10 +133,11 @@ function veiwNode(node=new Node){
 		focusedNode = null;
 	});
 
+	console.log(optionsPane.addButton);
+
 	optionsPane.addButton({
 		title: 'Remove Node'
-	})
-	.on('click', () => {
+	}).on('click', () => {
 		node.remove();
 	});
 }

@@ -1,22 +1,2 @@
 <link rel="stylesheet" href="./style.css">
-def async get(path=""):
-	def response = await fetch(path)
-	def contents = await response.text()
-	def b64moduleData = "data:text/javascript;base64," + btoa(contents)
-	def module = await import(b64moduleData)
-	return module;
-
-@include game from runtime
-@include player from runtime
-
-prop build():
-	console.log(game:block)
-	game:block.variant = default
-	console.log(game:block)
-
-property interact():
-	if game:block.variant == "opened": stop
-	
-	player:inventory.give("item/diamond")
-
 <script src="./pixjs.js" type="module"></script>

@@ -29,8 +29,12 @@ export default function viewProject(project=""){
 		}
 		document.getElementById("title").innerText = h1;
 
-		let sections = markdown.replace(/^# {0,}(.*)/g, "");
-		sections = sections.replace(/^(\s*)/g, "");
+		let sections = markdown
+			.replace(/^# {0,}(.*)/g, "")
+			.replace(/^(\s*)/g, "")
+			.replace(/\*\*([\S\s]+?)\*\*/g, "<strong>$1</strong>")
+			.replace(/_([\S\s]+?)_/g, "<strong>$1</strong>")
+			.replace(/\*([\S\s]+?)\*/g, "<i>$1</i>");
 		sections = sections.split("## ");
 
 		makeContent(sections);

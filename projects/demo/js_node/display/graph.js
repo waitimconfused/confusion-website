@@ -76,7 +76,7 @@ export default class Graph {
 					let edgeDisplayY = this.canvas.height / 2 + (edge.display.y - camera.y) * camera.zoom;
 
 					context.beginPath();
-					context.lineWidth = 2;
+					context.lineWidth = camera.zoom;
 					context.strokeStyle = "black";
 					context.moveTo(nodeDisplayX, nodeDisplayY);
 					context.lineTo(edgeDisplayX, edgeDisplayY);

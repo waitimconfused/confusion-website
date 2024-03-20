@@ -1,6 +1,5 @@
 import { globalGraph, calcDistance, camera, cameraTo, applyFocus } from "../index.js";
 import { keyPressed, mouse } from "../keyboard.js";
-import { showFile } from "../files/show.js";
 import { getFileOptions } from "../files/options.js";
 
 export default class Node {
@@ -112,8 +111,8 @@ export default class Node {
 
 		context.shadowColor = 'black';
 		context.strokeStyle = "black";
-		context.lineWidth = 5;
-		context.shadowBlur = 5;
+		context.lineWidth = camera.zoom * 2;
+		context.shadowBlur = camera.zoom * 2;
 		context.beginPath();
 		context.arc(displayX, displayY, radius, 0, Math.PI * 2);
 		context.stroke();

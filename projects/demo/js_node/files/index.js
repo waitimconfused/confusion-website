@@ -15,7 +15,7 @@ export async function readFile(fileName="", nodeConnector){
 
 	if(readFiles.includes(fileID)){
 		let fileIndex = readFiles.indexOf(fileID);
-		nodeConnector?.edgeTo(readFileNodes[fileIndex]);
+		nodeConnector.connectTo(readFileNodes[fileIndex]);
 		return undefined;
 	}
 
@@ -33,9 +33,11 @@ export async function readFile(fileName="", nodeConnector){
 		);
 	}
 
-	nodeConnector?.edgeTo(fileNode);
+	nodeConnector?.connectTo(fileNode);
 
-	let file = await fetch(fileName)
+	let file = await fetch(fileName, {
+		mode: 'no-cors'
+	})
 	let fileContents = await file.text();
 
 	let linkRegex = getFileOptions(fileName).data?.links;
@@ -51,7 +53,7 @@ export async function readFile(fileName="", nodeConnector){
 
 export function moveDirectory(oldDir="", appendDir=""){
 
-	if(/^https{0,}:/g.test(appendDir)) return appendDir;
+	if(/^https{0,1}:/g.test(appendDir)) return appendDir;
 	if(/^data:/g.test(appendDir)) return appendDir+".png";
 
 	oldDir = oldDir.replaceAll(/(\w{1,}\.\w{1,})/g, "");
