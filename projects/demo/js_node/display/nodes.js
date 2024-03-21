@@ -1,5 +1,5 @@
 import { globalGraph, calcDistance, camera, cameraTo, applyFocus } from "../index.js";
-import { keyPressed, mouse } from "../keyboard.js";
+import { keyPressed, mouse, setKey } from "../keyboard.js";
 import { getFileOptions } from "../files/options.js";
 
 export default class Node {
@@ -61,8 +61,6 @@ export default class Node {
 	click(){
 
 		if(mouse.click_l == true && this.isClicked == false){
-
-
 			this.isClicked = this.isHovering();
 		}
 
@@ -70,8 +68,27 @@ export default class Node {
 			cameraTo(this.display.x, this.display.y);
 			this.isClicked = false;
 		}
+		if(this.isClicked && keyPressed("shift")){
+			this.shiftClick();
+			setKey("shift", false);
+			this.isClicked = false;
+		}
 		return this;
 	}
+	shiftClick = function(node=new Node){}
+
+	addEventListener(eventName, callback=function(){}){
+		if(eventName == "shiftClick") this.shiftClick = callback;
+	}
+
+	#value = "";
+	setValue(value=""){
+		this.#value = (value);
+	}
+	getValue(){
+		return (this.#value);
+	}
+
 	script(){
 
 		if(this.isClicked){

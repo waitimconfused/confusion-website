@@ -1,4 +1,6 @@
-import { getRegexGroups } from "../index.js";
+function getRegexGroups(regex=new RegExp(), string=""){
+	return [...string.matchAll(regex)];
+}
 
 export var fileOptions = {
 

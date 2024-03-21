@@ -47,7 +47,6 @@ document.onkeydown = (e) => {
 		}else if(key == "0") {
 			setZoom(1);
 			cameraTo(0, 0);
-			e.preventDefault();
 		}else if(key !== "r" && (!e.shiftKey && key !== "i")){
 			e.preventDefault();
 		}
