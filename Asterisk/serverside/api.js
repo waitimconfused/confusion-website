@@ -39,7 +39,7 @@ export function createEndpoint(callback=(data={})=>{return data}, name="/my_api"
  * An inbetween from client api call to server response
  * Finding the correct api to use, and returning the api's data
 */
-export function handleRequest(data, endpoint="", ip){
+export async function handleRequest(data, endpoint="", ip){
 
 	if(!data){
 		return {
@@ -52,9 +52,18 @@ export function handleRequest(data, endpoint="", ip){
 		return apiEndpoint.name == endpoint;
 	} );
 
+	let isAsync = api.callback.constructor.name === "AsyncFunction";
+
+	let returnData = {};
+	if(isAsync){
+		returnData = await api.callback(data, ip);
+	}else{
+		returnData = api.callback(data, ip);
+	}
+
 	return {
 		type: api.type,
-		content: api.callback(data, ip)
+		content: returnData
 	};
 }
 

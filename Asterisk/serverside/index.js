@@ -67,10 +67,10 @@ export function onRequest(request=http.IncomingMessage, response=http.ServerResp
 			body += request.read() || "";
 		});
 
-		request.on("end", function() {
+		request.on("end", async function() {
 			body = JSON.parse(body || "{}");
 	
-			let API_response = API.handleRequest(body, req_url, ip);
+			let API_response = await API.handleRequest(body, req_url, ip);
 			let API_responseString = JSON.stringify(API_response.content || {response: 200});
 			response.writeHead(200, { "Content-Type": "plain/text" });
 			

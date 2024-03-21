@@ -40,9 +40,9 @@ async function recursiveImport(mainFilePath="", relativePath){
 
 recursiveImport(startingFile, relativeOutput);
 
-if(!fs.existsSync(relativeOutput+"/server.ast.js")){
+if(!fs.existsSync(relativeOutput+"/host.ast.js")){
 	let serverFile = await readFileFromURL(startingFile)
-	createFile(relativeOutput+"/server.ast.js", serverFile);
+	createFile(relativeOutput+"/host.ast.js", serverFile);
 }
 
 var json = fs.existsSync(relativeOutput+"/package.json")?readFileSync(relativeOutput+"/package.json"):"{}";
