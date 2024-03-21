@@ -4,7 +4,7 @@ import fs, { readFileSync } from "node:fs";
 import node_path from "node:path";
 
 const relativeOutput = "./";
-const startingFile = "https://raw.githubusercontent.com/Dev-384/confusion-website/main/server.ast.js"
+const startingFile = "https://raw.githubusercontent.com/Dev-384/confusion-website/main/host.ast.js"
 
 function createFolder(path){
 	if(!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
@@ -38,7 +38,7 @@ async function recursiveImport(mainFilePath="", relativePath){
 	});
 }
 
-recursiveImport(startingFile, "./");
+recursiveImport(startingFile, relativeOutput);
 
 if(!fs.existsSync(relativeOutput+"/server.ast.js")){
 	let serverFile = await readFileFromURL(startingFile)
