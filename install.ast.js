@@ -50,5 +50,5 @@ json = JSON.parse(json);
 json.type = "module";
 json.scripts = json.scripts || {};
 json.scripts["ast-host"] = "node host.ast.js";
-json.scripts["ast-build"] = "node build.ast.js";
+json.scripts["ast-install"] = "node install.ast.js";
 createFile(relativeOutput+"/package.json", JSON.stringify(json, null, 4));

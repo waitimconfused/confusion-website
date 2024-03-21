@@ -89,12 +89,12 @@ export default class Graph {
 					let dx = edge.display.x * camera.zoom - node.display.x * camera.zoom;
 					let dy = edge.display.y * camera.zoom - node.display.y * camera.zoom;
 
-					let angle = Math.atan(dx / dy) + Math.PI * (node.display.y < edge.display.y);
+					let angle = Math.atan(dx / dy) + Math.PI * (node.display.y > edge.display.y);
 
 					let offset = node.display.radius * camera.zoom;
 
-					let bulbX = edgeDisplayX + offset * Math.sin(angle);
-					let bulbY = edgeDisplayY + offset * Math.cos(angle);
+					let bulbX = nodeDisplayX + offset * Math.sin(angle);
+					let bulbY = nodeDisplayY + offset * Math.cos(angle);
 
 					context.beginPath();
 					context.fillStyle = "black";

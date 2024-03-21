@@ -81,7 +81,8 @@ export function getFileOptions(fileName=""){
 
 	let fileExtension = getRegexGroups(fileExtensionsRegex, fileName)[0];
 	if(fileExtension) fileExtension = fileExtension[0]
-	else fileExtension = ".html"
+	else fileExtension = ".html";
+	console.log(fileName, fileExtension);
 
 	return {
 		data: fileOptions[fileExtension],
