@@ -17,5 +17,5 @@ export async function apiCall(data={}, path=""){
 		body: JSON.stringify(data)
 	});
 
-	return await server.json();
+	return await response.json();
 }
