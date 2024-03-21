@@ -196,6 +196,11 @@ export default class Node {
 			if(indexOfThis == -1) return undefined;
 			node.children.splice(indexOfThis, 1);
 		});
+		this.children.forEach((node) => {
+			let indexOfThis = node.parents.indexOf(this);
+			if(indexOfThis == -1) return undefined;
+			node.parents.splice(indexOfThis, 1);
+		});
 		// delete this;
 	}
 }

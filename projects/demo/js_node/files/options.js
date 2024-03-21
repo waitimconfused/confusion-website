@@ -6,7 +6,8 @@ export var fileOptions = {
 
 	".md": {
 		colour: "#2965F1", text: "md",
-		links: [ /\[.*\]\((.*)\)/gm ]
+		links: [ /\[.*\]\((.*)\)/gm ],
+		linkPathIndex: 0
 	},
 	".js": {
 		colour: "#F1E05A", text: "JS",
@@ -14,23 +15,35 @@ export var fileOptions = {
 			/import [\*{ \w ,}]* from "([.\/\w]*)"/gm,
 			/export [\*{ \w ,}]* from "([.\/\w]*)"/gm,
 			/require\("([.\/\w]*)"\)/gm,
-		]
+		],
+		linkPathIndex: 0
 	},
 	".py": {
 		colour: "#3572A5", text: "py",
 		links: [
 			/^ {0,}import (\w*)/gm,
 			/^ {0,}from ([\w\W]*) import ([\w\W]*)/gm
-		]
+		],
+		linkPathIndex: 0
+	},
+	".plugin": {
+		colour: "grey", text: "PIX",
+		links: [
+			/\s*@include (\w+) as \w+ from ([\S]+)/g,
+			/\s*@include (\w+) from ([\S]+)/g
+		],
+		linkPathIndex: 1
 	},
 
 	".html": {
 		colour: "#E34C26", text: "</>",
-		links: [ /<.*src="([\w \.\/\:\;\,\+\-]*)".*>/gm, /<.*href="([\w \.\/\:\;\,\+\-]*)".*>/gm ]
+		links: [ /<.*src="([\w \.\/\:\;\,\+\-]*)".*>/gm, /<.*href="([\w \.\/\:\;\,\+\-]*)".*>/gm ],
+		linkPathIndex: 0
 	},
 	".css": {
 		colour: "#563D7C", text: "CSS",
-		links: [ /@import \w*\({0,}"([\w.:\/]*)"\){0,}/gm ]
+		links: [ /@import \w*\({0,}"([\w.:\/]*)"\){0,}/gm ],
+		linkPathIndex: 0
 	},
 
 	".json": {

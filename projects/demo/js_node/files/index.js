@@ -7,8 +7,10 @@ var readFileNodes = [];
 
 export async function readFile(fileName="", nodeConnector){
 
+	if(readFileNodes.length > 10) return;
+
 	fileName = fileName.replaceAll("/./", "/");
-	if(fileName.endsWith("/")) fileName += `index.html`;
+	if(fileName.endsWith("/")) fileName += `index`;
 	if(/\/(\w*)$/gm.test()) fileName += "."+nodeConnector.title.split(".")[nodeConnector.title.split(".").length-1]
 	let fileID = `${fileName}`;
 	while(fileID.startsWith(".")) fileID = fileID.replace(".", "");
@@ -41,16 +43,21 @@ export async function readFile(fileName="", nodeConnector){
 
 	let file = await fetch(fileName, {
 		mode: 'no-cors'
-	})
+	});
+	if(file.status == "404") {
+		fileNode.setTitle("404");
+		fileNode.display.glyph = "404";
+	}
 	let fileContents = await file.text();
-
-	let linkRegex = getFileOptions(fileName).data?.links;
+	let options = getFileOptions(fileName).data;
+	let linkRegex = options?.links;
+	let fileImportIndex = options?.linkPathIndex || 0;
 
 	linkRegex?.forEach((regex=new RegExp) => {
 		let imports = getRegexGroups(regex, fileContents);
 
 		imports.forEach((importFile=["fullstring", "group1", "filename"]) => {
-			readFile(moveDirectory(fileName, importFile[1]), fileNode);
+			readFile(moveDirectory(fileName, importFile.at(fileImportIndex+1)), fileNode);
 		});
 	})
 }
@@ -59,6 +66,8 @@ export function moveDirectory(oldDir="", appendDir=""){
 
 	if(/^https{0,1}:/g.test(appendDir)) return appendDir;
 	if(/^data:/g.test(appendDir)) return appendDir+".png";
+
+	if(appendDir.startsWith("/")) return appendDir;
 
 	oldDir = oldDir.replaceAll(/(\w{1,}\.\w{1,})/g, "");
 

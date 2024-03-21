@@ -9,6 +9,7 @@ export var camera = {
 	x: 0,
 	y: 0
 }
+export const initalCameraZoom = structuredClone(camera.zoom);
 
 var lastCalledTime = 0;
 export var fps = 0;
@@ -99,7 +100,7 @@ export function applyFocus(node){
 
 function veiwNode(node=new Node){
 
-	optionsPane.dispose();
+	optionsPane?.dispose();
 	optionsPane = new Pane({ title: 'Node Options' });
 
 	let options = structuredClone(node.display);
@@ -131,6 +132,7 @@ function veiwNode(node=new Node){
 		options.y = node.display.y;
 		node.display = options;
 		focusedNode = null;
+		veiwNode(node);
 	});
 
 	console.log(optionsPane.addButton);
@@ -139,5 +141,6 @@ function veiwNode(node=new Node){
 		title: 'Remove Node'
 	}).on('click', () => {
 		node.remove();
+		veiwNode(node);
 	});
 }

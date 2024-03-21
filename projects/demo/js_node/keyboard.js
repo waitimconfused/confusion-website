@@ -1,4 +1,4 @@
-import { globalGraph, cameraTo, changeZoom, setZoom, camera } from "./index.js";
+import { globalGraph, cameraTo, changeZoom, setZoom, camera, initalCameraZoom } from "./index.js";
 
 export var keyboard = [];
 export var mouse = {
@@ -45,7 +45,7 @@ document.onkeydown = (e) => {
 			e.preventDefault();
 			changeZoom(camera.zoom / -10);
 		}else if(key == "0") {
-			setZoom(1);
+			setZoom(initalCameraZoom);
 			cameraTo(0, 0);
 		}else if(key !== "r" && (!e.shiftKey && key !== "i")){
 			e.preventDefault();

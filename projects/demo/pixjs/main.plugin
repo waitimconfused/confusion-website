@@ -1,4 +1,4 @@
-@include Javascript as js from runtime
+@include Javascript as js from runtime/
 
 def async get(path=""):
 	def response = await fetch(path)
@@ -12,9 +12,9 @@ def random(low=0, high=1):
 	def calcRange = random * (high - low + 1) + start
 	return js.math.floor(calcRange)
 
-@include game from runtime
-@include player from runtime
-@include math from runtime
+@include game from runtime/
+@include player from runtime/
+@include math from runtime/
 
 prop build():
 	console.log(game:block)

@@ -62,6 +62,9 @@ export default class Graph {
 				});
 			}
 
+		} );
+		this.nodes.forEach( (node=new Node) => {
+
 			if(node.children.length > 0){
 				
 				node.children.forEach( (edge=(new Node).edges[0]) => {
@@ -86,15 +89,12 @@ export default class Graph {
 					let dx = edge.display.x * camera.zoom - node.display.x * camera.zoom;
 					let dy = edge.display.y * camera.zoom - node.display.y * camera.zoom;
 
-					let angle = Math.atan(dx / dy) + Math.PI * (node.display.y > edge.display.y);
+					let angle = Math.atan(dx / dy) + Math.PI * (node.display.y < edge.display.y);
 
 					let offset = node.display.radius * camera.zoom;
 
-					let nodedisplayX = this.canvas.width / 2 + (node.display.x - camera.x) * camera.zoom;
-					let nodedisplayY = this.canvas.height / 2 + (node.display.y - camera.y) * camera.zoom;
-
-					let bulbX = nodedisplayX + offset * Math.sin(angle);
-					let bulbY = nodedisplayY + offset * Math.cos(angle);
+					let bulbX = edgeDisplayX + offset * Math.sin(angle);
+					let bulbY = edgeDisplayY + offset * Math.cos(angle);
 
 					context.beginPath();
 					context.fillStyle = "black";
@@ -107,11 +107,11 @@ export default class Graph {
 
 				} );
 			}
+
 		} );
+
 		this.nodes.forEach( (node=new Node) => {
-
 			node.render();
-
 		} );
 		
 		if(redraw == false){
@@ -141,8 +141,7 @@ function limitConnectedNodePosition(anchorNode=new Node, freeNode=new Node, dont
 	if(anchorNode == freeNode) return undefined;
 	if(
 		anchorNode.hasChild(freeNode) == false &&
-		freeNode.hasChild(anchorNode) == false &&
-		anchorNode.hasSibling(freeNode) == false
+		freeNode.hasChild(anchorNode) == false
 	) return undefined;
 
 	let speed = fps / 60;
@@ -176,9 +175,10 @@ function limitConnectedNodePosition(anchorNode=new Node, freeNode=new Node, dont
 function limitNodePosition(anchorNode=new Node, freeNode=new Node, dontMove=false){
 
 	if(anchorNode == freeNode) return undefined;
-	if(anchorNode.hasChild(freeNode) || freeNode.hasChild(anchorNode)) return undefined;
-	if(anchorNode.hasParent(freeNode) || freeNode.hasParent(anchorNode)) return undefined;
-	if(anchorNode.hasSibling(freeNode)) return undefined;
+	if(
+		anchorNode.hasChild(freeNode) == true ||
+		freeNode.hasChild(anchorNode) == true
+	) return undefined;
 
 	let speed = fps / 60;
 
@@ -188,21 +188,12 @@ function limitNodePosition(anchorNode=new Node, freeNode=new Node, dontMove=fals
 	if(distance > preferedDistance) return undefined;
 
 	let velocity = calVelocity(distance, preferedDistance, 33.333 * (delta * speed), 100);
-	// velocity *= 100;
 	let step = velocity;
 	let dx = anchorNode.display.x - freeNode.display.x;
 	let dy = anchorNode.display.y - freeNode.display.y;
 
 	let anchorNode_RadianAngle = Math.atan(dx / dy) + Math.PI * (anchorNode.display.y > freeNode.display.y);
 	let freeNode_RadianAngle = Math.atan(dx / dy) + Math.PI * (freeNode.display.y > anchorNode.display.y);
-
-	// if(anchorNode.isClicked == false){
-	// 	let anchorNode_changeX = step * Math.sin(anchorNode_RadianAngle);
-	// 	let anchorNode_changeY = step * Math.cos(anchorNode_RadianAngle);
-
-	// 	anchorNode.display.x += anchorNode_changeX;
-	// 	anchorNode.display.y += anchorNode_changeY;
-	// }
 
 	if(freeNode.isClicked == false){
 		let freeNode_changeX = step * Math.sin(freeNode_RadianAngle);
