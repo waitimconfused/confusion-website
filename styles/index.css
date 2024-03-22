@@ -70,10 +70,7 @@ div.code, code {
 	padding: 0.5rem;
 	border-radius: calc(var(--border-radius) - var(--padding));
 }
-div.code.block[lang] {
-	white-space: pre;
-}
-div.code.block[lang]::before {
+code:is(.md, .js)::before {
 	content: "File";
 	background-color: rgba(0, 0, 0, 0.5);
 	position: absolute;
@@ -86,9 +83,9 @@ div.code.block[lang]::before {
 	border-top-left-radius: calc(var(--border-radius) - var(--padding) - 1px);
 	border-top-right-radius: calc(var(--border-radius) - var(--padding) - 1px);
 }
-div.code.block { display: block; }
-div.code.block[lang=md]::before { content: "Markdown"; }
-div.code.block[lang=js]::before { content: "Javascript"; }
+code:is(.md, .js) { display: block; padding-top: 2.5rem; }
+code.md::before { content: "Markdown"; }
+code.js::before { content: "Javascript"; }
 
 content {
 	display: flex;
