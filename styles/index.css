@@ -57,10 +57,10 @@ header h1 {
     font-weight: 900;
 }
 
-p, div.code {
+p, div.code, code {
 	font-size: 16px;
 }
-div.code {
+div.code, code {
 	position: relative;
 	display: inline-block;
 	font-family: monospace;

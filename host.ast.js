@@ -7,4 +7,4 @@ Ast.files.regester404("./404.html");
 
 Ast.serverside.api.createEndpoint(function(dataIn){
 	return {"message": "You sent: " + JSON.stringify(dataIn)};
-}, "/my_api")
+}, "/my_api");

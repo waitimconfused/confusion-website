@@ -6,6 +6,21 @@
 		<meta name="viewport" content="width = device-width, initial-scale = 1.">
 		<title>Project | Confusion</title>
 		<link rel="icon" type="image/*" href="/assets/favicon.png">
+		<style>
+			section h2::before { content: "## "; }
+			section h3::before { content: "### "; }
+			section h4::before { content: "#### "; }
+			blockquote { position: relative; }
+			blockquote::before {
+				content: "";
+				position: absolute;
+				background: #72bf80;
+				width: 0.25rem;
+				height: 100%;
+				left: -1.25rem;
+    			border-radius: 0.125rem;
+			}
+		</style>
 	</head>
 	<body>
 		<header>
@@ -52,6 +67,7 @@
 		</footer>
 	</body>
 
+	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 	<script type="module">
 		import viewProject from "./view.js";
 

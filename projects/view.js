@@ -21,7 +21,7 @@ export default function viewProject(project=""){
 		return response.text();
 	}).then((markdown) => {
 		if(typeof markdown == "number") return;	
-		let h1 = markdown.split(/^# {0,}(.*)/g)[1];
+		let h1 = markdown.split(/^# {0,}(.*)/gm)[1];
 
 		document.title = h1;
 		if(window.location.pathname !== "/"){
@@ -35,33 +35,10 @@ export default function viewProject(project=""){
 			.replace(/\*\*([\S\s]+?)\*\*/g, "<strong>$1</strong>")
 			.replace(/_([\S\s]+?)_/g, "<strong>$1</strong>")
 			.replace(/\*([\S\s]+?)\*/g, "<i>$1</i>");
-		sections = sections.split("## ");
+		sections = sections.split(/^## /gm);
 
 		makeContent(sections);
-	})
-
-	// console.log(response.status)
-
-	// if(response.status == 404){
-	// 	document.body.innerHTML = "<iframe src='/404.html' style='position:fixed;top:0px;left:0px;width:100vw;height:100vh;border:none;outline:none;'></iframe>";
-	// 	return;
-	// }
-
-	// let markdown = await response.text();
-
-	// let h1 = markdown.split(/^# {0,}(.*)/g)[1];
-
-	// document.title = h1;
-	// if(window.location.pathname !== "/"){
-	// 	document.title += " | Confusion";
-	// }
-	// document.getElementById("title").innerText = h1;
-
-	// let sections = markdown.replace(/^# {0,}(.*)/g, "");
-	// sections = sections.replace(/^(\s*)/g, "");
-	// sections = sections.split("## ");
-
-	// await makeContent(sections);
+	});
 
 	if(project == "confusion") return;
 
@@ -79,6 +56,17 @@ function makeContent(sections=[]){
 	makeContent(sections);
 }
 
+function markdownToHTML(markdownText="") {
+    // Dynamic import
+	console.log(showdown);
+
+	let converter = new showdown.Converter();
+	let html = converter.makeHtml(markdownText);
+
+	console.log(html);
+	return html;
+}
+
 function makeSection(content=""){
 	content = content.replace(/^(\s*)/g, "");
 	if(!content) return;
@@ -86,15 +74,9 @@ function makeSection(content=""){
 	let h2 = content.split(/^([\S ]*)/g)[1];
 	h2 = h2.replace(/^(\s*)/g, "");
 	let p = content.split(/^([\S ]*)/g)[2];
-	p = p.replace(/^(\s*)/g, "");
-	p = p.replace(/(\s*)$/g, "");
-	p = p.replaceAll("\n", "<br>");
-
-	p = p.replaceAll(/!\[([\S\s]+)\]\(([\S\s]+)\)/g, "<img src='$2' alt='$1'>");
-	p = p.replaceAll(/\[([\S\s]+?)\]\(([\S]+?)\)/g, "<a href='$2'>$1</a>");
-	p = p.replaceAll(/\[([\S\s]+?)\]\(([\S]+?)\)/g, "<a href='$2'>$1</a>");
-	p = p.replaceAll(/```(\w*)\n*([\s\S]+?)\n*```/gm, "<div class='code block' lang='$1'>$2</div>");
-	p = p.replaceAll(/`([\s\S]+?)`/g, "<div class='code'>$1</div>");
+	p = markdownToHTML(p);
+	// p = p.replaceAll("\n", "");
+	// p = p.replaceAll("\r", "");
 
 	let section = document.createElement("section");
 	document.getElementById("content").appendChild(section);
@@ -102,6 +84,6 @@ function makeSection(content=""){
 	h2Element.innerText = h2;
 	section.appendChild(h2Element);
 	let pElement = document.createElement("p");
-	pElement.innerHTML = p;
+	pElement.innerHTML = p.replace("\n", "");
 	section.appendChild(pElement);
 }
