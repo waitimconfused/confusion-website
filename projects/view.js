@@ -14,9 +14,10 @@ export default function viewProject(project=""){
 	document.title = tempTitle;
 	document.getElementById("title").innerText = tempTitle;
 	
-	// let response = await fetch(`/projects/markdown/${project}.md`);
+	let markdownPath = `/projects/markdown/${project}.md`;
+	if(project == "confusion") markdownPath = `/README.md`;
 
-	fetch(`/projects/markdown/${project}.md`).then((response) => {
+	fetch(markdownPath).then((response) => {
 		if(response.status !== 200) return response.status;
 		return response.text();
 	}).then((markdown) => {
@@ -57,13 +58,8 @@ function makeContent(sections=[]){
 }
 
 function markdownToHTML(markdownText="") {
-    // Dynamic import
-	console.log(showdown);
-
 	let converter = new showdown.Converter();
 	let html = converter.makeHtml(markdownText);
-
-	console.log(html);
 	return html;
 }
 

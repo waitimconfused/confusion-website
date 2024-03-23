@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width = device-width, initial-scale = 1.">
 		<title>Project | Confusion</title>
 		<link rel="icon" type="image/*" href="/assets/favicon.png">
+		<script src="/components/template.js" defer></script>
 		<style>
 			section h2::before { content: "## "; }
 			section h3::before { content: "### "; }
@@ -31,48 +32,34 @@
 		</header>
 
 		<content>
-			<aside>
-				<section>
-					<h1>Project Showcase</h1>
-					<div>
-						<a href="/projects/view?project=testing_page">Testing Page</a>
-					</div>
-				</section>
-				<section>
-					<h1>Newly Updated</h1>
-					<div>
-						<a href="/projects/view?project=iso-world">Iso-world</a>
-						<a href="/projects/view?project=pixjs">Pix-JS</a>
-						<a href="/projects/view?project=js_node">JS Node Viewer</a>
-						<a href="/projects/view?project=faker_banker">Faker Banker</a>
-						<a href="/projects/view?project=asterisk">Asterisk</a>
-						<a href="/projects/view?project=confusion">Confusion</a>
-					</div>
-				</section>
-			</aside>
-		
+			<template from="/components/" id="projects"></template>
 			<main id="content"></main>
 		</content>
-		<footer>
-			<a class="title" href="/">
-				<img src="/assets/favicon.png">
-				<h1>Confusion</h1>
-			</a>
-			<div>
-				<a href="https://github.com/Dev-384/confusion-website" target="_blank" stylize="false" class="link">
-					GitHub
-					<img src="/assets/github/github-mark-white.svg">
-				</a>
-			</div>
-		</footer>
+		
+		<template from="/components/" id="footer"></template>
 	</body>
 
+	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 	<script type="module">
 		import viewProject from "./view.js";
 
 		const urlParams = new URLSearchParams(window.location.search);
 		const projectName = urlParams.get('project');
 
-		viewProject(projectName);
+		if(!projectName) {
+			document.body.innerHTML = "";
+			let iframe = document.createElement("iframe");
+			iframe.src = "/404";
+			iframe.style.position = "fixed";
+			iframe.style.top = 0;
+			iframe.style.left = 0;
+			iframe.style.width = "100vw";
+			iframe.style.height = "100vh";
+			iframe.style.border = "none";
+			iframe.style.outline = "none";
+			document.body.appendChild(iframe);
+		}else{
+			viewProject(projectName);
+		}
 	</script>
 </html>
