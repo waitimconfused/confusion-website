@@ -4,7 +4,7 @@
 
 Have you ever had an idea, but no where to put it? What about multiple projects, stored with no organization?
 
-**THIS** is a place for those kinds of things. Random projects, that don't have to make sense!
+**THIS** is a place for those kinds of things. Random projects, keeped nice and tidy!
 
 ## How
 

@@ -1,8 +1,8 @@
-export default function viewProject(project=""){
+export default function viewProject(project="", forceLoad=false){
 
 	let root = window.location.protocol + "//" + window.location.host + "/";
 	let isHomePage = window.location.href == root;
-	if(project == "confusion" && !isHomePage){
+	if(project == "confusion" && !isHomePage && !forceLoad){
 		window.location.href = "/";
 	}
 

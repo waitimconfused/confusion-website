@@ -62,7 +62,13 @@ export function get(path=""){
 
 	if(path.split(/(\w*\.\w*)$/).length == 1 && !path.endsWith("/")){
 		if(fs.existsSync(path+".html")) path += ".html";
-		if(fs.existsSync(path+".htm")) path += ".htm";
+		else if(fs.existsSync(path+".htm")) path += ".htm";
+		else {
+			MESSAGES.code("404", path);
+			let content404 = get(page_404);
+			content404.status = 404;
+			return content404;
+		}
 	}
 
 	if(fs.existsSync(path) == false){
