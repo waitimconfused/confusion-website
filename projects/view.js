@@ -15,7 +15,6 @@ export default function viewProject(project="", forceLoad=false){
 	document.getElementById("title").innerText = tempTitle;
 	
 	let markdownPath = `/projects/markdown/${project}.md`;
-	if(project == "confusion") markdownPath = `/README.md`;
 
 	fetch(markdownPath).then((response) => {
 		if(response.status !== 200) return response.status;
