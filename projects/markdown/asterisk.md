@@ -1,3 +1,7 @@
+---
+link: none
+---
+
 # Asterisk
 
 ## Description

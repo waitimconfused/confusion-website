@@ -21,7 +21,9 @@ export default function viewProject(project="", forceLoad=false){
 		if(response.status !== 200) return response.status;
 		return response.text();
 	}).then((markdown) => {
-		if(typeof markdown == "number") return;	
+		if(typeof markdown == "number") return;
+		options(markdown, project);
+		markdown = markdown.replace(/(---[\S\s]+?---\n*)/, "");
 		let h1 = markdown.split(/^# {0,}(.*)/gm)[1];
 
 		document.title = h1;
@@ -30,24 +32,41 @@ export default function viewProject(project="", forceLoad=false){
 		}
 		document.getElementById("title").innerText = h1;
 
-		let sections = markdown
-			.replace(/^# {0,}(.*)/g, "")
-			.replace(/^(\s*)/g, "")
-			.replace(/\*\*([\S\s]+?)\*\*/g, "<strong>$1</strong>")
-			.replace(/_([\S\s]+?)_/g, "<strong>$1</strong>")
-			.replace(/\*([\S\s]+?)\*/g, "<i>$1</i>");
+		let sections = markdown.replace(/^# {0,}(.*)/m, "");
 		sections = sections.split(/^## /gm);
 
 		makeContent(sections);
+
+		return markdown;
 	});
+}
 
-	if(project == "confusion") return;
-
-	let demoButton = document.createElement("a");
-	demoButton.innerText = "Try It";
-	demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
-	demoButton.href = `/projects/demo?project=${project}`;
-	document.querySelector("header").appendChild(demoButton);
+function options(markdown="", project=""){
+	let optionsObject = {};
+	if(markdown.startsWith("---")){
+		let options = markdown.split("---")[1].split(/(\S+?): *([\S ]*)/g);
+		for(let index = 0; index < options.length - 1; index += 3){
+			let option = [options[index+1], options[index+2]];
+			let key = option[0];
+			let value = option[1];
+			optionsObject[key] = value;
+		}
+	}
+	if(typeof optionsObject.link !== "undefined" && optionsObject.link !== "none"){
+		let link = optionsObject.link.split(/\(([\S ]*)\)\[([\S ]*)\]/);
+		let demoButton = document.createElement("a");
+		demoButton.innerText = link[1];
+		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
+		demoButton.href = link[2];
+		demoButton.target = "_blank";
+		document.querySelector("header").appendChild(demoButton);
+	}else if(optionsObject.link !== "none"){
+		let demoButton = document.createElement("a");
+		demoButton.innerText = "Try It";
+		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
+		demoButton.href = `/projects/demo?project=${project}`;
+		document.querySelector("header").appendChild(demoButton);
+	}
 }
 
 function makeContent(sections=[]){

@@ -73,6 +73,8 @@ div.code, code {
 	padding: 0.5rem;
 	border-radius: calc(var(--border-radius) - var(--padding));
 }
+pre:first-child { margin-top: 0px; }
+pre:last-child { margin-bottom: 0px; }
 code { padding: 0.25rem 0.5rem; }
 code:is(.md, .js)::before {
 	content: "File";

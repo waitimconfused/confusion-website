@@ -1,3 +1,7 @@
+---
+link: none
+---
+
 # Confusion
 
 ## What is this place?
@@ -12,3 +16,23 @@ Each project is asigned a single `PROJECT.md` file, and a folder to put all demo
 
 The markdown file will be located at `/projects/markdown/PROJECT.md`
 The demos will be locaded in `/project/demo/PROJECT`
+
+If you want to attach a project from an external source, just put the following at the TOP of your projects markdown file:
+
+<br>
+
+If there is no demo page for your project, put:
+
+```md
+---
+link: none
+---
+```
+
+If there is a demo on an external source, using the markdown link format:
+
+```md
+---
+link: (LINK)[URL]
+---
+```
