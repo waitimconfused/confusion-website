@@ -1,5 +1,5 @@
 ---
-link: none
+display_link: none
 ---
 
 # Confusion

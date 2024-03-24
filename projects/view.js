@@ -51,15 +51,15 @@ function options(markdown="", project=""){
 			optionsObject[key] = value;
 		}
 	}
-	if(typeof optionsObject.link !== "undefined" && optionsObject.link !== "none"){
-		let link = optionsObject.link.split(/\(([\S ]*)\)\[([\S ]*)\]/);
+	if(typeof optionsObject.display_link !== "undefined" && optionsObject.display_link !== "none"){
+		let link = optionsObject.display_link.split(/\(([\S ]*)\)\[([\S ]*)\]/);
 		let demoButton = document.createElement("a");
 		demoButton.innerText = link[1];
 		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
 		demoButton.href = link[2];
 		demoButton.target = "_blank";
 		document.querySelector("header").appendChild(demoButton);
-	}else if(optionsObject.link !== "none"){
+	}else if(optionsObject.display_link !== "none"){
 		let demoButton = document.createElement("a");
 		demoButton.innerText = "Try It";
 		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
