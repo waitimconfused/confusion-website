@@ -1,6 +1,6 @@
----
-display_link: none
----
+...
+link: none
+...
 
 # Asterisk
 

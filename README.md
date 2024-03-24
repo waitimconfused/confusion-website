@@ -1,6 +1,6 @@
----
-display_link: none
----
+...
+link: none
+...
 
 # Confusion
 
@@ -24,15 +24,15 @@ If you want to attach a project from an external source, just put the following 
 If there is no demo page for your project, put:
 
 ```md
----
+...
 link: none
----
+...
 ```
 
 If there is a demo on an external source, using the markdown link format:
 
 ```md
----
+...
 link: (LINK)[URL]
----
+...
 ```

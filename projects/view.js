@@ -15,6 +15,7 @@ export default function viewProject(project="", forceLoad=false){
 	document.getElementById("title").innerText = tempTitle;
 	
 	let markdownPath = `/projects/markdown/${project}.md`;
+	if(project == "confusion") markdownPath = "/README.md";
 
 	fetch(markdownPath).then((response) => {
 		if(response.status !== 200) return response.status;
@@ -22,7 +23,7 @@ export default function viewProject(project="", forceLoad=false){
 	}).then((markdown) => {
 		if(typeof markdown == "number") return;
 		options(markdown, project);
-		markdown = markdown.replace(/(---[\S\s]+?---\n*)/, "");
+		markdown = markdown.replace(/(\.\.\.[\S\s]+?\.\.\.\n*)/, "");
 		let h1 = markdown.split(/^# {0,}(.*)/gm)[1];
 
 		document.title = h1;
@@ -42,8 +43,8 @@ export default function viewProject(project="", forceLoad=false){
 
 function options(markdown="", project=""){
 	let optionsObject = {};
-	if(markdown.startsWith("---")){
-		let options = markdown.split("---")[1].split(/(\S+?): *([\S ]*)/g);
+	if(markdown.startsWith("\.\.\.")){
+		let options = markdown.split("\.\.\.")[1].split(/(\S+?): *([\S ]*)/g);
 		for(let index = 0; index < options.length - 1; index += 3){
 			let option = [options[index+1], options[index+2]];
 			let key = option[0];
