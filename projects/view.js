@@ -54,12 +54,15 @@ function options(markdown="", project=""){
 	}
 	console.log(optionsObject);
 	if(typeof optionsObject.link !== "undefined" && optionsObject.link !== "none"){
-		let link = optionsObject.link.split(/\(([\S ]*)\)\[([\S ]*)\]/);
+		let link = optionsObject.link.split(/\[([\S ]*)\]\(([\S ]*)\)/);
+		let href = link[2];
 		let demoButton = document.createElement("a");
 		demoButton.innerText = link[1];
 		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
-		demoButton.href = link[2];
-		demoButton.target = "_blank";
+		demoButton.href = href;
+		if(!(/^\.\/|^\//gm).test(href)){
+			demoButton.target = "_blank";
+		}
 		document.querySelector("header").appendChild(demoButton);
 	}else if(optionsObject.link !== "none"){
 		let demoButton = document.createElement("a");

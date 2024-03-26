@@ -1,0 +1,13 @@
+section h2::before { content: "## "; }
+section h3::before { content: "### "; }
+section h4::before { content: "#### "; }
+blockquote { position: relative; }
+blockquote::before {
+	content: "";
+	position: absolute;
+	background: #72bf80;
+	width: 0.25rem;
+	height: 100%;
+	left: -1.25rem;
+	border-radius: 0.125rem;
+}
