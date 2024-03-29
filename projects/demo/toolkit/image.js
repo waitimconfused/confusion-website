@@ -28,8 +28,7 @@ export function draw(
 		alpha: 1,
 		brightness: 1,
 		pixelated: false
-	},
-	flipX=false,
+	}
 	drawDestination=new HTMLCanvasElement
 ){
 
@@ -45,7 +44,8 @@ export function draw(
 	}
 
 	context.save();
-	if(flipX == true){
+	if(DestinationWidth < 0){
+		DestinationWidth = Math.abs(DestinationWidth);
 		context.scale(-1, 1);
 		context.translate(
 			0 - innerScreen.width,
