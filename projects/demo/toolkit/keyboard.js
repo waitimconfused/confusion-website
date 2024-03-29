@@ -10,6 +10,7 @@ export function isKeyPressed(key=""){
 	return(indexOfKey !== -1);
 }
 export function setKeyValue(key="", value=true){
+	if(key.length == 1) key = key.toLowerCase();
 	if(value == true){
 		let indexOfKey = keys.indexOf(key);
 		if(indexOfKey == -1) keys.push(key);
