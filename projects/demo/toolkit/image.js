@@ -28,7 +28,7 @@ export function draw(
 		alpha: 1,
 		brightness: 1,
 		pixelated: false
-	}
+	},
 	drawDestination=new HTMLCanvasElement
 ){
 
