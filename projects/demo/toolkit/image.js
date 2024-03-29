@@ -15,7 +15,7 @@ export function loadAssets(){
 	return document.querySelector("div#assets");
 }
 
-export function image(
+export function draw(
 	imgSource="",
 
 	DestinationXPos=0, DestinationYPos=0,
