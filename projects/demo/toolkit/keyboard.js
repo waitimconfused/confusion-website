@@ -15,12 +15,31 @@ export function setKeyValue(key="", value=true){
 		if(indexOfKey == -1) keys.push(key);
 	}else{
 		let indexOfKey = keys.indexOf(key);
-		while(indexOfKey >= 0){
+		while(indexOfKey !== -1){
 			keys.splice(indexOfKey, 1);
 			indexOfKey = keys.indexOf(key);
 		}
 	}
 }
+var keybinds_keys = [];
+var keybinds_callback = [];
+export function setKeybind(callback=function(){}, keys=[]){
+	keybinds_callback.push(callback);
+	keybinds_keys.push(keys);
+}
+function arraysAreEqual(arr1, arr2) {
+	if (arr1.length !== arr2.length) {
+	  return false;
+	}
+  
+	for (let i = 0; i < arr1.length; i++) {
+	  if (arr1[i] !== arr2[i]) {
+		return false;
+	  }
+	}
+  
+	return true;
+  }
 
 document.body.addEventListener("mousewheel", (e) => {
 	let scrollY = e.deltaY;
@@ -45,6 +64,16 @@ document.onkeydown = (e) => {
 	let key = e.key.toLowerCase();
 
 	setKeyValue(key, true);
+
+	keybinds_keys.forEach((setOfKeys=[], index) => {
+		let isKeybindTriggered = arraysAreEqual(setOfKeys, keys);
+
+		console.log(keys, setOfKeys);
+
+		if(isKeybindTriggered){
+			keybinds_callback[index](e);
+		}
+	});
 }
 window.onresize = (e) => {
 	e.preventDefault();

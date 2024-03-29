@@ -70,9 +70,9 @@ export function onRequest(request=http.IncomingMessage, response=http.ServerResp
 		request.on("end", async function() {
 			body = JSON.parse(body || "{}");
 	
-			let API_response = await API.handleRequest(body, req_url, ip);
-			let API_responseString = JSON.stringify(API_response.content || {response: 200});
-			response.writeHead(200, { "Content-Type": "plain/text" });
+			let API_response = API.handleRequest(body, req_url, ip);
+			let API_responseString = JSON.stringify(API_response.content || {status: 200});
+			response.writeHead(API_response.content?.status || 200, { "Content-Type": "plain/text" });
 			
 			let chunks = API_responseString.match(/.{1,8}/g);
 

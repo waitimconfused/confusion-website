@@ -1,3 +1,4 @@
+import { networkInterfaces } from "node:os";
 export * as serverside from "./serverside/index.js";
 export * as files from "./files/index.js";
 export * as message from "./messages/index.js";
@@ -40,7 +41,7 @@ export function hideLogs(){
 */
 export function getIP() {
 	let nets = networkInterfaces();
-	let results = Object.create(null); // Or just '{}', an empty object
+	let results = {}; // Or just '{}', an empty object
 
 	for (const name of Object.keys(nets)) {
 		for (const net of nets[name]) {
@@ -56,5 +57,19 @@ export function getIP() {
 		}
 	}
 
-	return results["Wi-Fi"] || "";
+	return results["Wi-Fi"][0] || "";
+}
+
+/**
+ * SERVER-SIDE
+ * 
+ * Get IP of current machine
+ * @param { string } requestIP The IP of the request from client
+ * @returns { boolean }
+*/
+export function isThisMachine(requestIP="") {
+	let myIP = getIP();
+	let isThisMachine = requestIP == myIP || requestIP == "127.0.0.1";
+
+	return isThisMachine;
 }

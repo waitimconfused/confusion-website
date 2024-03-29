@@ -1,9 +1,12 @@
 import * as MESSAGE from "../messages/index.js";
+import * as Ast from "../index.js";
 
 export var endpoints = [];
 
 export var prefix = "";
 setPrefix("api");
+
+export var lockedIP = false;
 
 /**
  * SERVER-SIDE
@@ -39,30 +42,32 @@ export function createEndpoint(callback=(data={})=>{return data}, name="/my_api"
  * An inbetween from client api call to server response
  * Finding the correct api to use, and returning the api's data
 */
-export async function handleRequest(data, endpoint="", ip){
-
-	if(!data){
-		return {
-			type: api.type,
-			content: {error: "API endpoint was not passed any data"}
-		}
-	}
+export function handleRequest(data, endpoint="", IP=""){
 
 	let api = endpoints.find( (apiEndpoint) => {
 		return apiEndpoint.name == endpoint;
 	} );
 
-	let isAsync = api.callback.constructor.name === "AsyncFunction";
-
-	let returnData = {};
-	if(isAsync){
-		returnData = await api.callback(data, ip);
-	}else{
-		returnData = api.callback(data, ip);
+	if(!data){
+		return {
+			type: undefined,
+			content: {
+				status: 400,
+				error: "API endpoint was not passed any data"
+			}
+		}
 	}
 
+	if(lockedIP && !Ast.isThisMachine(IP)) return {
+		type: undefined,
+		content: {status: 403}
+	};
+
+	let returnData = api.callback(data, IP);
+	returnData.status = returnData.status || 200;
+
 	return {
-		type: api.type,
+		type: undefined,
 		content: returnData
 	};
 }
@@ -99,4 +104,30 @@ export function setPrefix(string=""){
 
 	prefix = "/"+string+"/";
 
+}
+
+/**
+ * SERVER-SIDE
+ * 
+ * Turns on an IP lock for all API endpoints
+ * 
+ * 
+ * 
+ * **Example**:
+ * ```js
+ * 
+ * setPrefix("/foobar/"); // Set API path prefix
+ * 
+ * createEndpoint( function(dataIn){
+ *   return {"message": "You sent: " + JSON.stringify(dataIn)};
+ * }, "/my_api"); // Create API endpoint at "localhost:<PORT>/foobar/my_api"
+ * 
+ * ```
+*/
+export function lock(){
+	lockedIP = true;
+}
+
+export function unlock(){
+	lockedIP = false;
 }

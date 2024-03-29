@@ -1,2 +1,2 @@
-export * from "./keyboard.js";
-export * from "./image.js";
+export * as keyboard from "./keyboard.js";
+export * as image from "./image.js";
