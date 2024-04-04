@@ -16,23 +16,23 @@ async function loadPlugin(pluginName=""){
 	let javascript = PYtoJS(python);
 	document.body.innerText += javascript + "\n\n\n";
 
-	fetch("/api/plugin/save", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			title: pluginName,
-			content: javascript
-		})
-	})
-	.then((response) => response.json())
-	.then((json) => {
-		if(json.status == 200){
-			console.log("Saved plugin: "+pluginName);
-		}else{
-			console.log("Couldn't save plugin: "+pluginName);
-		}
-		console.log(json);
-	});
+	// fetch("/api/plugin/save", {
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// 	body: JSON.stringify({
+	// 		title: pluginName,
+	// 		content: javascript
+	// 	})
+	// })
+	// .then((response) => response.json())
+	// .then((json) => {
+	// 	if(json.status == 200){
+	// 		console.log("Saved plugin: "+pluginName);
+	// 	}else{
+	// 		console.log("Couldn't save plugin: "+pluginName);
+	// 	}
+	// 	console.log(json);
+	// });
 }

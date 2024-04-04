@@ -33,9 +33,10 @@ export default function viewProject(project="", forceLoad=false){
 		document.getElementById("title").innerText = h1;
 
 		let sections = markdown.replace(/^# {0,}(.*)/m, "");
+		mkContent(sections);
 		sections = sections.split(/^## /gm);
 
-		makeContent(sections);
+		// makeContent(sections);
 
 		return markdown;
 	});
@@ -52,7 +53,6 @@ function options(markdown="", project=""){
 			optionsObject[key] = value;
 		}
 	}
-	console.log(optionsObject);
 	if(typeof optionsObject.link !== "undefined" && optionsObject.link !== "none"){
 		let link = optionsObject.link.split(/\[([\S ]*)\]\(([\S ]*)\)/);
 		let href = link[2];
@@ -78,6 +78,15 @@ function makeContent(sections=[]){
 	makeSection(sections[0]);
 	sections.shift();
 	makeContent(sections);
+}
+
+function mkContent(content=""){
+	if(!content) return;
+	console.log(content);
+	let html = markdownToHTML(content);
+	html = html.replaceAll(/(<h2[\S ]*>[\s\S]+?)(?=<h2|$)/g, "<section>$1</section>");
+	document.getElementById("content").innerHTML += html;
+	console.log(html);
 }
 
 function markdownToHTML(markdownText="") {

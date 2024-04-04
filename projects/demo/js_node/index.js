@@ -1,7 +1,7 @@
 import Graph from "./display/graph.js";
 import Node from "./display/nodes.js";
 export var globalGraph = new Graph;
-import { keyPressed } from "./keyboard.js";
+import { keyPressed, mouse } from "./keyboard.js";
 import { Pane } from 'https://cdn.skypack.dev/tweakpane';
 
 export var camera = {
@@ -46,6 +46,8 @@ function graphUpdate(){
 	lastCalledTime = Date.now();
 	fps = 1/delta;
 
+	cameraGlide();
+
 	globalGraph.render();
 	window.requestAnimationFrame(graphUpdate);
 	// setTimeout(graphUpdate, 1000 / 60);
@@ -57,7 +59,7 @@ export function changeZoom(factor=0){
 export function setZoom(factor=camera.zoom){
 	camera.zoom = Math.max(factor, 0);
 }
-
+var glideTo = null;
 export function cameraTo(x=0, y=0){
 	camera.x = x;
 	camera.y = y;
@@ -66,6 +68,29 @@ export function cameraMoveby(x=0, y=0){
 	camera.x -= x / camera.zoom;
 	camera.y -= y / camera.zoom;
 }
+
+export function cameraGlideTo(node=new Node){
+	glideTo = node;
+}
+
+function cameraGlide(){
+	if(!glideTo) return;
+
+	let distanceX = camera.x - glideTo.display.x;
+	let distanceY = camera.y - glideTo.display.y;
+
+	if(Math.abs(distanceX) < 1 && Math.abs(distanceY) < 1){
+		glideTo = null;
+		return;
+	}
+	
+	cameraMoveby(
+		distanceX * 10 * delta,
+		distanceY * 10 * delta
+	)
+
+}
+
 export function calcDistance(start={x:0,y:0}, end={x:0,y:0}){
 	return Math.hypot(
 		start.x - end.x,
@@ -81,7 +106,7 @@ window.addEventListener('wheel', (e) => {
 	if (e.ctrlKey) {
 		e.preventDefault();
 		if(e.target !== globalGraph.canvas) return undefined;
-		camera.zoom = Math.max(camera.zoom - e.deltaY * 0.01, 0.1)
+		camera.zoom = Math.max(camera.zoom - e.deltaY * 0.01, 0.1);
 	} else {
 		if(e.target !== globalGraph.canvas) return undefined;
 		e.preventDefault();
@@ -98,10 +123,19 @@ export function applyFocus(node){
 	focusedNode = node;
 }
 
+globalGraph.canvas.ondblclick = () => {
+	(new Node).moveTo(
+		mouse.position.x - globalGraph.canvas.width / 2,
+		mouse.position.y - globalGraph.canvas.height / 2
+	);
+}
+
 function veiwNode(node=new Node){
 
 	optionsPane?.dispose();
 	optionsPane = new Pane({ title: 'Node Options' });
+
+	if(!node) return;
 
 	let options = structuredClone(node.display);
 
@@ -134,8 +168,6 @@ function veiwNode(node=new Node){
 		focusedNode = null;
 		veiwNode(node);
 	});
-
-	console.log(optionsPane.addButton);
 
 	optionsPane.addButton({
 		title: 'Remove Node'

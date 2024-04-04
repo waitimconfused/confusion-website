@@ -63,6 +63,7 @@ p, div.code, code {
 	font-size: 16px;
 }
 div.code, code {
+	max-width: calc(100vw - var(--padding)* 7 - 20rem);
 	color: white;
 	position: relative;
 	display: inline-block;
@@ -89,7 +90,10 @@ code:is(.md, .js)::before {
 	border-top-left-radius: calc(var(--border-radius) - var(--padding) - 1px);
 	border-top-right-radius: calc(var(--border-radius) - var(--padding) - 1px);
 }
-code:is(.md, .js) { display: block; padding-top: 2.5rem; }
+code:is(.md, .js) {
+	display: block;
+	padding-top: 2.5rem;
+}
 code.md::before { content: "Markdown"; }
 code.js::before { content: "Javascript"; }
 

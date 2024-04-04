@@ -23,9 +23,9 @@ export async function readFile(fileName="", nodeConnector){
 
 	var fileNode = new Node(fileID, globalGraph);
 	fileNode.setValue(fileName);
-	fileNode.addEventListener("shiftClick", (node) => {
-		window.location = `./files/?path=${btoa(fileName)}`
-	});
+	// fileNode.addEventListener("shiftClick", (node) => {
+	// 	window.location = `./files/?path=${btoa(fileName)}`
+	// });
 	readFiles.push(fileID);
 	readFileNodes.push(fileNode);
 

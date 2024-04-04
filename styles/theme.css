@@ -1,0 +1,88 @@
+:root {
+	--primary: #f87171;
+	--secondary: #fca5a5;
+	--accent: #22c55e;
+	--neutral: #4b5563;
+	--base: #111827;
+	--info: #374151;
+	--success: #10b981;
+	--warning: #fde047;
+	--error: #f43f5e;
+
+	--border-radius: 2.5rem;
+	--size: calc(288.487px / 4 - 0.75rem);
+}
+
+html {
+	background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+	background-color: color-mix(in srgb, var(--base) 70%, black);
+	padding: 1rem;
+	box-sizing: border-box;
+	margin: 0px;
+	color: #c8cbd0;
+	height: 100vh;
+	aspect-ratio: 9 / 19.5;
+	border-radius: var(--border-radius);
+}
+
+div.controls {
+	display: grid;
+	gap: 1rem;
+	grid-template-areas: 
+		"⚙️ ⚙️ 🎵 🎵"
+		"⚙️ ⚙️ 🎵 🎵"
+		"🔒 🪞 ☀️ 🔊"
+		"🧑 🧑 ☀️ 🔊";
+	color: #c8cbd0;
+	width: 288.487px;
+	grid-template-columns: var(--size) var(--size) var(--size) var(--size);
+	grid-template-rows: var(--size) var(--size) var(--size) var(--size) var(--size);
+	
+}
+
+div.controls > div {
+	background-color: #111827;
+	border-radius: calc(var(--border-radius) - 1rem);
+}
+
+div.various {
+	grid-area: ⚙️;
+}
+div.music {
+	grid-area: 🎵;
+}
+div.rotation {
+	grid-area: 🔒;
+}
+div.mirror {
+	grid-area: 🪞;
+}
+div.focus {
+	grid-area: 🧑;
+}
+div.brightness {
+	grid-area: ☀️;
+}
+div.volume {
+	grid-area: 🔊;
+}
+
+div.controls div.custom {
+	display: flex;
+	background: none;
+	width: 288.487px;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+div.controls div.custom div {
+	background-color: #111827;
+	border-radius: calc(var(--border-radius) - 1rem);
+	width: var(--size);
+	height: var(--size);
+}

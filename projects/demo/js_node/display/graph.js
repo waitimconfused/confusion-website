@@ -1,5 +1,22 @@
 import { calcDistance, camera, delta, fps, redraw } from "../index.js";
+import { keyPressed } from "../keyboard.js";
 import Node from "./nodes.js";
+
+var shiftClickedNode1 = null;
+var shiftClickedNode2 = null;
+
+export function nodeIsShiftClicked(node=new Node){
+	if(!shiftClickedNode1){
+		shiftClickedNode1 = node;
+		return;
+	}else if(!shiftClickedNode2){
+		shiftClickedNode2 = node;
+	}
+
+	shiftClickedNode1.connectTo(shiftClickedNode2);
+	shiftClickedNode2 = null;
+	shiftClickedNode1 = null;
+}
 
 export default class Graph {
 	canvas = document.createElement("canvas");
@@ -32,6 +49,11 @@ export default class Graph {
 	}
 
 	render(){
+
+		if(shiftClickedNode1 && !keyPressed("shift")) {
+			shiftClickedNode1 = null;
+			shiftClickedNode2 = null;
+		}
 
 		let context = this.canvas.getContext("2d");
 

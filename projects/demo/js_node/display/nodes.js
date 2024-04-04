@@ -1,6 +1,7 @@
-import { globalGraph, calcDistance, camera, cameraTo, applyFocus } from "../index.js";
+import { globalGraph, calcDistance, camera, cameraTo, applyFocus, cameraGlideTo } from "../index.js";
 import { keyPressed, mouse, setKey } from "../keyboard.js";
 import { getFileOptions } from "../files/options.js";
+import { nodeIsShiftClicked } from "./graph.js";
 
 export default class Node {
 	display = {
@@ -44,6 +45,10 @@ export default class Node {
 		this.display.y = screenY / camera.zoom;
 		return this;
 	}
+	focus(){
+		cameraGlideTo(this);
+		return this;
+	}
 	isHovering(){
 
 		let displayX = globalGraph.canvas.width / 2 + (this.display.x - camera.x) * camera.zoom;
@@ -65,17 +70,18 @@ export default class Node {
 		}
 
 		if(this.isClicked && keyPressed("control")){
-			cameraTo(this.display.x, this.display.y);
+			// cameraTo(this.display.x, this.display.y);
+			cameraGlideTo(this);
 			this.isClicked = false;
 		}
 		if(this.isClicked && keyPressed("shift")){
 			this.shiftClick();
-			setKey("shift", false);
-			this.isClicked = false;
 		}
 		return this;
 	}
-	shiftClick = function(node=new Node){}
+	shiftClick = function(){
+		nodeIsShiftClicked(this);
+	}
 
 	addEventListener(eventName, callback=function(){}){
 		if(eventName == "shiftClick") this.shiftClick = callback;
@@ -201,7 +207,7 @@ export default class Node {
 			if(indexOfThis == -1) return undefined;
 			node.parents.splice(indexOfThis, 1);
 		});
-		// delete this;
+		delete this;
 	}
 }
 

@@ -71,7 +71,7 @@ export default function py_to_js(python=""){
 			variableScope.pop();
 		}
 
-		let variableDeclarationRegex = /(^|[^.])\b(\S*)\b *= */g
+		let variableDeclarationRegex = /(^|[^.])\b(\S*)\b *= */gm
 		if(variableDeclarationRegex.test(line)){
 			let variableName = line.split(variableDeclarationRegex)[2];
 			let variableHasBeenDeclared = false
@@ -115,7 +115,9 @@ export default function py_to_js(python=""){
 			line = "";
 		}
 
-		line = line.replace(/def {1,}([a-zA-Z\_]{1,}) {0,}\((.*)+?\):/g, "export function $1($2)");
+		line = line.replace(/^def {1,}([a-zA-Z\_]{1,}) {0,}\((.*)+?\):/g, "export function $1($2)");
+		line = line.replace(/def {1,}([a-zA-Z\_]{1,}) {0,}\((.*)+?\):/g, "function $1($2)");
+		line = line.replace(/def let (\S+?)\b\((.+?):/g, "function $1($2)");
 		line = line.replace(/class {1,}(\S*):/g, "class $1");
 		line = line.replace(/if *\(([\S\s]+?)\):|if *([\S\s]+?):/, "if($1)");
 		line = line.replace(/\bFalse\b/, "false");
@@ -125,6 +127,7 @@ export default function py_to_js(python=""){
 		pythonLines[index] = line;
 	});
 
+	Object.keys(imports).forEach(() => pythonLines.shift())
 	Object.keys(imports).reverse().forEach((path) => {
 		let modules = imports[path];
 		let importString = "";
