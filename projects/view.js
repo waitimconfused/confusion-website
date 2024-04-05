@@ -75,6 +75,11 @@ function makeContent(content=""){
 	let html = markdownToHTML(content);
 	html = html.replaceAll(/(<h2[\S ]*>[\s\S]+?)(?=<h2|$)/g, "<section>$1</section>");
 	document.getElementById("content").innerHTML += html;
+	document.querySelectorAll("section h2[id]").forEach((h2) => {
+		h2.onclick = () => {
+			window.location.href = "#"+h2.id;
+		}
+	})
 }
 
 function markdownToHTML(markdownText="") {

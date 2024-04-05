@@ -17,6 +17,7 @@
 html {
 	padding: 0px;
 	margin: 0px;
+	scroll-behavior: smooth;
 }
 body {
 	margin: 0px;
@@ -26,6 +27,7 @@ body {
 	left: 0px;
 	box-sizing: border-box;
 	font-family: "Cairo Play";
+	scroll-behavior: smooth;
 }
 
 header {
