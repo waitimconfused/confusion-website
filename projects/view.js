@@ -33,10 +33,7 @@ export default function viewProject(project="", forceLoad=false){
 		document.getElementById("title").innerText = h1;
 
 		let sections = markdown.replace(/^# {0,}(.*)/m, "");
-		mkContent(sections);
-		sections = sections.split(/^## /gm);
-
-		// makeContent(sections);
+		makeContent(sections);
 
 		return markdown;
 	});
@@ -73,45 +70,15 @@ function options(markdown="", project=""){
 	}
 }
 
-function makeContent(sections=[]){
-	if(sections.length == 0) return;
-	makeSection(sections[0]);
-	sections.shift();
-	makeContent(sections);
-}
-
-function mkContent(content=""){
+function makeContent(content=""){
 	if(!content) return;
-	console.log(content);
 	let html = markdownToHTML(content);
 	html = html.replaceAll(/(<h2[\S ]*>[\s\S]+?)(?=<h2|$)/g, "<section>$1</section>");
 	document.getElementById("content").innerHTML += html;
-	console.log(html);
 }
 
 function markdownToHTML(markdownText="") {
 	let converter = new showdown.Converter();
 	let html = converter.makeHtml(markdownText);
 	return html;
-}
-
-function makeSection(content=""){
-	content = content.replace(/^(\s*)/g, "");
-	if(!content) return;
-
-	let h2 = content.split(/^([\S ]*)/g)[1];
-	h2 = h2.replace(/^(\s*)/g, "");
-	let p = content.split(/^([\S ]*)/g)[2];
-	p = markdownToHTML(p);
-	// p = p.replaceAll("\n", "");
-	// p = p.replaceAll("\r", "");
-
-	let section = document.createElement("section");
-	document.getElementById("content").appendChild(section);
-	let h2Element = document.createElement("h2");
-	h2Element.innerText = h2;
-	section.appendChild(h2Element);
-	let pElement = document.createElement("p");
-	pElement.innerHTML = p.replace("\n", "");
-	section.appendChild(pElement);
 }

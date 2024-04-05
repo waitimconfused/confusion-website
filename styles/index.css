@@ -175,15 +175,6 @@ main footer {
 	width: 100%;
 }
 
-main section {
-	opacity: 0;
-	animation: load 400ms forwards;
-}
-@keyframes load {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
 main section img {
     display: inline-flex;
     float: left;
