@@ -8,8 +8,6 @@ section h2:hover {
 	text-decoration-color: #72bf80;
 }
 section h2::before { content: "## "; }
-section h3::before { content: "### "; }
-section h4::before { content: "#### "; }
 blockquote { position: relative; }
 blockquote::before {
 	content: "";
