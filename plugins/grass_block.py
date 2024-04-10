@@ -3,6 +3,13 @@ import random
 
 thisBlock = 0
 
+class myBlock:
+	title = "None"
+	def __init__(self, title):
+		self.title = title
+
+HAS_BEEN_PRESSED = False
+
 def place():
 	player.inventory.take("block/chest")
 	game.block.setBlock("chest:unopened")

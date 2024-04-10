@@ -15,7 +15,3 @@ def interact():
 	game.block.setBlock("chest:unopened")
 
 	return abs(100)
-
-class player:
-	class inventory:
-		def take(item="", quantity=1): return None

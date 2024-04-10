@@ -19,22 +19,18 @@ export default function py_to_js(python=""){
 	var imports = {};
 	var replacements = [];
 
-	// let div = document.createElement("div");
-	// document.body.appendChild(div);
-
 	python = python.replaceAll("    ", "\t");
 	python = python.replaceAll("\r", "");
 
-	// div.innerText = python;
-	// python = div.innerText;
-	// div.remove();
-
 	var nestedLevel = 0;
 	var pythonLines = python.split("\n");
-	// pythonLines = pythonLines.filter(str => !isBlankString(str));
 	var variableScope = [
 		[]
 	];
+
+	let isInClass = false;
+	let classNestedLevel = nestedLevel;
+
 	pythonLines.forEach((line, index) => {
 
 		if(line.trim().startsWith("#")){
@@ -71,7 +67,12 @@ export default function py_to_js(python=""){
 			variableScope.pop();
 		}
 
-		let variableDeclarationRegex = /(^|[^.])\b(\S*)\b *= */gm
+		if(isInClass && indents < classNestedLevel) {
+			isInClass = false;
+			classNestedLevel = 0;
+		}
+
+		let variableDeclarationRegex = /^(\s*)(\w*) = (.*)$/gm
 		if(variableDeclarationRegex.test(line)){
 			let variableName = line.split(variableDeclarationRegex)[2];
 			let variableHasBeenDeclared = false
@@ -80,12 +81,16 @@ export default function py_to_js(python=""){
 			});
 			if(!variableHasBeenDeclared){
 				variableScope[indents].push(variableName);
+				let type = "var";
+				if(variableName.toUpperCase() == variableName) type = "const";
 				if(indents == 0){
-					line = line.replace(/(^|[^.])\b(\S*)\b *= */, "$1export var $2 = ");
+					type = "export " + type;
 				}else{
-					
-					line = line.replace(/(^|[^.])\b(\S*)\b *= */, "$1let $2 = ");
+					type = "let";
 				}
+				type += " ";
+				if(isInClass && indents == classNestedLevel) type = "";
+				line = line.replace(/(^|[^.])\b(\S*)\b *= */, `$1${type}$2 = `);
 			}
 		}
 
@@ -115,10 +120,33 @@ export default function py_to_js(python=""){
 			line = "";
 		}
 
-		line = line.replace(/^def {1,}([a-zA-Z\_]{1,}) {0,}\((.*)+?\):/g, "export function $1($2)");
-		line = line.replace(/def {1,}([a-zA-Z\_]{1,}) {0,}\((.*)+?\):/g, "function $1($2)");
-		line = line.replace(/def let (\S+?)\b\((.+?):/g, "function $1($2)");
-		line = line.replace(/class {1,}(\S*):/g, "class $1");
+
+		if(line.trim().startsWith('class')){
+			// Replace Python class definitions with JavaScript class definitions
+			if(nestedLevel == 0){
+				line = line.replace(/class (.*?):/g, 'export class $1');
+			}else{
+				line = line.replace(/class (.*?):/g, 'class $1');
+			}
+			isInClass = true;
+			classNestedLevel = nestedLevel + 1;
+		}else if(isInClass && line.trim().startsWith('def __init__(self')){
+			// Replace Python class constructors with JavaScript class constructors
+			line = line.replace(/def __init__\(self, *(.*?)\):/g, 'constructor($1)');
+		}else if(isInClass && line.trim().startsWith('def __init__')){
+			// Replace Python class constructors with JavaScript class constructors
+			line = line.replace(/def __init__\((.*?)\):/g, 'constructor($1)');
+		}else if(isInClass && line.trim().startsWith('def')) {
+			// Replace Python method definitions with JavaScript method definitions
+			line = line.replace(/def (.*?):/g, '$1() /* IN_CLASS */');
+		}else if(isInClass && line.trim().startsWith('self.')){
+			// Replace Python's self with JavaScript's this
+			line = line.replace(/self\./g, 'this.');
+		}else if(isInClass == false){
+			line = line.replace(/^def {1,}([a-zA-Z\_]{1,}) {0,}\((.*)+?\):/g, "export function $1($2)");
+			line = line.replace(/def {1,}([a-zA-Z\_]{1,}) {0,}\((.*)+?\):/g, "function $1($2)");
+		}
+
 		line = line.replace(/if *\(([\S\s]+?)\):|if *([\S\s]+?):/, "if($1)");
 		line = line.replace(/\bFalse\b/, "false");
 		line = line.replace(/\bTrue\b/, "true");
@@ -145,7 +173,6 @@ export default function py_to_js(python=""){
 		nestedLevel -= 1;
 	}
 	pythonLines = pythonLines.split("\n");
-	// pythonLines = pythonLines.filter(str => !isBlankString(str));
 
 	let javascript = pythonLines.join("\n");
 	javascript = javascript.replaceAll("\nfunction", "\n\nfunction");
