@@ -30,5 +30,5 @@ async function loadPlugin(pluginName=""){
 
 	pluginName = pluginName.replace(/\.[^\/.]+$/, "");
 
-	writeFile(`./plugins/compiled/${pluginName}.js`, javascript);
+	writeFile(`./plugin/output/compiled/${pluginName}.js`, javascript);
 }
