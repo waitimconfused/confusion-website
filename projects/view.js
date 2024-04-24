@@ -18,7 +18,18 @@ export default function viewProject(project="", forceLoad=false){
 	if(project == "confusion") markdownPath = "/README.md";
 
 	fetch(markdownPath).then((response) => {
-		if(response.status !== 200) return response.status;
+		if(response.status !== 200){
+			let iframe = document.createElement("iframe");
+			document.documentElement.innerHTML = "";
+			iframe.src = "/404";
+			iframe.style.display = "none";
+			iframe.onload = () => {
+				console.dir(iframe);
+				document.documentElement.innerHTML = iframe.contentDocument.documentElement.innerHTML;
+			}
+			document.body.appendChild(iframe);
+			return response.status;
+		};
 		return response.text();
 	}).then((markdown) => {
 		if(typeof markdown == "number") return;

@@ -1,4 +1,4 @@
-import { globalGraph, calcDistance, camera, cameraTo, applyFocus, cameraGlideTo } from "../index.js";
+import { globalGraph, calcDistance, camera, cameraTo, applyFocus, cameraGlideTo, delta, lerp } from "../index.js";
 import { keyPressed, mouse, setKey } from "../keyboard.js";
 import { getFileOptions } from "../files/options.js";
 import { nodeIsShiftClicked } from "./graph.js";
@@ -15,6 +15,7 @@ export default class Node {
 	children = [];
 	parents = [];
 	isClicked = false;
+	isHovered = false;
 	constructor(title=this.display.title, graph=globalGraph){
 		graph.addNode(this);
 
@@ -55,13 +56,15 @@ export default class Node {
 		let displayY = globalGraph.canvas.height / 2 + (this.display.y - camera.y) * camera.zoom;
 		let radius = Math.abs(this.display.radius * camera.zoom);
 
-		return calcDistance({
+		let hovering = calcDistance({
 			x: displayX,
 			y: displayY
 		}, {
 			x: mouse.position.x - globalGraph.canvas.getBoundingClientRect().left,
 			y: mouse.position.y - globalGraph.canvas.getBoundingClientRect().top
-		}) < radius
+		}) < radius;
+
+		return hovering;
 	}
 	click(){
 
@@ -86,6 +89,9 @@ export default class Node {
 	addEventListener(eventName, callback=function(){}){
 		if(eventName == "shiftClick") this.shiftClick = callback;
 	}
+
+	#lerpFrame = 0;
+	#textOffset = 0;
 
 	#value = "";
 	setValue(value=""){
@@ -124,13 +130,37 @@ export default class Node {
 		});
 		return isSibling;
 	}
-	render(showNode=true){
+	render(){
+
+		let mouseHovering = this.isHovering();
+
+		if(mouseHovering){
+			this.#lerpFrame += 10 * delta;
+			// this.#textOffset = Math.min(this.#textOffset + 100 * delta, 20);
+			globalGraph.canvas.style.cursor = "pointer";
+		}else{
+			this.#lerpFrame -= 10 * delta;
+			// this.#textOffset = Math.max(this.#textOffset - 100 * delta, 10);
+		}
+		this.#lerpFrame = Math.max(Math.min(this.#lerpFrame, 1), 0);
+
+		if(mouseHovering && !this.isHovered) {
+			console.log("Hovering on node:", this.display.title);
+			globalGraph.setHoveredNode(true);
+		}else if(!mouseHovering && this.isHovered && globalGraph.hasHoveredNode) {
+			console.log("Stopped Hovering on node:", this.display.title);
+			globalGraph.setHoveredNode(false);
+		}
+
+		this.isHovered = mouseHovering;
 
 		let context = globalGraph.canvas.getContext("2d");
 
 		let displayX = globalGraph.canvas.width / 2 + (this.display.x - camera.x) * camera.zoom;
 		let displayY = globalGraph.canvas.height / 2 + (this.display.y - camera.y) * camera.zoom;
 		let radius = Math.abs(this.display.radius * camera.zoom);
+
+		radius -= lerp(0, 2 * -camera.zoom, this.#lerpFrame);
 
 		context.shadowColor = 'black';
 		context.strokeStyle = "black";
@@ -140,8 +170,8 @@ export default class Node {
 		context.arc(displayX, displayY, radius, 0, Math.PI * 2);
 		context.stroke();
 		context.closePath();
-
-
+		
+		// Shadow
 		context.shadowBlur = 0;
 		context.shadowColor = 'black';
 		context.strokeStyle = "black";
@@ -149,35 +179,34 @@ export default class Node {
 		context.beginPath();
 		context.arc(displayX, displayY, radius + 1, 0, Math.PI * 2);
 		context.fill();
-		context.closePath();
 
-		context.beginPath();
+		context.lineWidth = 5;
+		context.shadowBlur = 0;
 		context.fillStyle = this.display.colour;
-		context.arc(displayX, displayY, radius, 0, Math.PI * 2);
-
-		let mouseHovering = calcDistance({
-			x: displayX,
-			y: displayY
-		}, mouse.position) < radius;
-
-		if(mouseHovering){
-			context.fillStyle = "white";
-			context.font = "15px Arial";
-			context.textBaseline = 'middle';
-			context.textAlign = 'center';
-			let textX = displayX;
-			let textY = displayY + radius + 10;
-			context.shadowColor = 'black';
-			context.lineWidth = 5;
-			context.shadowBlur = 0;
-			context.strokeText(this.display.title, textX, textY);
-			context.fillText(this.display.title, textX, textY);
-			context.fillStyle = this.display.colour;
-			globalGraph.canvas.style.cursor = "click";
+		if(globalGraph.hasHoveredNode && !this.isHovered){
+			context.fillStyle = "cyan";
 		}
+
 		context.fill();
+
 		context.closePath();
 
+		// Title
+		context.beginPath();
+		let t = camera.zoom - 0.5;
+		let r = lerp(globalGraph.bg.r, 255, t);
+		let g = lerp(globalGraph.bg.g, 255, t);
+		let b = lerp(globalGraph.bg.b, 255, t);
+		context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+		context.font = "15px Arial";
+		context.textBaseline = 'middle';
+		context.textAlign = 'center';
+		let textX = displayX;
+		let textY = displayY + radius + lerp(10, 10 + camera.zoom, this.#lerpFrame);
+		context.fillText(this.display.title, textX, textY);
+		context.closePath();
+
+		// Glyph
 		context.beginPath();
 		context.shadowColor = 'black';
 		context.strokeStyle = "black";

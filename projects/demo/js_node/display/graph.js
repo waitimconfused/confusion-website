@@ -20,13 +20,19 @@ export function nodeIsShiftClicked(node=new Node){
 
 export default class Graph {
 	canvas = document.createElement("canvas");
+
+	bg = {
+		r: 35,
+		g: 35,
+		b: 35,
+	};
+
 	constructor(){
 		this.canvas = document.createElement("canvas");
 		document.body.appendChild(this.canvas);
 		this.canvas.style.position = "fixed";
 		this.canvas.style.top = 0;
 		this.canvas.style.left = 0;
-		this.canvas.style.backgroundColor = "#232323";
 		this.canvas.style.userSelect = "none";
 		this.canvas.style.zIndex = -1;
 		window.onresize = () => {
@@ -37,6 +43,7 @@ export default class Graph {
 	}
 
 	nodes = [];
+	hasHoveredNode = false;
 
 	addNode(node=new Node){
 		this.nodes.push(node);
@@ -48,7 +55,14 @@ export default class Graph {
 		});
 	}
 
+	setHoveredNode(bool=false){
+		this.hasHoveredNode = bool;
+	}
+
 	render(){
+
+		this.canvas.style.cursor = "default";
+		this.canvas.style.backgroundColor = `rgb(${this.bg.r}, ${this.bg.g}, ${this.bg.b})`;
 
 		if(shiftClickedNode1 && !keyPressed("shift")) {
 			shiftClickedNode1 = null;

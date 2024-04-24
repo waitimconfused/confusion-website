@@ -40,12 +40,15 @@
 
 	<script type="module">
 		let path = location.pathname.replace("/", "");
-		let markdownURL = `/projects/markdown/${path}.md`;
-		let projectURL = `/projects/view?project=${path}`;
-		let response = await fetch(markdownURL);
-		let isProject = (response.status == 200);
-		if(isProject) {
-			location.href = projectURL;
+		
+		if(path !== "404" && path.split("/").length == 1) {
+			let markdownURL = `/projects/markdown/${path}.md`;
+			let projectURL = `/projects/view?project=${path}`;
+			let response = await fetch(markdownURL);
+			let isProject = (response.status == 200);
+			if(isProject) {
+				location.href = projectURL;
+			}
 		}
 	</script>
 

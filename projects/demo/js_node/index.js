@@ -25,6 +25,8 @@ var focusedNode = null;
 var focusedNode_prev = null;
 
 function graphUpdate(){
+	
+	console.log(camera.zoom);
 
 	if(escapePressed == true && !keyPressed("escape")){
 		escapePressed = false;
@@ -175,4 +177,9 @@ function veiwNode(node=new Node){
 		node.remove();
 		veiwNode(node);
 	});
+}
+
+export function lerp(a, b, t) {
+	t = Math.max(Math.min(t, 1), 0);
+	return a + (b - a) * t
 }
