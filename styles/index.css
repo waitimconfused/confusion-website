@@ -1,18 +1,5 @@
-@import url("./fonts/cairo_play.css");
-:root {
-	--background: #151515;
-	--section-background: #232323;
-	--sidebar-width: 20rem;
-	--border-radius: 2rem;
-	--padding: 1rem;
-
-	--accent1: #e06767;
-	--accent2: #ffb3b3;
-
-	--text-color: white;
-
-	color-scheme: dark;
-}
+@import url("./fonts/fonts.css");
+@import url("./root.css");
 
 html {
 	padding: 0px;
@@ -261,16 +248,15 @@ a:not([stylize=false]):hover,
 a:not([stylize=false]):active {
 	text-decoration-color: var(--accent2);
 }
-
-aside section div a:not([stylize=false]):hover,
-aside section div a:not([stylize=false]):active {
-	background: var(--accent2);
-	color: black;
-}
 a:visited,
 a:active,
 a:link {
 	color: var(--text-color);
+}
+aside section div a:not([stylize=false]):hover,
+aside section div a:not([stylize=false]):active {
+	background: var(--accent2);
+	color: black;
 }
 
 

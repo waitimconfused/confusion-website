@@ -25,4 +25,11 @@ import { readFile } from "./files/index.js";
 
 // // readFile("./js_node.html")
 
-readFile("/index");
+// readFile("./index.html");
+
+// readFile("/index.html");
+
+readFile("/404.html");
+
+readFile("/projects/demo.html");
+readFile("/projects/view.html");

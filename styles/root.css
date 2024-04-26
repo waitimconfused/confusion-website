@@ -1,0 +1,14 @@
+:root {
+	--background: #151515;
+	--section-background: #232323;
+	--sidebar-width: 20rem;
+	--border-radius: 2rem;
+	--padding: 1rem;
+
+	--accent1: #e06767;
+	--accent2: #ffb3b3;
+
+	--text-color: white;
+
+	color-scheme: dark;
+}

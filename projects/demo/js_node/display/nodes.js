@@ -1,4 +1,4 @@
-import { globalGraph, calcDistance, camera, cameraTo, applyFocus, cameraGlideTo, delta, lerp } from "../index.js";
+import { globalGraph, calcDistance, camera, cameraTo, applyFocus, cameraGlideTo, delta, lerp, hexToRgb } from "../index.js";
 import { keyPressed, mouse, setKey } from "../keyboard.js";
 import { getFileOptions } from "../files/options.js";
 import { nodeIsShiftClicked } from "./graph.js";
@@ -9,7 +9,11 @@ export default class Node {
 		y: 0,
 		radius: 10,
 		title: "Untitled Node",
-		colour: "#ff0000",
+		colour: {
+			r: 255,
+			g: 0,
+			b: 0
+		},
 		glyph: "?"
 	};
 	children = [];
@@ -21,7 +25,8 @@ export default class Node {
 
 		this.display.title = title;
 		if(title.match(/\..+$/g)?.length > 0){
-			this.display.colour = getFileOptions(title).data?.colour || "purple";
+			let colour = getFileOptions(title).data?.colour || "#FF0000";
+			this.setColour(colour);
 			this.display.glyph = getFileOptions(title).data?.text || "?";
 		}
 
@@ -34,6 +39,19 @@ export default class Node {
 	setTitle(title=this.display.title){
 		this.display.title = title || this.display.title;
 		return this;
+	}
+	setColour(colour=""){
+		if(colour.startsWith("#")){
+			let rgb = hexToRgb(colour);
+			this.display.colour.r = rgb.r;
+			this.display.colour.g = rgb.g;
+			this.display.colour.b = rgb.b;
+		}else if(colour.startsWith("rgb(")){
+			let rgbArray = colour.split(/rgb\((\d*), *(\d*), *(\d*)\)/gm);
+			this.display.colour.r = rgbArray[1];
+			this.display.colour.g = rgbArray[2];
+			this.display.colour.b = rgbArray[3];
+		}
 	}
 	connectTo(node=new Node){
 		this.children.push(node);
@@ -91,7 +109,10 @@ export default class Node {
 	}
 
 	#lerpFrame = 0;
-	#textOffset = 0;
+	#lerp = {
+		radius: 0,
+		textOffset: 0,
+	}
 
 	#value = "";
 	setValue(value=""){
@@ -135,39 +156,39 @@ export default class Node {
 		let mouseHovering = this.isHovering();
 
 		if(mouseHovering){
-			this.#lerpFrame += 10 * delta;
+			this.#lerp.radius += 10 * delta;
+			this.#lerp.textOffset += 10 * delta;
 			// this.#textOffset = Math.min(this.#textOffset + 100 * delta, 20);
 			globalGraph.canvas.style.cursor = "pointer";
 		}else{
-			this.#lerpFrame -= 10 * delta;
+			this.#lerp.radius -= 10 * delta;
+			this.#lerp.textOffset -= 10 * delta;
 			// this.#textOffset = Math.max(this.#textOffset - 100 * delta, 10);
 		}
-		this.#lerpFrame = Math.max(Math.min(this.#lerpFrame, 1), 0);
+		this.#lerp.radius = Math.max(Math.min(this.#lerp.radius, 1), 0);
+		this.#lerp.textOffset = Math.max(Math.min(this.#lerp.textOffset, 1), 0);
 
 		if(mouseHovering && !this.isHovered) {
-			console.log("Hovering on node:", this.display.title);
 			globalGraph.setHoveredNode(true);
 		}else if(!mouseHovering && this.isHovered && globalGraph.hasHoveredNode) {
-			console.log("Stopped Hovering on node:", this.display.title);
 			globalGraph.setHoveredNode(false);
 		}
 
 		this.isHovered = mouseHovering;
 
 		let context = globalGraph.canvas.getContext("2d");
+		let bgColour = this.display.colour;
 
 		let displayX = globalGraph.canvas.width / 2 + (this.display.x - camera.x) * camera.zoom;
 		let displayY = globalGraph.canvas.height / 2 + (this.display.y - camera.y) * camera.zoom;
 		let radius = Math.abs(this.display.radius * camera.zoom);
-
-		radius -= lerp(0, 2 * -camera.zoom, this.#lerpFrame);
 
 		context.shadowColor = 'black';
 		context.strokeStyle = "black";
 		context.lineWidth = camera.zoom * 2;
 		context.shadowBlur = camera.zoom * 2;
 		context.beginPath();
-		context.arc(displayX, displayY, radius, 0, Math.PI * 2);
+		context.arc(displayX, displayY, radius + lerp(0, 10, this.#lerp.radius), 0, Math.PI * 2);
 		context.stroke();
 		context.closePath();
 		
@@ -177,12 +198,12 @@ export default class Node {
 		context.strokeStyle = "black";
 		context.fillStyle = "black";
 		context.beginPath();
-		context.arc(displayX, displayY, radius + 1, 0, Math.PI * 2);
+		context.arc(displayX, displayY, radius + lerp(0, 10, this.#lerp.radius) + 1, 0, Math.PI * 2);
 		context.fill();
 
 		context.lineWidth = 5;
 		context.shadowBlur = 0;
-		context.fillStyle = this.display.colour;
+		context.fillStyle = `rgb(${bgColour.r}, ${bgColour.g}, ${bgColour.b})`;
 		if(globalGraph.hasHoveredNode && !this.isHovered){
 			context.fillStyle = "cyan";
 		}
@@ -194,31 +215,30 @@ export default class Node {
 		// Title
 		context.beginPath();
 		let t = camera.zoom - 0.5;
-		let r = lerp(globalGraph.bg.r, 255, t);
-		let g = lerp(globalGraph.bg.g, 255, t);
-		let b = lerp(globalGraph.bg.b, 255, t);
-		context.fillStyle = `rgb(${r}, ${g}, ${b})`;
-		context.font = "15px Arial";
-		context.textBaseline = 'middle';
-		context.textAlign = 'center';
-		let textX = displayX;
-		let textY = displayY + radius + lerp(10, 10 + camera.zoom, this.#lerpFrame);
-		context.fillText(this.display.title, textX, textY);
-		context.closePath();
+		let a = lerp(0, 1, t);
+		if(a > 0){
+			context.fillStyle = `rgba(255, 255, 255, ${a})`;
+			context.font = "15px 'JetBrains Mono'";
+			context.textBaseline = 'middle';
+			context.textAlign = 'center';
+			let textX = displayX;
+			let textY = displayY + radius + lerp(0, 10, this.#lerp.textOffset) + 10;
+			context.fillText(this.display.title, textX, textY);
+			context.closePath();
 
-		// Glyph
-		context.beginPath();
-		context.shadowColor = 'black';
-		context.strokeStyle = "black";
-		context.fillStyle = "white";
-		context.font = `${this.display.radius * camera.zoom / 1.5}px Arial`;
-		context.textBaseline = 'middle';
-		context.textAlign = 'center';
-		context.shadowBlur = 0;
-		context.lineWidth = this.display.radius * camera.zoom / 10;
-		context.strokeText(this.display.glyph, displayX, displayY);
-		context.fillText(this.display.glyph, displayX, displayY);
-		context.closePath();
+			// Glyph
+			context.beginPath();
+			context.shadowColor = `rgba(0, 0, 0, ${a})`;
+			context.strokeStyle = `rgba(0, 0, 0, ${a})`;
+			context.fillStyle = `rgba(255, 255, 255, ${a})`;
+			context.font = `bold ${this.display.radius * camera.zoom / 1.5 + lerp(0, 10, this.#lerp.radius)}px 'JetBrains Mono', 'Noto Emoji'`;
+			context.textBaseline = 'middle';
+			context.textAlign = 'center';
+			context.lineWidth = this.display.radius * camera.zoom / 10;
+			context.strokeText(this.display.glyph, displayX, displayY);
+			context.fillText(this.display.glyph, displayX, displayY);
+			context.closePath();
+		}
 
 		return this;
 	}

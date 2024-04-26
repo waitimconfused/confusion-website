@@ -25,8 +25,6 @@ var focusedNode = null;
 var focusedNode_prev = null;
 
 function graphUpdate(){
-	
-	console.log(camera.zoom);
 
 	if(escapePressed == true && !keyPressed("escape")){
 		escapePressed = false;
@@ -127,8 +125,8 @@ export function applyFocus(node){
 
 globalGraph.canvas.ondblclick = () => {
 	(new Node).moveTo(
-		mouse.position.x - globalGraph.canvas.width / 2,
-		mouse.position.y - globalGraph.canvas.height / 2
+		mouse.position.x - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
+		mouse.position.y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
 	);
 }
 
@@ -183,3 +181,16 @@ export function lerp(a, b, t) {
 	t = Math.max(Math.min(t, 1), 0);
 	return a + (b - a) * t
 }
+
+
+
+
+export function hexToRgb(hex="") {
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+	  r: parseInt(result[1], 16),
+	  g: parseInt(result[2], 16),
+	  b: parseInt(result[3], 16)
+	} : null;
+  }
+  

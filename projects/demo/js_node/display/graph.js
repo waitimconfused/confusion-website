@@ -26,6 +26,19 @@ export default class Graph {
 		g: 35,
 		b: 35,
 	};
+	setBG(colour=""){
+		if(colour.startsWith("#")){
+			let rgb = hexToRgb(colour);
+			this.bg.r = rgb.r;
+			this.bg.g = rgb.g;
+			this.bg.b = rgb.b;
+		}else if(colour.startsWith("rgb(")){
+			let rgbArray = colour.split(/rgb\((\d*), *(\d*), *(\d*)\)/gm);
+			this.bg.r = rgbArray[1];
+			this.bg.g = rgbArray[2];
+			this.bg.b = rgbArray[3];
+		}
+	}
 
 	constructor(){
 		this.canvas = document.createElement("canvas");
@@ -40,6 +53,17 @@ export default class Graph {
 			this.canvas.height = window.innerHeight;
 		}
 		window.onresize();
+	}
+
+	RGBfromXY(x=0, y=0){
+		let context = this.canvas.getContext("2d");
+		let rgbArray = context.getImageData(x, y, 1, 1).data;
+
+		return {
+			r: rgbArray[0],
+			g: rgbArray[1],
+			b: rgbArray[2]
+		}
 	}
 
 	nodes = [];
@@ -74,10 +98,15 @@ export default class Graph {
 		context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
 		// Render all edges before drawing nodes
-		this.nodes = this.nodes.sort(() => {
-			return Math.round(Math.random()) - 0.5;
+		this.nodes = this.nodes.sort((node1, node2) => {
+			let biggestRadius = Math.max(node1.display.radius, node2.display.radius);
+			return (node2.display.y - biggestRadius) - (node1.display.y - biggestRadius)
 		});
 		this.nodes.forEach( (node=new Node) => {
+
+			if(redraw){
+				centralForce(node);
+			}
 
 			this.nodes.forEach( (otherNode=(new Node)) => {
 				node.script();
@@ -171,6 +200,22 @@ function calVelocity(dist, prefDist, maxSpeed=1, t=1){
 }
 
 
+function centralForce(node=new Node){
+	let speed = fps / 60;
+
+	let distance = calcDistance(node.display, {x:0, y:0});
+	let velocity = calVelocity(distance, 0, 100 * (delta * speed), 100);
+	let dx = -node.display.x;
+	let dy = -node.display.y;
+
+	let node_RadianAngle = Math.atan( (dx / dy) || 1 ) + Math.PI * (node.display.y < 0);
+
+	let node_changeX = velocity * Math.sin(node_RadianAngle);
+	let node_changeY = velocity * Math.cos(node_RadianAngle);
+
+	node.display.x -= node_changeX;
+	node.display.y -= node_changeY;
+}
 
 function limitConnectedNodePosition(anchorNode=new Node, freeNode=new Node, dontMove=false){
 

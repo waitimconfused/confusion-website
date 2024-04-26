@@ -10,10 +10,10 @@ export async function readFile(fileName="", nodeConnector){
 	if(readFileNodes.length > 10) return;
 
 	fileName = fileName.replaceAll("/./", "/");
-	if(fileName.endsWith("/")) fileName += `index`;
+	// if(fileName.endsWith("/")) fileName += `index`;
 	if(/\/(\w*)$/gm.test()) fileName += "."+nodeConnector.title.split(".")[nodeConnector.title.split(".").length-1]
 	let fileID = `${fileName}`;
-	while(fileID.startsWith(".")) fileID = fileID.replace(".", "");
+	if(nodeConnector) while(fileID.startsWith(".")) fileID = fileID.replace(".", "");
 
 	if(readFiles.includes(fileID)){
 		let fileIndex = readFiles.indexOf(fileID);
@@ -23,13 +23,12 @@ export async function readFile(fileName="", nodeConnector){
 
 	var fileNode = new Node(fileID, globalGraph);
 	fileNode.setValue(fileName);
-	// fileNode.addEventListener("shiftClick", (node) => {
-	// 	window.location = `./files/?path=${btoa(fileName)}`
-	// });
+	fileNode.addEventListener("shiftClick", (node) => {
+		window.location = `./files/?path=${btoa(fileName)}`
+	});
 	readFiles.push(fileID);
 	readFileNodes.push(fileNode);
 
-	// if(false){
 	if(readFiles.length == 1){
 		fileNode.moveTo(0, 0);
 	}else{

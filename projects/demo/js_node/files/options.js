@@ -27,7 +27,7 @@ export var fileOptions = {
 		linkPathIndex: 0
 	},
 	".plugin": {
-		colour: "grey", text: "PIX",
+		colour: "#808080", text: "PIX",
 		links: [
 			/\s*@include (\w+) as \w+ from ([\S]+)/g,
 			/\s*@include (\w+) from ([\S]+)/g
@@ -47,30 +47,30 @@ export var fileOptions = {
 	},
 
 	".json": {
-		colour: "darkgrey", text: "{json}"
+		colour: "#a8a8a8", text: "{json}"
 	},
 	".txt": {
-		colour: "grey", text: "TXT"
+		colour: "#808080", text: "TXT"
 	},
 
 
 	".png": {
-		colour: "darkgrey", text: "🖼️"
+		colour: "#a8a8a8", text: "🖼️"
 	},
 	".svg": {
-		colour: "darkgrey", text: "🖼️"
+		colour: "#a8a8a8", text: "🖼️"
 	},
 	".jpg": {
-		colour: "darkgrey", text: "🖼️"
+		colour: "#a8a8a8", text: "🖼️"
 	},
 	".jpeg": {
-		colour: "darkgrey", text: "🖼️"
+		colour: "#a8a8a8", text: "🖼️"
 	},
 	".webp": {
-		colour: "darkgrey", text: "🖼️"
+		colour: "#a8a8a8", text: "🖼️"
 	},
 	".gif": {
-		colour: "darkgrey", text: "🖼️"
+		colour: "#a8a8a8", text: "🖼️"
 	}
 }
 
@@ -82,7 +82,6 @@ export function getFileOptions(fileName=""){
 	let fileExtension = getRegexGroups(fileExtensionsRegex, fileName)[0];
 	if(fileExtension) fileExtension = fileExtension[0]
 	else fileExtension = ".html";
-	console.log(fileName, fileExtension);
 
 	return {
 		data: fileOptions[fileExtension],

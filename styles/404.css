@@ -1,3 +1,4 @@
+@import url("./root.css");
 body {
 	font-family: system-ui;
 	color: white;
@@ -5,12 +6,33 @@ body {
 	padding: 5rem;
 }
 
-h1 {
-	padding-left: 1rem;
+div.text {
+	max-width: 20rem;
 }
 
-h2 {
-	max-width: 20rem;
+a {
+	display: block;
+	color: var(--text-color);
+	text-decoration: none;
+	transition: background 400ms, color 400ms;
+	text-align: center;
+	background: var(--accent1);
+	box-sizing: border-box;;
+	width: 100%;
+	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
+	padding: calc( var(--padding) / 2 );
+	margin-top: calc( var(--padding) / 1 );
+	text-decoration-color: var(--accent2);
+}
+
+a:hover,
+a:active {
+	background: var(--accent2);
+	color: black;
+}
+
+h1 {
+	padding-left: 1rem;
 }
 
 div.emoji {
