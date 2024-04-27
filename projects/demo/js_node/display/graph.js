@@ -1,4 +1,4 @@
-import { calcDistance, camera, delta, fps, redraw } from "../index.js";
+import { calcDistance, camera, delta, fps, hideOptionsPane, redraw, showOptionsPane } from "../index.js";
 import { keyPressed } from "../keyboard.js";
 import Node from "./nodes.js";
 
@@ -68,6 +68,7 @@ export default class Graph {
 
 	disableEditing(){
 		this.canvas.ondblclick = () => {}
+		hideOptionsPane();
 	}
 	enableEditing(){
 		this.canvas.ondblclick = () => {
@@ -76,6 +77,7 @@ export default class Graph {
 				mouse.position.y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
 			);
 		}
+		showOptionsPane();
 	}
 
 	nodes = [];
@@ -112,7 +114,7 @@ export default class Graph {
 
 		context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-		// Render all edges before drawing nodes
+		// Sort from back to front
 		this.nodes = this.nodes.sort((node1, node2) => {
 			let biggestRadius = Math.max(node1.display.radius, node2.display.radius);
 			return (node2.display.y - biggestRadius) - (node1.display.y - biggestRadius)
@@ -158,32 +160,18 @@ export default class Graph {
 					let edgeDisplayX = this.canvas.width / 2 + (edge.display.x - camera.x) * camera.zoom;
 					let edgeDisplayY = this.canvas.height / 2 + (edge.display.y - camera.y) * camera.zoom;
 
-					context.beginPath();
-					context.lineWidth = camera.zoom;
-					context.strokeStyle = "black";
-					context.moveTo(nodeDisplayX, nodeDisplayY);
-					context.lineTo(edgeDisplayX, edgeDisplayY);
-					context.stroke();
-					context.closePath();
-
-					let dx = edge.display.x * camera.zoom - node.display.x * camera.zoom;
-					let dy = edge.display.y * camera.zoom - node.display.y * camera.zoom;
-
-					let angle = Math.atan(dx / dy) + Math.PI * (node.display.y > edge.display.y);
-
-					let offset = node.display.radius * camera.zoom;
-
-					let bulbX = nodeDisplayX + offset * Math.sin(angle);
-					let bulbY = nodeDisplayY + offset * Math.cos(angle);
-
-					context.beginPath();
-					context.fillStyle = "black";
-					context.arc(
-						bulbX, bulbY,
-						Math.abs(node.display.radius * camera.zoom) / 2, 0, Math.PI * 2
-					);
-					context.fill();
-					context.closePath();
+					let a = Math.max(node.lerp.radius, edge.lerp.radius);
+					let rgb = {
+						r: node.display.colour.r*a,
+						g: node.display.colour.g*a,
+						b: node.display.colour.b*a
+					};
+					if(a == edge.lerp.radius) {
+						rgb.r = edge.display.colour.r*a;
+						rgb.g = edge.display.colour.g*a;
+						rgb.b = edge.display.colour.b*a;
+					}
+					drawArrow(context, nodeDisplayX, nodeDisplayY, edgeDisplayX, edgeDisplayY, 0.5, rgb);
 
 				} );
 			}
@@ -201,6 +189,48 @@ export default class Graph {
 			context.fill();
 		}
 	}
+}
+
+
+function drawArrow(context, startX, startY, endX, endY, arrowPercentage, rgb={r:0,g:0,b:0}) {
+    var dx = endX - startX;
+    var dy = endY - startY;
+    var length = Math.sqrt(dx * dx + dy * dy);
+    var arrowLength = 5 * camera.zoom; // Constant arrow head size
+
+    // Calculate the angle
+    var angle = Math.atan2(dy, dx);
+
+    // Calculate the position of the arrow head
+    var arrowX = startX + (arrowPercentage+0.1) * dx;
+    var arrowY = startY + (arrowPercentage+0.1) * dy;
+
+    // Draw the line
+    context.beginPath();
+	context.strokeStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+	context.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    context.moveTo(startX, startY);
+    context.lineTo(endX, endY);
+    context.stroke();
+
+    // Draw the arrow head
+    context.beginPath();
+	context.strokeStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+	context.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    context.moveTo(
+		arrowX - arrowLength * Math.cos(angle - Math.PI / 6),
+		arrowY - arrowLength * Math.sin(angle - Math.PI / 6)
+	);
+    context.lineTo(
+		arrowX,
+		arrowY
+	);
+    context.lineTo(
+		arrowX - arrowLength * Math.cos(angle + Math.PI / 6),
+		arrowY - arrowLength * Math.sin(angle + Math.PI / 6)
+	);
+	context.stroke();
+    context.closePath();
 }
 
 function range(min, number, max){

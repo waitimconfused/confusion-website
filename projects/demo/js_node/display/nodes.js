@@ -77,7 +77,7 @@ export default class Node {
 
 		let displayX = globalGraph.canvas.width / 2 + (this.display.x - camera.x) * camera.zoom;
 		let displayY = globalGraph.canvas.height / 2 + (this.display.y - camera.y) * camera.zoom;
-		let radius = Math.abs(this.display.radius * camera.zoom) + lerp(0, 10, this.#lerp.radius);
+		let radius = Math.abs(this.display.radius * camera.zoom) + lerp(0, 10, this.lerp.radius);
 
 		let hovering = calcDistance({
 			x: displayX,
@@ -113,7 +113,7 @@ export default class Node {
 		return this;
 	}
 
-	#lerp = {
+	lerp = {
 		radius: 0,
 		textOffset: 0,
 		nothovered:0
@@ -161,24 +161,24 @@ export default class Node {
 		let mouseHovering = this.isHovering();
 
 		if(mouseHovering){
-			this.#lerp.radius += 10 * delta;
-			this.#lerp.textOffset += 10 * delta;
+			this.lerp.radius += 10 * delta;
+			this.lerp.textOffset += 10 * delta;
 			// this.#textOffset = Math.min(this.#textOffset + 100 * delta, 20);
 			globalGraph.canvas.style.cursor = "pointer";
 		}else{
-			this.#lerp.radius -= 10 * delta;
-			this.#lerp.textOffset -= 10 * delta;
+			this.lerp.radius -= 10 * delta;
+			this.lerp.textOffset -= 10 * delta;
 			// this.#textOffset = Math.max(this.#textOffset - 100 * delta, 10);
 		}
-		this.#lerp.radius = Math.max(Math.min(this.#lerp.radius, 1), 0);
-		this.#lerp.textOffset = Math.max(Math.min(this.#lerp.textOffset, 1), 0);
+		this.lerp.radius = Math.max(Math.min(this.lerp.radius, 1), 0);
+		this.lerp.textOffset = Math.max(Math.min(this.lerp.textOffset, 1), 0);
 
 		if(mouseHovering == false && globalGraph.hasHoveredNode == true){
-			this.#lerp.nothovered += 10 * delta;
+			this.lerp.nothovered += 10 * delta;
 		}else{
-			this.#lerp.nothovered -= 10 * delta;
+			this.lerp.nothovered -= 10 * delta;
 		}
-		this.#lerp.nothovered = Math.max(Math.min(this.#lerp.nothovered, 0.9), 0);
+		this.lerp.nothovered = Math.max(Math.min(this.lerp.nothovered, 0.9), 0);
 
 		if(mouseHovering && !this.isHovered) {
 			globalGraph.setHoveredNode(true, this);
@@ -201,19 +201,19 @@ export default class Node {
 		context.strokeStyle = "black";
 		context.fillStyle = "black";
 		context.beginPath();
-		context.arc(displayX, displayY, radius + lerp(0, 10, this.#lerp.radius) + 1, 0, Math.PI * 2);
+		context.arc(displayX, displayY, radius + lerp(0, 10, this.lerp.radius) + 1, 0, Math.PI * 2);
 		context.fill();
 
-		let r = lerp(bgColour.r, globalGraph.bg.r, this.#lerp.nothovered);
-		let g = lerp(bgColour.g, globalGraph.bg.g, this.#lerp.nothovered);
-		let b = lerp(bgColour.b, globalGraph.bg.b, this.#lerp.nothovered);
+		let r = lerp(bgColour.r, globalGraph.bg.r, this.lerp.nothovered);
+		let g = lerp(bgColour.g, globalGraph.bg.g, this.lerp.nothovered);
+		let b = lerp(bgColour.b, globalGraph.bg.b, this.lerp.nothovered);
 		context.fillStyle = `rgb(${r}, ${g}, ${b})`;
 		// context.fillStyle = `purple`;
 		context.lineWidth = 5;
 		context.shadowBlur = 0;
 		context.beginPath();
 		context.fillStyle = `rgb(${r}, ${g}, ${b})`;
-		context.arc(displayX, displayY, radius + lerp(0, 10, this.#lerp.radius), 0, Math.PI * 2);
+		context.arc(displayX, displayY, radius + lerp(0, 10, this.lerp.radius), 0, Math.PI * 2);
 		context.stroke();
 		context.fill();
 		context.closePath();
@@ -222,33 +222,33 @@ export default class Node {
 
 		// Title and Glyph
 		context.beginPath();
-		let t = Math.min(camera.zoom - 0.5, 1-this.#lerp.nothovered);
-		if(this.#lerp.radius > 0) t = this.#lerp.radius;
+		let t = camera.zoom - 0.75;
+		t = Math.min(t, 1-this.lerp.nothovered);
+		t = Math.max(t, this.lerp.radius);
+		// t = camera.zoom - 0.5;
 		let a = lerp(0, 1, t);
-		if(a > 0){
-			// Title
-			context.fillStyle = `rgba(255, 255, 255, ${a})`;
-			context.font = "15px 'JetBrains Mono'";
-			context.textBaseline = 'middle';
-			context.textAlign = 'center';
-			let textX = displayX;
-			let textY = displayY + radius + lerp(0, 10, this.#lerp.textOffset) + 10;
-			context.fillText(this.display.title, textX, textY);
-			context.closePath();
+		// Title
+		context.fillStyle = `rgba(255, 255, 255, ${a})`;
+		context.font = "15px 'JetBrains Mono'";
+		context.textBaseline = 'middle';
+		context.textAlign = 'center';
+		let textX = displayX;
+		let textY = displayY + radius + lerp(0, 10, this.lerp.textOffset) + 10;
+		context.fillText(this.display.title, textX, textY);
+		context.closePath();
 
-			// Glyph
-			context.beginPath();
-			context.shadowColor = `rgba(0, 0, 0, ${a})`;
-			context.strokeStyle = `rgba(0, 0, 0, ${a})`;
-			context.fillStyle = `rgba(255, 255, 255, ${a})`;
-			context.font = `bold ${this.display.radius * camera.zoom / 1.5 + lerp(0, 10, this.#lerp.radius)}px 'JetBrains Mono', 'Noto Emoji'`;
-			context.textBaseline = 'middle';
-			context.textAlign = 'center';
-			context.lineWidth = this.display.radius * camera.zoom / 10;
-			context.strokeText(this.display.glyph, displayX, displayY);
-			context.fillText(this.display.glyph, displayX, displayY);
-			context.closePath();
-		}
+		// Glyph
+		context.beginPath();
+		context.shadowColor = `rgba(0, 0, 0, ${a})`;
+		context.strokeStyle = `rgba(0, 0, 0, ${a})`;
+		context.fillStyle = `rgba(255, 255, 255, ${a})`;
+		context.font = `bold ${this.display.radius * camera.zoom / 1.5 + lerp(0, 10, this.lerp.radius)}px 'JetBrains Mono', 'Noto Emoji'`;
+		context.textBaseline = 'middle';
+		context.textAlign = 'center';
+		context.lineWidth = this.display.radius * camera.zoom / 10;
+		context.strokeText(this.display.glyph, displayX, displayY);
+		context.fillText(this.display.glyph, displayX, displayY);
+		context.closePath();
 
 		return this;
 	}

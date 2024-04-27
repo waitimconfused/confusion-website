@@ -1,5 +1,8 @@
 import Node from "./display/nodes.js";
 import { readFile } from "./files/index.js";
+import { globalGraph } from "./index.js";
+
+globalGraph.disableEditing();
 
 // const addNode = document.createElement("button");
 // addNode.innerText = "Create Node";
