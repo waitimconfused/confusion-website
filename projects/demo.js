@@ -1,7 +1,8 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectName = urlParams.get('project');
 
-const favicon = document.querySelector("head link[rel=icon]")
+const favicon = document.querySelector("head link[rel=icon]");
+const meta_themeColor = document.querySelector("head meta[name=theme-color]");
 
 let src = "/404.html";
 if(projectName) src = `./demo/${projectName}/`;
@@ -22,7 +23,6 @@ iframe.onload = () => {
 	document.title = iframeDoc.title;
 
 	let iframeFavicon = iframeDoc.querySelector("head link[rel=icon]");
-	console.dir(iframeFavicon);
 	if(iframeFavicon) {
 		if(iframeFavicon.href.startsWith("./")) {
 			iframeFavicon.href = `${iframe.src}/${iframeFavicon.href}`
@@ -30,6 +30,12 @@ iframe.onload = () => {
 		favicon.href = iframeFavicon.href;
 		favicon.type = iframeFavicon.type;
 	}
+
+	let iframeMetaThemeColor = iframeDoc.querySelector("head meta[name=theme-color]");
+	if(iframeMetaThemeColor) {
+		meta_themeColor.content = iframeMetaThemeColor.content
+	}
+
 	iframe.focus();
 	console.groupEnd();
 	console.group("Page: " + iframeDoc.location.pathname);

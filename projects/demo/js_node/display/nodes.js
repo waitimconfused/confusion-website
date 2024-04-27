@@ -40,6 +40,10 @@ export default class Node {
 		this.display.title = title || this.display.title;
 		return this;
 	}
+	setGlyph(glyph=this.display.glyph){
+		this.display.glyph = glyph;
+		return this;
+	}
 	setColour(colour=""){
 		if(colour.startsWith("#")){
 			let rgb = hexToRgb(colour);
@@ -52,6 +56,7 @@ export default class Node {
 			this.display.colour.g = rgbArray[2];
 			this.display.colour.b = rgbArray[3];
 		}
+		return this;
 	}
 	connectTo(node=new Node){
 		this.children.push(node);
@@ -72,7 +77,7 @@ export default class Node {
 
 		let displayX = globalGraph.canvas.width / 2 + (this.display.x - camera.x) * camera.zoom;
 		let displayY = globalGraph.canvas.height / 2 + (this.display.y - camera.y) * camera.zoom;
-		let radius = Math.abs(this.display.radius * camera.zoom);
+		let radius = Math.abs(this.display.radius * camera.zoom) + lerp(0, 10, this.#lerp.radius);
 
 		let hovering = calcDistance({
 			x: displayX,
@@ -91,7 +96,6 @@ export default class Node {
 		}
 
 		if(this.isClicked && keyPressed("control")){
-			// cameraTo(this.display.x, this.display.y);
 			cameraGlideTo(this);
 			this.isClicked = false;
 		}
@@ -106,17 +110,19 @@ export default class Node {
 
 	addEventListener(eventName, callback=function(){}){
 		if(eventName == "shiftClick") this.shiftClick = callback;
+		return this;
 	}
 
-	#lerpFrame = 0;
 	#lerp = {
 		radius: 0,
 		textOffset: 0,
+		nothovered:0
 	}
 
 	#value = "";
 	setValue(value=""){
 		this.#value = (value);
+		return this;
 	}
 	getValue(){
 		return (this.#value);
@@ -125,7 +131,6 @@ export default class Node {
 	script(){
 
 		if(this.isClicked){
-
 			this.moveTo(
 				mouse.position.x - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
 				mouse.position.y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
@@ -168,10 +173,17 @@ export default class Node {
 		this.#lerp.radius = Math.max(Math.min(this.#lerp.radius, 1), 0);
 		this.#lerp.textOffset = Math.max(Math.min(this.#lerp.textOffset, 1), 0);
 
+		if(mouseHovering == false && globalGraph.hasHoveredNode == true){
+			this.#lerp.nothovered += 10 * delta;
+		}else{
+			this.#lerp.nothovered -= 10 * delta;
+		}
+		this.#lerp.nothovered = Math.max(Math.min(this.#lerp.nothovered, 0.9), 0);
+
 		if(mouseHovering && !this.isHovered) {
-			globalGraph.setHoveredNode(true);
+			globalGraph.setHoveredNode(true, this);
 		}else if(!mouseHovering && this.isHovered && globalGraph.hasHoveredNode) {
-			globalGraph.setHoveredNode(false);
+			globalGraph.setHoveredNode(false, this);
 		}
 
 		this.isHovered = mouseHovering;
@@ -183,16 +195,7 @@ export default class Node {
 		let displayY = globalGraph.canvas.height / 2 + (this.display.y - camera.y) * camera.zoom;
 		let radius = Math.abs(this.display.radius * camera.zoom);
 
-		context.shadowColor = 'black';
-		context.strokeStyle = "black";
-		context.lineWidth = camera.zoom * 2;
-		context.shadowBlur = camera.zoom * 2;
-		context.beginPath();
-		context.arc(displayX, displayY, radius + lerp(0, 10, this.#lerp.radius), 0, Math.PI * 2);
-		context.stroke();
-		context.closePath();
-		
-		// Shadow
+		// Fill
 		context.shadowBlur = 0;
 		context.shadowColor = 'black';
 		context.strokeStyle = "black";
@@ -201,22 +204,29 @@ export default class Node {
 		context.arc(displayX, displayY, radius + lerp(0, 10, this.#lerp.radius) + 1, 0, Math.PI * 2);
 		context.fill();
 
+		let r = lerp(bgColour.r, globalGraph.bg.r, this.#lerp.nothovered);
+		let g = lerp(bgColour.g, globalGraph.bg.g, this.#lerp.nothovered);
+		let b = lerp(bgColour.b, globalGraph.bg.b, this.#lerp.nothovered);
+		context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+		// context.fillStyle = `purple`;
 		context.lineWidth = 5;
 		context.shadowBlur = 0;
-		context.fillStyle = `rgb(${bgColour.r}, ${bgColour.g}, ${bgColour.b})`;
-		if(globalGraph.hasHoveredNode && !this.isHovered){
-			context.fillStyle = "cyan";
-		}
-
+		context.beginPath();
+		context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+		context.arc(displayX, displayY, radius + lerp(0, 10, this.#lerp.radius), 0, Math.PI * 2);
+		context.stroke();
 		context.fill();
+		context.closePath();
 
 		context.closePath();
 
-		// Title
+		// Title and Glyph
 		context.beginPath();
-		let t = camera.zoom - 0.5;
+		let t = Math.min(camera.zoom - 0.5, 1-this.#lerp.nothovered);
+		if(this.#lerp.radius > 0) t = this.#lerp.radius;
 		let a = lerp(0, 1, t);
 		if(a > 0){
+			// Title
 			context.fillStyle = `rgba(255, 255, 255, ${a})`;
 			context.font = "15px 'JetBrains Mono'";
 			context.textBaseline = 'middle';
@@ -257,6 +267,7 @@ export default class Node {
 			node.parents.splice(indexOfThis, 1);
 		});
 		delete this;
+		return undefined;
 	}
 }
 

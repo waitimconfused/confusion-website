@@ -21,8 +21,15 @@ var escapePressed = false;
 graphUpdate();
 
 var optionsPane = new Pane({ title: 'Node Options' });
+export var optionsPaneVisibility = true;
 var focusedNode = null;
 var focusedNode_prev = null;
+
+var customScript = function(){}
+
+export function setCustomScript(callback=()=>{}){
+	customScript = callback;
+}
 
 function graphUpdate(){
 
@@ -47,7 +54,9 @@ function graphUpdate(){
 	fps = 1/delta;
 
 	cameraGlide();
-
+	if(customScript){
+		customScript();
+	}
 	globalGraph.render();
 	window.requestAnimationFrame(graphUpdate);
 	// setTimeout(graphUpdate, 1000 / 60);
@@ -119,19 +128,45 @@ window.addEventListener("gesturestart", (e) => e.preventDefault(), {passive: fal
 window.addEventListener("gesturechange", (e) => e.preventDefault(), {passive: false});
 window.addEventListener("gestureend", (e) => e.preventDefault(), {passive: false});
 
+let lastTouchX = null;
+let lastTouchY = null;
+document.ontouchstart = (e) => {
+	var touch = e.touches[0];
+	lastTouchX = touch.pageX;
+	lastTouchY = touch.pageY;
+}
+document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    var touch = e.touches[0];
+	if(globalGraph.hasHoveredNode == false){
+		cameraMoveby(
+			-(lastTouchX - touch.pageX),
+			-(lastTouchY - touch.pageY)
+		);
+	}else{
+		globalGraph.hoveredNode.moveTo(
+			touch.pageX - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
+			touch.pageY - globalGraph.canvas.height / 2 + camera.y * camera.zoom
+		);
+	}
+	lastTouchX = touch.pageX;
+	lastTouchY = touch.pageY;
+}, false);
+
 export function applyFocus(node){
 	focusedNode = node;
 }
 
-globalGraph.canvas.ondblclick = () => {
-	(new Node).moveTo(
-		mouse.position.x - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
-		mouse.position.y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
-	);
+export function showOptionsPane(){
+	optionsPaneVisibility = true;
 }
-
+export function hideOptionsPane(){
+	optionsPaneVisibility = false;
+	optionsPane?.dispose();
+}
 function veiwNode(node=new Node){
 
+	if(!optionsPaneVisibility) return;
 	optionsPane?.dispose();
 	optionsPane = new Pane({ title: 'Node Options' });
 

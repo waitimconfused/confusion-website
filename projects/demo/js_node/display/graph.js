@@ -49,8 +49,8 @@ export default class Graph {
 		this.canvas.style.userSelect = "none";
 		this.canvas.style.zIndex = -1;
 		window.onresize = () => {
-			this.canvas.width = window.innerWidth;
-			this.canvas.height = window.innerHeight;
+			this.canvas.width = document.documentElement.clientWidth;
+			this.canvas.height = document.documentElement.clientHeight;
 		}
 		window.onresize();
 	}
@@ -63,6 +63,18 @@ export default class Graph {
 			r: rgbArray[0],
 			g: rgbArray[1],
 			b: rgbArray[2]
+		}
+	}
+
+	disableEditing(){
+		this.canvas.ondblclick = () => {}
+	}
+	enableEditing(){
+		this.canvas.ondblclick = () => {
+			(new Node).moveTo(
+				mouse.position.x - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
+				mouse.position.y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
+			);
 		}
 	}
 
@@ -79,8 +91,11 @@ export default class Graph {
 		});
 	}
 
-	setHoveredNode(bool=false){
+	setHoveredNode(bool=false, node=new Node){
 		this.hasHoveredNode = bool;
+		if(bool){
+			this.hoveredNode = node;
+		}
 	}
 
 	render(){
@@ -232,16 +247,7 @@ function limitConnectedNodePosition(anchorNode=new Node, freeNode=new Node, dont
 	let dx = anchorNode.display.x - freeNode.display.x;
 	let dy = anchorNode.display.y - freeNode.display.y;
 
-	let anchorNode_RadianAngle = Math.atan(dx / dy) + Math.PI * (anchorNode.display.y > freeNode.display.y);
 	let freeNode_RadianAngle = Math.atan(dx / dy) + Math.PI * (freeNode.display.y > anchorNode.display.y);
-
-	// if(anchorNode.isClicked == false){
-	// 	let anchorNode_changeX = velocity * Math.sin(anchorNode_RadianAngle);
-	// 	let anchorNode_changeY = velocity * Math.cos(anchorNode_RadianAngle);
-
-	// 	anchorNode.display.x += anchorNode_changeX;
-	// 	anchorNode.display.y += anchorNode_changeY;
-	// }
 
 	if(freeNode.isClicked == false){
 		let freeNode_changeX = velocity * Math.sin(freeNode_RadianAngle);
@@ -273,7 +279,6 @@ function limitNodePosition(anchorNode=new Node, freeNode=new Node, dontMove=fals
 	let dx = anchorNode.display.x - freeNode.display.x;
 	let dy = anchorNode.display.y - freeNode.display.y;
 
-	let anchorNode_RadianAngle = Math.atan(dx / dy) + Math.PI * (anchorNode.display.y > freeNode.display.y);
 	let freeNode_RadianAngle = Math.atan(dx / dy) + Math.PI * (freeNode.display.y > anchorNode.display.y);
 
 	if(freeNode.isClicked == false){
@@ -307,8 +312,8 @@ function preventNodeOverlap(anchorNode=new Node, freeNode=new Node){
 		freeNode.display.x += changeX;
 		freeNode.display.y += changeY;
 
-		// anchorNode.display.x += changeX;
-		// anchorNode.display.y += changeY;
+		anchorNode.display.x -= changeX;
+		anchorNode.display.y -= changeY;
 
 		distance = calcDistance(anchorNode.display, freeNode.display);
 	}
