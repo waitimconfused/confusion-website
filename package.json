@@ -1,7 +1,7 @@
 {
     "type": "module",
     "scripts": {
-        "ast-host": "nodemon host.ast.js",
+        "ast-host": "node host.ast.js",
         "ast-install": "node install.ast.js"
     }
 }
