@@ -1,4 +1,4 @@
-import { globalGraph, calcDistance, camera, cameraTo, applyFocus, cameraGlideTo, delta, lerp, hexToRgb } from "../index.js";
+import { globalGraph, calcDistance, camera, applyFocus, cameraGlideTo, delta, lerp, hexToRgb, nodeTransitionSpeed } from "../index.js";
 import { keyPressed, mouse, setKey } from "../keyboard.js";
 import { getFileOptions } from "../files/options.js";
 import { nodeIsShiftClicked } from "./graph.js";
@@ -151,9 +151,10 @@ export default class Node {
 	}
 	hasSibling(node=new Node){
 		let isSibling = false;
-		this.parents.forEach((parent=new Node) => {
+		for(let parentIndex = 0; parentIndex < this.parents.length; parentIndex ++){
+			let parent = this.parents[parentIndex];
 			if(parent.hasChild(node)) isSibling = true;
-		});
+		}
 		return isSibling;
 	}
 	render(){
@@ -161,22 +162,25 @@ export default class Node {
 		let mouseHovering = this.isHovering();
 
 		if(mouseHovering){
-			this.lerp.radius += 10 * delta;
-			this.lerp.textOffset += 10 * delta;
+			this.lerp.radius += nodeTransitionSpeed * delta;
+			this.lerp.textOffset += nodeTransitionSpeed * delta;
 			// this.#textOffset = Math.min(this.#textOffset + 100 * delta, 20);
 			globalGraph.canvas.style.cursor = "pointer";
 		}else{
-			this.lerp.radius -= 10 * delta;
-			this.lerp.textOffset -= 10 * delta;
+			this.lerp.radius -= nodeTransitionSpeed * delta;
+			this.lerp.textOffset -= nodeTransitionSpeed * delta;
 			// this.#textOffset = Math.max(this.#textOffset - 100 * delta, 10);
 		}
 		this.lerp.radius = Math.max(Math.min(this.lerp.radius, 1), 0);
 		this.lerp.textOffset = Math.max(Math.min(this.lerp.textOffset, 1), 0);
 
 		if(mouseHovering == false && globalGraph.hasHoveredNode == true){
-			this.lerp.nothovered += 10 * delta;
+			this.lerp.nothovered += nodeTransitionSpeed * delta;
+			if(this.hasChild(globalGraph.hoveredNode) || this.hasParent(globalGraph.hoveredNode)){
+				this.lerp.nothovered = Math.min(this.lerp.nothovered, 0.1)
+			}
 		}else{
-			this.lerp.nothovered -= 10 * delta;
+			this.lerp.nothovered -= nodeTransitionSpeed * delta;
 		}
 		this.lerp.nothovered = Math.max(Math.min(this.lerp.nothovered, 0.9), 0);
 
@@ -222,7 +226,7 @@ export default class Node {
 
 		// Title and Glyph
 		context.beginPath();
-		let t = camera.zoom - 0.75;
+		let t = (camera.zoom - 1.5);
 		t = Math.min(t, 1-this.lerp.nothovered);
 		t = Math.max(t, this.lerp.radius);
 		// t = camera.zoom - 0.5;
@@ -256,16 +260,19 @@ export default class Node {
 		let indexOfThis = globalGraph.nodes.indexOf(this);
 		if(indexOfThis == -1) return undefined;
 		globalGraph.nodes.splice(indexOfThis, 1);
-		this.parents.forEach((node) => {
-			let indexOfThis = node.children.indexOf(this);
+
+		for(let parentIndex = 0; parentIndex < this.parents.length; parentIndex ++){
+			let parent = this.parents[parentIndex];
+			let indexOfThis = parent.children.indexOf(this);
+			if(indexOfThis == -1) continue;
+			parent.children.splice(indexOfThis, 1);
+		}
+		for(let childIndex = 0; childIndex < this.children.length; childIndex ++){
+			let child = this.children[childIndex];
+			let indexOfThis = child.parents.indexOf(this);
 			if(indexOfThis == -1) return undefined;
-			node.children.splice(indexOfThis, 1);
-		});
-		this.children.forEach((node) => {
-			let indexOfThis = node.parents.indexOf(this);
-			if(indexOfThis == -1) return undefined;
-			node.parents.splice(indexOfThis, 1);
-		});
+			child.parents.splice(indexOfThis, 1);
+		}
 		delete this;
 		return undefined;
 	}

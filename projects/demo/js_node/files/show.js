@@ -45,10 +45,12 @@ function reloadCode(source="", text=""){
 		code.style.backgroundSize = "contain";
 		code.style.backgroundRepeat = "no-repeat";
 	}else{
-		lines.forEach((line="") => {
+		for(let lineNumber = 0; lineNumber < lines.length; lineNumber ++){
+			let line = lines[lineNumber];
+
 			let codeLineElement = document.createElement("li");
 			codeLineElement.innerText = line;
 			code.appendChild(codeLineElement);
-		});
+		}
 	}
 }

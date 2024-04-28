@@ -88,9 +88,10 @@ export default class Graph {
 	}
 
 	tryClick(){
-		this.nodes.forEach( (node=new Node) => {
+		for(let nodeIndex = 0; nodeIndex < this.nodes.length; nodeIndex ++){
+			let node = this.nodes[nodeIndex];
 			node.click();
-		});
+		}
 	}
 
 	setHoveredNode(bool=false, node=new Node){
@@ -119,13 +120,15 @@ export default class Graph {
 			let biggestRadius = Math.max(node1.display.radius, node2.display.radius);
 			return (node2.display.y - biggestRadius) - (node1.display.y - biggestRadius)
 		});
-		this.nodes.forEach( (node=new Node) => {
-
+		for(let nodeIndex = 0; nodeIndex < this.nodes.length; nodeIndex ++){
+			let node = this.nodes[nodeIndex];
 			if(redraw){
 				centralForce(node);
 			}
 
-			this.nodes.forEach( (otherNode=(new Node)) => {
+			for(let otherNodeIndex = 0; otherNodeIndex < this.nodes.length; otherNodeIndex ++){
+				if(otherNodeIndex == nodeIndex) continue
+				let otherNode = this.nodes[otherNodeIndex];
 				node.script();
 				preventNodeOverlap(node, otherNode);
 
@@ -133,54 +136,52 @@ export default class Graph {
 					limitNodePosition(node, otherNode);
 					limitNodePosition(otherNode, node);
 				}
-			} );
-
-			if(node.children.length > 0){
-				node.children.forEach( (edge=(new Node).edges[0]) => {
-					if(redraw){
-						limitConnectedNodePosition(node, edge);
-						limitConnectedNodePosition(edge, node);
-					}
-				});
 			}
 
-		} );
-		this.nodes.forEach( (node=new Node) => {
-
-			if(node.children.length > 0){
-				
-				node.children.forEach( (edge=(new Node).edges[0]) => {
-
-					if(calcDistance(node.display, edge.display) > node.size * 10) return undefined;
-
-
-					let nodeDisplayX = this.canvas.width / 2 + (node.display.x - camera.x) * camera.zoom;
-					let nodeDisplayY = this.canvas.height / 2 + (node.display.y - camera.y) * camera.zoom;
-
-					let edgeDisplayX = this.canvas.width / 2 + (edge.display.x - camera.x) * camera.zoom;
-					let edgeDisplayY = this.canvas.height / 2 + (edge.display.y - camera.y) * camera.zoom;
-
-					let a = Math.max(node.lerp.radius, edge.lerp.radius);
-					let rgb = {
-						r: node.display.colour.r*a,
-						g: node.display.colour.g*a,
-						b: node.display.colour.b*a
-					};
-					if(a == edge.lerp.radius) {
-						rgb.r = edge.display.colour.r*a;
-						rgb.g = edge.display.colour.g*a;
-						rgb.b = edge.display.colour.b*a;
-					}
-					drawArrow(context, nodeDisplayX, nodeDisplayY, edgeDisplayX, edgeDisplayY, 0.5, rgb);
-
-				} );
+			if(redraw && node.children.length > 0){
+				for(let childIndex = 0; childIndex < node.children.length; childIndex ++){
+					let child = node.children[childIndex];
+					limitConnectedNodePosition(node, child);
+					limitConnectedNodePosition(child, node);
+				}
 			}
+		}
 
-		} );
+		for(let nodeIndex = 0; nodeIndex < this.nodes.length; nodeIndex++){
+			let node = this.nodes[nodeIndex];
 
-		this.nodes.forEach( (node=new Node) => {
+			for(let childIndex = 0; childIndex < node.children.length; childIndex ++){
+				let child = node.children[childIndex];
+
+				if(calcDistance(node.display, child.display) > node.size * 10) continue;
+
+
+				let nodeDisplayX = this.canvas.width / 2 + (node.display.x - camera.x) * camera.zoom;
+				let nodeDisplayY = this.canvas.height / 2 + (node.display.y - camera.y) * camera.zoom;
+
+				let childDisplayX = this.canvas.width / 2 + (child.display.x - camera.x) * camera.zoom;
+				let childDisplayY = this.canvas.height / 2 + (child.display.y - camera.y) * camera.zoom;
+
+				let a = Math.max(node.lerp.radius, child.lerp.radius);
+				let rgb = {
+					r: node.display.colour.r*a,
+					g: node.display.colour.g*a,
+					b: node.display.colour.b*a
+				};
+				if(a == child.lerp.radius) {
+					rgb.r = child.display.colour.r*a;
+					rgb.g = child.display.colour.g*a;
+					rgb.b = child.display.colour.b*a;
+				}
+				drawArrow(context, nodeDisplayX, nodeDisplayY, childDisplayX, childDisplayY, 0.5, rgb);
+			}
+		}
+
+		for(let nodeIndex = 0; nodeIndex < this.nodes.length; nodeIndex++){
+			let node = this.nodes[nodeIndex];
+
 			node.render();
-		} );
+		}
 		
 		if(redraw == false){
 			context.fillStyle = "white";
@@ -207,6 +208,7 @@ function drawArrow(context, startX, startY, endX, endY, arrowPercentage, rgb={r:
 
     // Draw the line
     context.beginPath();
+	context.lineCap = "round";
 	context.strokeStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 	context.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
     context.moveTo(startX, startY);
@@ -215,6 +217,7 @@ function drawArrow(context, startX, startY, endX, endY, arrowPercentage, rgb={r:
 
     // Draw the arrow head
     context.beginPath();
+	context.lineCap = "round";
 	context.strokeStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 	context.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
     context.moveTo(

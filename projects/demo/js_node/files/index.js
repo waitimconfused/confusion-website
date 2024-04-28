@@ -5,6 +5,10 @@ import Node from "../display/nodes.js";
 var readFiles = [];
 var readFileNodes = [];
 
+function delay(ms=1000) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export async function readFile(fileName="", nodeConnector){
 
 	if(readFileNodes.length > 10) return;
@@ -23,9 +27,6 @@ export async function readFile(fileName="", nodeConnector){
 
 	var fileNode = new Node(fileID, globalGraph);
 	fileNode.setValue(fileName);
-	fileNode.addEventListener("shiftClick", (node) => {
-		window.location = `./files/?path=${btoa(fileName)}`
-	});
 	readFiles.push(fileID);
 	readFileNodes.push(fileNode);
 
@@ -52,13 +53,15 @@ export async function readFile(fileName="", nodeConnector){
 	let linkRegex = options?.links;
 	let fileImportIndex = options?.linkPathIndex || 0;
 
-	linkRegex?.forEach((regex=new RegExp) => {
+	for(let linkRegexIndex = 0; linkRegexIndex < (linkRegex.length || 0); linkRegexIndex ++){
+		let regex = linkRegex[linkRegexIndex];
 		let imports = getRegexGroups(regex, fileContents);
 
-		imports.forEach((importFile=["fullstring", "group1", "filename"]) => {
+		for(let importIndex = 0; importIndex < imports.length; importIndex ++){
+			let importFile = imports[importIndex];
 			readFile(moveDirectory(fileName, importFile.at(fileImportIndex+1)), fileNode);
-		});
-	})
+		}
+	}
 }
 
 export function moveDirectory(oldDir="", appendDir=""){

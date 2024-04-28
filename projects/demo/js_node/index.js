@@ -14,6 +14,7 @@ export const initalCameraZoom = structuredClone(camera.zoom);
 var lastCalledTime = 0;
 export var fps = 0;
 export var delta;
+export var nodeTransitionSpeed = 5;
 
 export var redraw = true;
 var escapePressed = false;
@@ -52,6 +53,7 @@ function graphUpdate(){
 	delta = (Date.now() - lastCalledTime)/1000;
 	lastCalledTime = Date.now();
 	fps = 1/delta;
+
 	
 	camera.zoom = Math.max(camera.zoom, 0.1);
 
@@ -94,10 +96,12 @@ function cameraGlide(){
 		glideTo = null;
 		return;
 	}
+
+	let speedMultiplier = 5 * delta * camera.zoom;
 	
 	cameraMoveby(
-		distanceX * 10 * delta,
-		distanceY * 10 * delta
+		distanceX * speedMultiplier,
+		distanceY * speedMultiplier
 	)
 
 }
@@ -221,10 +225,14 @@ function veiwNode(node=new Node){
 
 	let options = structuredClone(node.display);
 
-	Object.keys(options).forEach((item) => {
-		if(typeof options[item] == "function") return;
-		if(typeof options[item] == "object") return;
-		if(item == "x" || item == "y") return;
+	let optionKeys = Object.keys(options);
+
+	for(let optionIndex = 0; optionIndex < optionKeys.length; optionIndex ++){
+		let item = optionKeys[optionIndex];
+
+		if(typeof options[item] == "function") continue;
+		if(typeof options[item] == "object") continue;
+		if(item == "x" || item == "y") continue;
 
 		let title = `${item}`;
 		title = title.replaceAll("_", " ");
@@ -234,7 +242,7 @@ function veiwNode(node=new Node){
 		title = title.join(" ");
 
 		optionsPane.addBinding(options, item, { label: title });
-	});
+	}
 
 	optionsPane.addBlade({
 		view: 'separator',
