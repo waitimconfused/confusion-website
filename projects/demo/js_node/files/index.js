@@ -2,7 +2,7 @@ import { globalGraph, getRegexGroups } from "../index.js";
 import { getFileOptions } from "./options.js";
 import Node from "../display/nodes.js";
 import { showFile } from "./show.js";
-import { setKey } from "../keyboard.js";
+import { keyboard } from "../../toolkit/keyboard.js";
 
 var readFiles = [];
 var readFileNodes = [];
@@ -23,7 +23,7 @@ export async function readFile(fileName="", nodeConnector){
 
 	var fileNode = new Node(fileID);
 	fileNode.addEventListener("shiftclick", () => {
-		setKey("shift", false);
+		keyboard.setKey("shift", false);
 		showFile(fileNode.display.title);
 	});
 	if(fileName.match(/\..+$/g)?.length > 0){
@@ -94,10 +94,10 @@ export function moveDirectory(oldDir="", appendDir=""){
 
 	if(returnedDir.startsWith(".") == false && appendDir.startsWith("/") == false) returnedDir = "." + returnedDir;
 
-	console.log({
-		current: oldDir,
-		append: appendDir,
-		result: returnedDir
-	});
+	// console.log({
+	// 	current: oldDir,
+	// 	append: appendDir,
+	// 	result: returnedDir
+	// });
 	return returnedDir;
 }

@@ -1,13 +1,14 @@
 import { hideOptionsPane, globalGraph, camera } from "./demo/js_node/index.js";
 import Node from "./demo/js_node/display/nodes.js";
-import { readFile } from "./demo/js_node/files/index.js";
 
 hideOptionsPane();
 
-// globalGraph.disableEditing();
+globalGraph.disableEditing();
 globalGraph.setBG("#151515");
 globalGraph.setSize(500, 500);
-camera.setDefaultZoom(1);
+globalGraph.styles.text.minimumZoom = 0.5;
+globalGraph.styles.line.size = 4;
+camera.setDefaultZoom(1.5);
 globalGraph.setLineColour("#232323");
 
 let homepage = (new Node)
@@ -17,12 +18,12 @@ let homepage = (new Node)
 	.moveTo(0, 0);
 
 let projectView = (new Node)
-	.setTitle("Project Viewer")
+	.setTitle("View")
 	.setGlyph("👁️")
 	.setColour("#FFB3B3");
 
 let projectDemo = (new Node)
-	.setTitle("Project Demos")
+	.setTitle("Demo")
 	.setGlyph("🪀")
 	.setColour("#FFB3B3");
 
@@ -30,11 +31,15 @@ let response = await fetch('https://api.github.com/repos/Dev-384/confusion-websi
 let json = await response.json();
 let projects = json.map(file => file.name);
 
-projects.forEach((project) => {
+projects.forEach((project="") => {
+	let projectName = project.replace(/\.\w+?$/, "");
 	let viewNode = new Node;
-	viewNode.setTitle("view:"+project);
+	viewNode.setTitle(projectName);
 	viewNode.setColour("#E06767");
 	viewNode.setGlyph("📁");
+	viewNode.addEventListener("dblclick", () => {
+		window.open(`/projects/view?project=${projectName}`)
+	})
 	projectView.connectTo(viewNode);
 
 });

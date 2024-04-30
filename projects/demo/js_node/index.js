@@ -1,6 +1,6 @@
 import Graph from "./display/graph.js";
 import Node from "./display/nodes.js";
-import { keyPressed, mouse } from "./keyboard.js";
+import { keyboard, mouse } from "../toolkit/keyboard.js";
 import { Pane } from 'https://cdn.skypack.dev/tweakpane';
 
 export var globalGraph = new Graph;
@@ -33,18 +33,41 @@ var focusedNode_prev = null;
 
 var customScript = function(){}
 
+keyboard.setScript((e) => {
+	let key = e.key.toLowerCase();
+
+	if(globalGraph.canvas.matches(':hover') == false) return;
+
+	if(e.type == "keydown") {
+		if(key == "escape"){
+			redraw = !redraw;
+		}
+		if(e.ctrlKey == false) return;
+
+		if(key == "+" || key == "=") {
+			e.preventDefault();
+			changeZoom(camera.zoom / 10);
+		}else if(key == "-" || e.key == "_") {
+			e.preventDefault();
+			changeZoom(camera.zoom / -10);
+		}else if(key == "0") {
+			e.preventDefault();
+			setZoom(initalCameraZoom);
+			cameraTo(0, 0);
+		}
+	}
+});
+mouse.setScript((e) => {
+	if(e.type != "mousedown") return;
+	
+	if(e.target == globalGraph.canvas) globalGraph.tryClick();
+});
+
 export function setCustomScript(callback=()=>{}){
 	customScript = callback;
 }
 
 function graphUpdate(){
-
-	if(escapePressed == true && !keyPressed("escape")){
-		escapePressed = false;
-	}else if(escapePressed == false && keyPressed("escape")){
-		redraw = !redraw;
-		escapePressed = true;
-	}
 	
 	if(focusedNode != focusedNode_prev && focusedNode != null) {
 		veiwNode(focusedNode);
@@ -67,8 +90,10 @@ function graphUpdate(){
 		customScript();
 	}
 	globalGraph.render();
-	setTimeout(graphUpdate, 1000 / 60);
-	// setTimeout(graphUpdate, 1000 / 60);
+	setTimeout(() => {
+		window.requestAnimationFrame(graphUpdate);
+	}, 1000 / 60);
+	// alert(delta);
 }
 
 export function changeZoom(factor=0){
@@ -124,8 +149,8 @@ export function getRegexGroups(regex=new RegExp(), string=""){
 window.addEventListener('wheel', (e) => {
 
 	if (e.ctrlKey) {
-		e.preventDefault();
 		if(e.target != globalGraph.canvas) return undefined;
+		e.preventDefault();
 		camera.zoom -= e.deltaY * 0.01;
 	} else {
 		if(e.target != globalGraph.canvas) return undefined;

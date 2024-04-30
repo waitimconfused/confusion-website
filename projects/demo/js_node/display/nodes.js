@@ -1,6 +1,5 @@
 import { globalGraph, calcDistance, camera, applyFocus, cameraGlideTo, delta, lerp, hexToRgb, nodeTransitionSpeed } from "../index.js";
-import { keyPressed, mouse, setKey } from "../keyboard.js";
-import { getFileOptions } from "../files/options.js";
+import { keyboard, mouse } from "../../toolkit/keyboard.js";
 import { nodeIsShiftClicked } from "./graph.js";
 
 export default class Node {
@@ -40,6 +39,9 @@ export default class Node {
 			(Math.random() * globalGraph.canvas.width / 2 - globalGraph.canvas.width / 4),
 			(Math.random() * globalGraph.canvas.height / 2 - globalGraph.canvas.height / 4)
 		);
+		this.events.shiftclick = function(){
+			nodeIsShiftClicked(this);
+		};
 		return this;
 	}
 	setTitle(title=this.display.title){
@@ -123,37 +125,50 @@ export default class Node {
 		let hovering = calcDistance({
 			x: displayX,
 			y: displayY
-		}, {
-			x: mouse.position.x,
-			y: mouse.position.y
-		}) < radius;
+		}, mouse.position.relative(globalGraph.canvas)) < radius;
 
 		return hovering;
 	}
-	click(){
+	click(type="single"){
 
+		let returnValue = false;
 
-		if(mouse.click_l == true && this.isClicked == false){
-			this.isClicked = this.isHovering();
-			if(this.isClicked) applyFocus(this);
+		if(type == "single"){
+			if(mouse.click_l == true && this.isClicked == false){
+				this.isClicked = this.isHovering();
+				if(this.isClicked) applyFocus(this);
+			}
+	
+			if(this.isClicked && keyboard.isPressed("control")){
+				cameraGlideTo(this);
+				this.isClicked = false;
+				keyboard.setKey("control", false);
+				mouse.click_l = false;
+			}
+			if(this.isClicked && keyboard.isPressed("shift")){
+				this.events.shiftclick();
+				this.isClicked = false;
+				keyboard.setKey("shift", false);
+				mouse.click_l = false;
+			}
+			returnValue = this.isClicked;
+		}else if(type == "double"){
+			if(this.isHovering()){
+				this.events.dblclick();
+				returnValue = true;
+			}
 		}
-
-		if(this.isClicked && keyPressed("control")){
-			cameraGlideTo(this);
-			this.isClicked = false;
-		}
-		if(this.isClicked && keyPressed("shift")){
-			this.shiftClick();
-			this.isClicked = false;
-		}
-		return this;
+		return returnValue;
 	}
-	shiftClick = function(){
-		nodeIsShiftClicked(this);
+	events = {
+		shiftclick: function(){},
+		click: function(){},
+		dblclick: function(){},
 	}
 
 	addEventListener(eventName="", callback=function(){}){
-		if(eventName.toLowerCase() == "shiftclick") this.shiftClick = callback;
+		eventName = eventName.toLowerCase();
+		this.events[eventName] = callback;
 		return this;
 	}
 
@@ -176,8 +191,8 @@ export default class Node {
 
 		if(this.isClicked){
 			this.moveTo(
-				mouse.position.x - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
-				mouse.position.y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
+				mouse.position.relative(globalGraph.canvas).x - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
+				mouse.position.relative(globalGraph.canvas).y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
 			);
 			applyFocus(this);
 
@@ -274,7 +289,7 @@ export default class Node {
 
 		// Title and Glyph
 		context.beginPath();
-		let t = (camera.zoom - 1.5);
+		let t = (camera.zoom - globalGraph.styles.text.minimumZoom / 2);
 		t = Math.min(t, 1-this.lerp.nothovered);
 		t = Math.max(t, this.lerp.radius);
 		// t = camera.zoom - 0.5;

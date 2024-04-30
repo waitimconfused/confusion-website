@@ -1,5 +1,5 @@
-import { calcDistance, camera, delta, fps, hexToRgb, hideOptionsPane, lerp, redraw, showOptionsPane } from "../index.js";
-import { keyPressed, mouse } from "../keyboard.js";
+import { calcDistance, camera, delta, fps, globalGraph, hexToRgb, hideOptionsPane, lerp, redraw, showOptionsPane } from "../index.js";
+import { keyboard, mouse } from "../../toolkit/keyboard.js";
 import Node from "./nodes.js";
 
 var shiftClickedNode1 = null;
@@ -24,8 +24,11 @@ export default class Graph {
 	styles = {
 		size: { width: "100%", height: "100%" },
 		bg: { r: 35, g: 35, b: 35, },
-		line: { r: 0, g: 0, b: 0, },
-		tags: {}
+		line: { r: 0, g: 0, b: 0, size: 5 },
+		tags: {},
+		text: {
+			minimumZoom: 1.5
+		}
 	}
 
 	#nodeData = {};
@@ -44,6 +47,7 @@ export default class Graph {
 			this.styles.bg.g = rgbArray[2];
 			this.styles.bg.b = rgbArray[3];
 		}
+		this.canvas.style.backgroundColor = `rgb(${this.styles.bg.r}, ${this.styles.bg.g}, ${this.styles.bg.b})`;
 	}
 	setLineColour(colour=""){
 		if(colour.startsWith("#")){
@@ -79,6 +83,7 @@ export default class Graph {
 		this.canvas.style.position = "fixed";
 		this.canvas.style.userSelect = "none";
 		this.canvas.style.zIndex = -1;
+		this.canvas.style.backgroundColor = `rgb(${this.styles.bg.r}, ${this.styles.bg.g}, ${this.styles.bg.b})`;
 		window.onresize = () => {
 			let width = this.styles.size.width;
 			let height = this.styles.size.height;
@@ -109,38 +114,51 @@ export default class Graph {
 	}
 
 	disableEditing(){
-		this.canvas.ondblclick = () => {}
+		this.canvas.ondblclick = () => {
+			for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex ++){
+				let nodeToken = this.nodeIndexes[nodeIndex];
+				let node = this.#nodeData[nodeToken];
+				node.click("double");
+			}
+		}
 		hideOptionsPane();
 	}
 	enableEditing(){
 		this.canvas.ondblclick = () => {
-			(new Node).moveTo(
-				mouse.position.x - this.canvas.width / 2 + camera.x * camera.zoom,
-				mouse.position.y - this.canvas.height / 2 + camera.y * camera.zoom
+			let nodeDoubleClick = false;
+			for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex ++){
+				let nodeToken = this.nodeIndexes[nodeIndex];
+				let node = this.#nodeData[nodeToken];
+				if(node.click("double")) nodeDoubleClick = true;
+			}
+			if(!nodeDoubleClick) (new Node).moveTo(
+				mouse.position.relative(this.canvas).x - this.canvas.width / 2 + camera.x * camera.zoom,
+				mouse.position.relative(this.canvas).y - this.canvas.height / 2 + camera.y * camera.zoom
 			);
 		}
 		showOptionsPane();
 	}
 
 	addNode(node=new Node){
+		if(node instanceof Node == false) throw new Error("`graph.addNode()` Must be called with a Node");
 		this.#nodeData[node.token] = node;
 		this.nodeIndexes = Object.keys(this.#nodeData);
 	}
 	removeNode(node=new Node){
+		if(node instanceof Node == false) throw new Error("`graph.removeNode()` Must be called with a Node");
 		if(node.token in this.#nodeData) delete this.#nodeData[node.token];
 		else throw Error("Could not find Node with token: "+node.token);
 		this.nodeIndexes = Object.keys(this.#nodeData);
 	}
 
 	getNode(token="") {
+		if(token in this.#nodeData == false) throw new Error(`Failed to get Node with token: "${token}"`);
 		return this.#nodeData[token];
 	}
 
 	tryClick(){
-		console.log("trying to press nodes...");
 		for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex ++){
 			let nodeToken = this.nodeIndexes[nodeIndex];
-			console.log(" - "+nodeToken);
 			let node = this.#nodeData[nodeToken];
 			node.click();
 		}
@@ -156,9 +174,14 @@ export default class Graph {
 	render(){
 
 		this.canvas.style.cursor = "default";
-		this.canvas.style.backgroundColor = `rgb(${this.styles.bg.r}, ${this.styles.bg.g}, ${this.styles.bg.b})`;
+		let bg = this.canvas.style.backgroundColor.split(/rgb\((\d*),? ?(\d*),? ?(\d*),? ?(\d*)\)/gm);
+		this.styles.bg.r = bg[1];
+		this.styles.bg.g = bg[2];
+		this.styles.bg.b = bg[3];
+		this.canvas.width = this.canvas.offsetWidth;
+		this.canvas.height = this.canvas.offsetHeight;
 
-		if(shiftClickedNode1 && !keyPressed("shift")) {
+		if(shiftClickedNode1 && !keyboard.isPressed("shift")) {
 			shiftClickedNode1 = null;
 			shiftClickedNode2 = null;
 		}
@@ -204,6 +227,7 @@ export default class Graph {
 			}
 		}
 
+		let linesOntop = [];
 		for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex++){
 			let nodeToken = this.nodeIndexes[nodeIndex];
 			let node = this.#nodeData[nodeToken];
@@ -222,21 +246,46 @@ export default class Graph {
 				let childDisplayY = this.canvas.height / 2 + (child.display.y - camera.y) * camera.zoom;
 
 				let a = Math.max(node.lerp.radius, child.lerp.radius);
-				let nodeColour = node.getStyling().background;
-				let lineColour = this.styles.line;
-				let rgb = {
-					r: lerp(lineColour.r, nodeColour.r, a),
-					g: lerp(lineColour.g, nodeColour.g, a),
-					b: lerp(lineColour.b, nodeColour.b, a)
-				};
-				if(a == child.lerp.radius) {
-					let nodeColour = child.getStyling().background;
-					rgb.r = lerp(lineColour.r, nodeColour.r, a);
-					rgb.g = lerp(lineColour.g, nodeColour.g, a);
-					rgb.b = lerp(lineColour.b, nodeColour.b, a);
+				if(a > 0){
+					linesOntop.push({
+						parent: nodeToken,
+						child: childToken
+					});
+					continue;
 				}
-				drawArrow(context, nodeDisplayX, nodeDisplayY, childDisplayX, childDisplayY, 0.5, rgb);
+				let lineColour = this.styles.line;
+				drawArrow(context, nodeDisplayX, nodeDisplayY, childDisplayX, childDisplayY, 0.5, lineColour);
 			}
+		}
+
+		for(let lineIndex = 0; lineIndex < linesOntop.length; lineIndex ++){
+			let line = linesOntop[lineIndex];
+			let parentToken = line.parent;
+			let childToken = line.child;
+			let parent = this.getNode(parentToken);
+			let child = this.getNode(childToken);
+
+			let nodeDisplayX = this.canvas.width / 2 + (parent.display.x - camera.x) * camera.zoom;
+			let nodeDisplayY = this.canvas.height / 2 + (parent.display.y - camera.y) * camera.zoom;
+
+			let childDisplayX = this.canvas.width / 2 + (child.display.x - camera.x) * camera.zoom;
+			let childDisplayY = this.canvas.height / 2 + (child.display.y - camera.y) * camera.zoom;
+
+			let a = Math.max(parent.lerp.radius, child.lerp.radius);
+			let parentColour = parent.getStyling().background;
+			let lineColour = this.styles.line;
+			let rgb = {
+				r: lerp(lineColour.r, parentColour.r, a),
+				g: lerp(lineColour.g, parentColour.g, a),
+				b: lerp(lineColour.b, parentColour.b, a)
+			};
+			if(a == child.lerp.radius) {
+				let childColour = child.getStyling().background;
+				rgb.r = lerp(lineColour.r, childColour.r, a);
+				rgb.g = lerp(lineColour.g, childColour.g, a);
+				rgb.b = lerp(lineColour.b, childColour.b, a);
+			}
+			drawArrow(context, nodeDisplayX, nodeDisplayY, childDisplayX, childDisplayY, 0.5, rgb);
 		}
 
 		for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex++){
@@ -262,11 +311,11 @@ export default class Graph {
 }
 
 
-function drawArrow(context, startX, startY, endX, endY, arrowPercentage, rgb={r:0,g:0,b:0}) {
+function drawArrow(context=new CanvasRenderingContext2D, startX=0, startY=0, endX=0, endY=0, arrowPercentage=1, rgb={r:0,g:0,b:0}) {
     var dx = endX - startX;
     var dy = endY - startY;
     var length = Math.sqrt(dx * dx + dy * dy);
-    var arrowLength = 5 * camera.zoom; // Constant arrow head size
+    var arrowLength = globalGraph.styles.line.size * 5 * camera.zoom; // Constant arrow head size
 
     // Calculate the angle
     var angle = Math.atan2(dy, dx);
@@ -278,6 +327,7 @@ function drawArrow(context, startX, startY, endX, endY, arrowPercentage, rgb={r:
     // Draw the line
     context.beginPath();
 	context.lineCap = "round";
+	context.lineWidth = globalGraph.styles.line.size * camera.zoom;
 	context.strokeStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 	context.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
     context.moveTo(startX, startY);
@@ -287,6 +337,7 @@ function drawArrow(context, startX, startY, endX, endY, arrowPercentage, rgb={r:
     // Draw the arrow head
     context.beginPath();
 	context.lineCap = "round";
+	context.lineWidth = globalGraph.styles.line.size * camera.zoom;
 	context.strokeStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 	context.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
     context.moveTo(
