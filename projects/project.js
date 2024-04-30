@@ -1,4 +1,4 @@
-import { hideOptionsPane, globalGraph } from "./demo/js_node/index.js";
+import { hideOptionsPane, globalGraph, setCustomScript } from "./demo/js_node/index.js";
 import Node from "./demo/js_node/display/nodes.js";
 import { readFile } from "./demo/js_node/files/index.js";
 
@@ -22,15 +22,17 @@ let projectDemo = (new Node)
 	.setGlyph("🪀")
 	.setColour("#00FF00");
 
-let projects = ["AAA", "BBB", "CCC"];
+let response = await fetch('https://api.github.com/repos/Dev-384/confusion-website/contents/projects/markdown');
+let json = await response.json();
+let projects = json.map(file => file.name);
 
 projects.forEach((project) => {
 	let viewNode = new Node;
-	let demoNode = new Node;
+	// let demoNode = new Node;
 	viewNode.setTitle("view:"+project+".md");
-	demoNode.setTitle("demo:"+project+"/");
+	// demoNode.setTitle("demo:"+project+"/");
 	projectView.connectTo(viewNode);
-	projectDemo.connectTo(demoNode);
+	// projectDemo.connectTo(demoNode);
 
 });
 

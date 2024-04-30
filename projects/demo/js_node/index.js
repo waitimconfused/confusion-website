@@ -1,8 +1,9 @@
 import Graph from "./display/graph.js";
 import Node from "./display/nodes.js";
-export var globalGraph = new Graph;
 import { keyPressed, mouse } from "./keyboard.js";
 import { Pane } from 'https://cdn.skypack.dev/tweakpane';
+
+export var globalGraph = new Graph;
 
 export var camera = {
 	zoom: 3,
@@ -41,7 +42,7 @@ function graphUpdate(){
 		escapePressed = true;
 	}
 	
-	if(focusedNode !== focusedNode_prev && focusedNode !== null) {
+	if(focusedNode != focusedNode_prev && focusedNode != null) {
 		veiwNode(focusedNode);
 	}
 	focusedNode_prev = focusedNode;
@@ -62,7 +63,7 @@ function graphUpdate(){
 		customScript();
 	}
 	globalGraph.render();
-	window.requestAnimationFrame(graphUpdate);
+	setTimeout(graphUpdate, 1000 / 60);
 	// setTimeout(graphUpdate, 1000 / 60);
 }
 
@@ -120,10 +121,10 @@ window.addEventListener('wheel', (e) => {
 
 	if (e.ctrlKey) {
 		e.preventDefault();
-		if(e.target !== globalGraph.canvas) return undefined;
+		if(e.target != globalGraph.canvas) return undefined;
 		camera.zoom -= e.deltaY * 0.01;
 	} else {
-		if(e.target !== globalGraph.canvas) return undefined;
+		if(e.target != globalGraph.canvas) return undefined;
 		e.preventDefault();
 		cameraMoveby(-e.deltaX, -e.deltaY);
 	}
@@ -213,15 +214,15 @@ export function showOptionsPane(){
 }
 export function hideOptionsPane(){
 	optionsPaneVisibility = false;
-	optionsPane?.dispose();
+	if(optionsPane.containerElem_ != null) optionsPane?.dispose();
 }
 function veiwNode(node=new Node){
 
 	if(!optionsPaneVisibility) return;
-	optionsPane?.dispose();
+	if(optionsPane.containerElem_ != null) optionsPane?.dispose();
 	optionsPane = new Pane({ title: 'Node Options' });
 
-	if(!node) return;
+	if(!node) throw Error("The `viewNode` function was called without parameter: Node");
 
 	let options = structuredClone(node.display);
 
@@ -263,7 +264,8 @@ function veiwNode(node=new Node){
 		title: 'Remove Node'
 	}).on('click', () => {
 		node.remove();
-		veiwNode(node);
+		if(optionsPane.containerElem_ != null) optionsPane?.dispose();
+		console.log(globalGraph);
 	});
 }
 

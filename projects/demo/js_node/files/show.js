@@ -3,7 +3,7 @@ import { moveDirectory } from "./index.js";
 import { fileOptions, getFileOptions } from "./options.js";
 
 export async function showFile(source=""){
-	globalGraph.setSize(0.5, 1);
+	globalGraph.setSize("50%", "100%");
 	let response = await fetch(source);
 	let text = await response.text();
 	let textSpace = document.getElementById("filespace");

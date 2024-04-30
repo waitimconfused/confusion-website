@@ -30,7 +30,7 @@ document.onkeydown = (e) => {
 
 	let hoveredElement = document.elementFromPoint(mouse.position.x, mouse.position.y);
 
-	if(hoveredElement !== globalGraph.canvas) return undefined;
+	if(hoveredElement != globalGraph.canvas) return undefined;
 
 	setKey("control", false);
 
@@ -47,7 +47,7 @@ document.onkeydown = (e) => {
 		}else if(key == "0") {
 			setZoom(initalCameraZoom);
 			cameraTo(0, 0);
-		}else if(key !== "r" && (!e.shiftKey && key !== "i")){
+		}else if(key != "r" && (!e.shiftKey && key != "i")){
 			e.preventDefault();
 		}
 	}
@@ -57,9 +57,9 @@ document.onkeyup = (e) => {
 	setKey("control", false);
 }
 
-document.onmousedown = () => {
+document.onmousedown = (e) => {
 	mouse.click_l = true;
-	globalGraph.tryClick();
+	if(e.target == globalGraph.canvas) globalGraph.tryClick();
 }
 document.onmouseup = () => {
 	mouse.click_l = false;

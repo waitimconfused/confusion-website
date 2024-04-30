@@ -1,5 +1,5 @@
-import { calcDistance, camera, delta, fps, hideOptionsPane, redraw, showOptionsPane } from "../index.js";
-import { keyPressed } from "../keyboard.js";
+import { calcDistance, camera, delta, fps, hexToRgb, hideOptionsPane, redraw, showOptionsPane } from "../index.js";
+import { keyPressed, mouse } from "../keyboard.js";
 import Node from "./nodes.js";
 
 var shiftClickedNode1 = null;
@@ -21,23 +21,42 @@ export function nodeIsShiftClicked(node=new Node){
 export default class Graph {
 	canvas = document.createElement("canvas");
 
-	bg = {
-		r: 35,
-		g: 35,
-		b: 35,
-	};
+	styles = {
+		size: { width: "100%", height: "100%" },
+		bg: { r: 35, g: 35, b: 35, },
+		tags: {}
+	}
+
+	#nodeData = {};
+	nodeIndexes = [];
+	hasHoveredNode = false;
+
 	setBG(colour=""){
 		if(colour.startsWith("#")){
 			let rgb = hexToRgb(colour);
-			this.bg.r = rgb.r;
-			this.bg.g = rgb.g;
-			this.bg.b = rgb.b;
+			this.styles.bg.r = rgb.r;
+			this.styles.bg.g = rgb.g;
+			this.styles.bg.b = rgb.b;
 		}else if(colour.startsWith("rgb(")){
 			let rgbArray = colour.split(/rgb\((\d*), *(\d*), *(\d*)\)/gm);
-			this.bg.r = rgbArray[1];
-			this.bg.g = rgbArray[2];
-			this.bg.b = rgbArray[3];
+			this.styles.bg.r = rgbArray[1];
+			this.styles.bg.g = rgbArray[2];
+			this.styles.bg.b = rgbArray[3];
 		}
+	}
+	addTag(tag="", options={}){
+		this.styles.tags[tag] = options;
+		if(options.colour){
+			this.styles.tags[tag].colour = hexToRgb(options.colour);
+		}
+	}
+	getTag(tag=""){
+		return this.styles.tags[tag];
+	}
+	setSize(width, height){
+		this.styles.size.width = (typeof width == "number")?width+"px":width;
+		this.styles.size.height = (typeof height == "number")?height+"px":height;
+		window.onresize();
 	}
 
 	constructor(){
@@ -49,10 +68,21 @@ export default class Graph {
 		this.canvas.style.userSelect = "none";
 		this.canvas.style.zIndex = -1;
 		window.onresize = () => {
-			this.canvas.width = document.documentElement.clientWidth;
-			this.canvas.height = document.documentElement.clientHeight;
+			let width = this.styles.size.width;
+			let height = this.styles.size.height;
+			if(width.trim().endsWith("%")){
+				this.canvas.width = document.documentElement.clientWidth * parseInt(width.replace("%","")) / 100;
+			}else if(width.trim().endsWith("px")){
+				this.canvas.width = parseInt(width.replace("px",""));
+			}
+			if(height.trim().endsWith("%")){
+				this.canvas.height = document.documentElement.clientHeight * parseInt(height.replace("%","")) / 100;
+			}else if(height.trim().endsWith("px")){
+				this.canvas.height = parseInt(height.replace("px",""));
+			}
 		}
 		window.onresize();
+		this.enableEditing();
 	}
 
 	RGBfromXY(x=0, y=0){
@@ -73,23 +103,33 @@ export default class Graph {
 	enableEditing(){
 		this.canvas.ondblclick = () => {
 			(new Node).moveTo(
-				mouse.position.x - globalGraph.canvas.width / 2 + camera.x * camera.zoom,
-				mouse.position.y - globalGraph.canvas.height / 2 + camera.y * camera.zoom
+				mouse.position.x - this.canvas.width / 2 + camera.x * camera.zoom,
+				mouse.position.y - this.canvas.height / 2 + camera.y * camera.zoom
 			);
 		}
 		showOptionsPane();
 	}
 
-	nodes = [];
-	hasHoveredNode = false;
-
 	addNode(node=new Node){
-		this.nodes.push(node);
+		this.#nodeData[node.token] = node;
+		this.nodeIndexes = Object.keys(this.#nodeData);
+	}
+	removeNode(node=new Node){
+		if(node.token in this.#nodeData) delete this.#nodeData[node.token];
+		else throw Error("Could not find Node with token: "+node.token);
+		this.nodeIndexes = Object.keys(this.#nodeData);
+	}
+
+	getNode(token="") {
+		return this.#nodeData[token];
 	}
 
 	tryClick(){
-		for(let nodeIndex = 0; nodeIndex < this.nodes.length; nodeIndex ++){
-			let node = this.nodes[nodeIndex];
+		console.log("trying to press nodes...");
+		for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex ++){
+			let nodeToken = this.nodeIndexes[nodeIndex];
+			console.log(" - "+nodeToken);
+			let node = this.#nodeData[nodeToken];
 			node.click();
 		}
 	}
@@ -104,7 +144,7 @@ export default class Graph {
 	render(){
 
 		this.canvas.style.cursor = "default";
-		this.canvas.style.backgroundColor = `rgb(${this.bg.r}, ${this.bg.g}, ${this.bg.b})`;
+		this.canvas.style.backgroundColor = `rgb(${this.styles.bg.r}, ${this.styles.bg.g}, ${this.styles.bg.b})`;
 
 		if(shiftClickedNode1 && !keyPressed("shift")) {
 			shiftClickedNode1 = null;
@@ -116,19 +156,23 @@ export default class Graph {
 		context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
 		// Sort from back to front
-		this.nodes = this.nodes.sort((node1, node2) => {
+		this.nodeIndexes = this.nodeIndexes.sort((nodeToken1, nodeToken2) => {
+			let node1 = this.getNode(nodeToken1);
+			let node2 = this.getNode(nodeToken2);
 			let biggestRadius = Math.max(node1.display.radius, node2.display.radius);
 			return (node2.display.y - biggestRadius) - (node1.display.y - biggestRadius)
 		});
-		for(let nodeIndex = 0; nodeIndex < this.nodes.length; nodeIndex ++){
-			let node = this.nodes[nodeIndex];
+		for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex ++){
+			let nodeToken = this.nodeIndexes[nodeIndex];
+			let node = this.#nodeData[nodeToken];
 			if(redraw){
 				centralForce(node);
 			}
 
-			for(let otherNodeIndex = 0; otherNodeIndex < this.nodes.length; otherNodeIndex ++){
+			for(let otherNodeIndex = 0; otherNodeIndex < this.nodeIndexes.length; otherNodeIndex ++){
+				let otherNodeToken = this.nodeIndexes[otherNodeIndex];
 				if(otherNodeIndex == nodeIndex) continue
-				let otherNode = this.nodes[otherNodeIndex];
+				let otherNode = this.#nodeData[otherNodeToken];
 				node.script();
 				preventNodeOverlap(node, otherNode);
 
@@ -140,18 +184,21 @@ export default class Graph {
 
 			if(redraw && node.children.length > 0){
 				for(let childIndex = 0; childIndex < node.children.length; childIndex ++){
-					let child = node.children[childIndex];
+					let childToken = node.children[childIndex];
+					let child = this.#nodeData[childToken];
 					limitConnectedNodePosition(node, child);
 					limitConnectedNodePosition(child, node);
 				}
 			}
 		}
 
-		for(let nodeIndex = 0; nodeIndex < this.nodes.length; nodeIndex++){
-			let node = this.nodes[nodeIndex];
+		for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex++){
+			let nodeToken = this.nodeIndexes[nodeIndex];
+			let node = this.#nodeData[nodeToken];
 
 			for(let childIndex = 0; childIndex < node.children.length; childIndex ++){
-				let child = node.children[childIndex];
+				let childToken = node.children[childIndex];
+				let child = this.#nodeData[childToken];
 
 				if(calcDistance(node.display, child.display) > node.size * 10) continue;
 
@@ -163,22 +210,25 @@ export default class Graph {
 				let childDisplayY = this.canvas.height / 2 + (child.display.y - camera.y) * camera.zoom;
 
 				let a = Math.max(node.lerp.radius, child.lerp.radius);
+				let nodeColour = node.getStyling().background;
 				let rgb = {
-					r: node.display.colour.r*a,
-					g: node.display.colour.g*a,
-					b: node.display.colour.b*a
+					r: nodeColour.r*a,
+					g: nodeColour.g*a,
+					b: nodeColour.b*a
 				};
 				if(a == child.lerp.radius) {
-					rgb.r = child.display.colour.r*a;
-					rgb.g = child.display.colour.g*a;
-					rgb.b = child.display.colour.b*a;
+					let nodeColour = child.getStyling().background;
+					rgb.r = nodeColour.r*a;
+					rgb.g = nodeColour.g*a;
+					rgb.b = nodeColour.b*a;
 				}
 				drawArrow(context, nodeDisplayX, nodeDisplayY, childDisplayX, childDisplayY, 0.5, rgb);
 			}
 		}
 
-		for(let nodeIndex = 0; nodeIndex < this.nodes.length; nodeIndex++){
-			let node = this.nodes[nodeIndex];
+		for(let nodeIndex = 0; nodeIndex < this.nodeIndexes.length; nodeIndex++){
+			let nodeToken = this.nodeIndexes[nodeIndex];
+			let node = this.#nodeData[nodeToken];
 
 			node.render();
 		}
@@ -189,6 +239,12 @@ export default class Graph {
 			context.roundRect(25, 10, 10, 25, 3);
 			context.fill();
 		}
+
+		context.fillStyle = "white";
+		context.font = "bold 48px serif";
+		context.textAlign = "start";
+		context.textBaseline = "top"
+		context.fillText(Math.round(fps) * 10, 0, 0);
 	}
 }
 
@@ -246,10 +302,12 @@ function calVelocity(dist, prefDist, maxSpeed=1, t=1){
 	prefDist -= 1;
 	return Math.min( (Math.max(dist - prefDist + timeToAjust, 0)) * (1 / timeToAjust) - 1, 1) * maxSpeed;
 }
-
+function calcSpeed(){
+	return fps / 60;
+}
 
 function centralForce(node=new Node){
-	let speed = fps / 60;
+	let speed = calcSpeed();
 
 	let distance = calcDistance(node.display, {x:0, y:0});
 	let velocity = calVelocity(distance, 0, 100 * (delta * speed), 100);
@@ -273,10 +331,10 @@ function limitConnectedNodePosition(anchorNode=new Node, freeNode=new Node, dont
 		freeNode.hasChild(anchorNode) == false
 	) return undefined;
 
-	let speed = fps / 60;
+	let speed = calcSpeed();
 
 	let distance = calcDistance(anchorNode.display, freeNode.display);
-	let velocity = calVelocity(distance, 50, 75 * (delta * speed), 100);
+	let velocity = calVelocity(distance, 50, 200 * (delta * speed), 100);
 	let dx = anchorNode.display.x - freeNode.display.x;
 	let dy = anchorNode.display.y - freeNode.display.y;
 
@@ -292,7 +350,7 @@ function limitConnectedNodePosition(anchorNode=new Node, freeNode=new Node, dont
 
 }
 
-function limitNodePosition(anchorNode=new Node, freeNode=new Node, dontMove=false){
+function limitNodePosition(anchorNode=new Node, freeNode=new Node){
 
 	if(anchorNode == freeNode) return undefined;
 	if(
@@ -300,14 +358,14 @@ function limitNodePosition(anchorNode=new Node, freeNode=new Node, dontMove=fals
 		freeNode.hasChild(anchorNode) == true
 	) return undefined;
 
-	let speed = fps / 60;
+	let speed = calcSpeed();
 
 	let distance = calcDistance(anchorNode.display, freeNode.display);
 	let preferedDistance = 200;
 
 	if(distance > preferedDistance) return undefined;
 
-	let velocity = calVelocity(distance, preferedDistance, 33.333 * (delta * speed), 100);
+	let velocity = calVelocity(distance, preferedDistance, (100/3) * (delta * speed), 100);
 	let step = velocity;
 	let dx = anchorNode.display.x - freeNode.display.x;
 	let dy = anchorNode.display.y - freeNode.display.y;
@@ -329,7 +387,7 @@ function preventNodeOverlap(anchorNode=new Node, freeNode=new Node){
 
 	if(anchorNode == freeNode) return undefined;
 
-	let speed = fps / 60;
+	let speed = calcSpeed();
 	let distance = calcDistance(anchorNode.display, freeNode.display);
 	let step = 1 * (delta * speed);
 	let dx = anchorNode.display.x - freeNode.display.x;

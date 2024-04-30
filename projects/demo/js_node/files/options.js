@@ -26,14 +26,6 @@ export var fileOptions = {
 		],
 		linkPathIndex: 0
 	},
-	".plugin": {
-		colour: "#808080", text: "PIX",
-		links: [
-			/\s*@include (\w+) as \w+ from ([\S]+)/g,
-			/\s*@include (\w+) from ([\S]+)/g
-		],
-		linkPathIndex: 1
-	},
 
 	".html": {
 		colour: "#E34C26", text: "</>",
@@ -42,7 +34,7 @@ export var fileOptions = {
 	},
 	".css": {
 		colour: "#563D7C", text: "CSS",
-		links: [ /@import \w*\({0,}"([\w.:\/]*)"\){0,}/gm ],
+		links: [ /@import url\({0,}"([\w.:\/]*)"\){0,}/gm ],
 		linkPathIndex: 0
 	},
 
