@@ -1,36 +1,46 @@
-import { hideOptionsPane, globalGraph } from "./demo/js_node/index.js";
+import { hideOptionsPane, globalGraph, camera } from "./demo/js_node/index.js";
 import Node from "./demo/js_node/display/nodes.js";
-import { readFile } from "./demo/js_node/files/index.js";
 
 hideOptionsPane();
 
 globalGraph.disableEditing();
+globalGraph.setBG("#151515");
+globalGraph.setSize(500, 500);
+globalGraph.styles.text.minimumZoom = 0.5;
+globalGraph.styles.line.size = 4;
+camera.setDefaultZoom(1.5);
+globalGraph.setLineColour("#232323");
 
 let homepage = (new Node)
 	.setTitle("Confusion")
 	.setGlyph("🏠")
-	.setColour("#00FF00")
+	.setColour("#FFB3B3")
 	.moveTo(0, 0);
 
 let projectView = (new Node)
-	.setTitle("Project Viewer")
+	.setTitle("View")
 	.setGlyph("👁️")
-	.setColour("#00FF00");
+	.setColour("#FFB3B3");
 
 let projectDemo = (new Node)
-	.setTitle("Project Demos")
+	.setTitle("Demo")
 	.setGlyph("🪀")
-	.setColour("#00FF00");
+	.setColour("#FFB3B3");
 
-let projects = ["AAA", "BBB", "CCC"];
+let response = await fetch('https://api.github.com/repos/Dev-384/confusion-website/contents/projects/markdown');
+let json = await response.json();
+let projects = json.map(file => file.name);
 
-projects.forEach((project) => {
+projects.forEach((project="") => {
+	let projectName = project.replace(/\.\w+?$/, "");
 	let viewNode = new Node;
-	let demoNode = new Node;
-	viewNode.setTitle("view:"+project+".md");
-	demoNode.setTitle("demo:"+project+"/");
+	viewNode.setTitle(projectName);
+	viewNode.setColour("#E06767");
+	viewNode.setGlyph("📁");
+	viewNode.addEventListener("dblclick", () => {
+		window.open(`/projects/view?project=${projectName}`)
+	})
 	projectView.connectTo(viewNode);
-	projectDemo.connectTo(demoNode);
 
 });
 

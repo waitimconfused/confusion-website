@@ -44,12 +44,15 @@
 	<script type="module">
 		let path = location.pathname.replace("/", "");
 		
-		if(path !== "404" && path.split("/").length == 1) {
-			let markdownURL = `/projects/markdown/${path}.md`;
-			let projectURL = `/projects/view?project=${path}`;
+		if(path != "404" && path.match(/(\S+?$|\S+?\/\S+?$)/)) {
+			let pathParts = path.split("/");
+			let projectName = pathParts[0];
+			let projectPath = pathParts[1] || "view";
+			let markdownURL = `/projects/markdown/${projectName}.md`;
 			let response = await fetch(markdownURL);
 			let isProject = (response.status == 200);
 			if(isProject) {
+				let projectURL = `/projects/${projectPath}?project=${projectName}`;
 				location.href = projectURL;
 			}
 		}

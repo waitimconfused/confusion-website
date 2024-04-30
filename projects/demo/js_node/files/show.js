@@ -3,7 +3,7 @@ import { moveDirectory } from "./index.js";
 import { fileOptions, getFileOptions } from "./options.js";
 
 export async function showFile(source=""){
-	globalGraph.setSize(0.5, 1);
+	globalGraph.setSize("50%", "100%");
 	let response = await fetch(source);
 	let text = await response.text();
 	let textSpace = document.getElementById("filespace");
@@ -45,10 +45,12 @@ function reloadCode(source="", text=""){
 		code.style.backgroundSize = "contain";
 		code.style.backgroundRepeat = "no-repeat";
 	}else{
-		lines.forEach((line="") => {
+		for(let lineNumber = 0; lineNumber < lines.length; lineNumber ++){
+			let line = lines[lineNumber];
+
 			let codeLineElement = document.createElement("li");
 			codeLineElement.innerText = line;
 			code.appendChild(codeLineElement);
-		});
+		}
 	}
 }

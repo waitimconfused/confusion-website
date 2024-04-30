@@ -1,36 +1,62 @@
-import Node from "./display/nodes.js";
 import { readFile } from "./files/index.js";
 import { globalGraph } from "./index.js";
 
-globalGraph.disableEditing();
+globalGraph.addTag(".md", {
+	colour: "#2965F1",
+	glyph: "md"
+});
+globalGraph.addTag(".js", {
+	colour: "#F1E05A",
+	glyph: "JS"
+});
+globalGraph.addTag(".py", {
+	colour: "#3572A5",
+	glyph: "JS"
+});
+globalGraph.addTag(".html", {
+	colour: "#E34C26",
+	glyph: "</>"
+});
+globalGraph.addTag(".css", {
+	colour: "#563D7C",
+	glyph: "CSS"
+});
+globalGraph.addTag(".json", {
+	colour: "#563D7C",
+	glyph: "{json}"
+});
+globalGraph.addTag(".txt", {
+	colour: "#563D7C",
+	glyph: "TXT"
+});
+globalGraph.addTag(".png", {
+	colour: "#A8A8A8",
+	glyph: "🖼️"
+});
+globalGraph.addTag(".svg", {
+	colour: "#A8A8A8",
+	glyph: "🖼️"
+});
+globalGraph.addTag(".jpg", {
+	colour: "#A8A8A8",
+	glyph: "🖼️"
+});
+globalGraph.addTag(".jpeg", {
+	colour: "#A8A8A8",
+	glyph: "🖼️"
+});
+globalGraph.addTag(".webp", {
+	colour: "#A8A8A8",
+	glyph: "🖼️"
+});
+globalGraph.addTag(".gif", {
+	colour: "#A8A8A8",
+	glyph: "🖼️"
+});
 
-// const addNode = document.createElement("button");
-// addNode.innerText = "Create Node";
-// document.body.appendChild(addNode);
+readFile("./index.html");
 
-// addNode.onclick = () => {
-// 	new Node()
-// 		// .moveTo(0, 0);
-// }
-
-// const node1 = new Node("Node 1");
-// const node2 = new Node("Node 2");
-// const node3 = new Node("Node 3");
-
-// node1.connectTo(node2);
-// node1.connectTo(node3);
-
-// const node4 = new Node("Node 4");
-// const node5 = new Node("Node 5");
-
-// node2.connectTo(node4);
-// // node2.connectTo(node5);
-
-// // readFile("./js_node.html")
-
-// readFile("./index.html");
-
-// readFile("/index.html");
+readFile("/index.html");
 
 readFile("/404.html");
 

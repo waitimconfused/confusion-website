@@ -1,5 +1,5 @@
-import * as tk from "./index.js";
+import * as toolkit from "./index.js";
 
-tk.keyboard.setKeybind((event) => {
+toolkit.keyboard.setKeybind((event) => {
 	console.log(event);
 }, [ "a", "s" ]);
