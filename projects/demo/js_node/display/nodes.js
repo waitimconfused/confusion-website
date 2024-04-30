@@ -39,7 +39,7 @@ export default class Node {
 			(Math.random() * globalGraph.canvas.width / 2 - globalGraph.canvas.width / 4),
 			(Math.random() * globalGraph.canvas.height / 2 - globalGraph.canvas.height / 4)
 		);
-		this.events.shiftclick = function(){
+		this.events.shiftclick = () => {
 			nodeIsShiftClicked(this);
 		};
 		return this;
@@ -148,7 +148,6 @@ export default class Node {
 			if(this.isClicked && keyboard.isPressed("shift")){
 				this.events.shiftclick();
 				this.isClicked = false;
-				keyboard.setKey("shift", false);
 				mouse.click_l = false;
 			}
 			returnValue = this.isClicked;

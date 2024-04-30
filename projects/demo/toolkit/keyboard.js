@@ -6,8 +6,10 @@ export var keyboard = new class {
 	setKey(key="", value=true){
 		if(value == true && !this.isPressed(key)){
 			this.list.push(key);
-		}else if(value == true == false && this.isPressed(key)){
-			this.list.splice( this.list.indexOf(key), 1 );
+		}else if(value == false && this.isPressed(key)){
+			while(this.isPressed(key)){
+				this.list.splice( this.list.indexOf(key), 1 );
+			}
 		}
 	}
 	script = function(e=new KeyboardEvent){}
@@ -62,7 +64,8 @@ document.onkeydown = (e) => {
 }
 document.onkeyup = (e) => {
 	keyboard.setKey(e.key, false);
-	keyboard.setKey("control", false);
+	keyboard.setKey("control", e.ctrlKey);
+	keyboard.setKey("shift", e.shiftKey);
 	keyboard.script(e);
 }
 

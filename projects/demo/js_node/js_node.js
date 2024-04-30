@@ -1,3 +1,4 @@
+import Rect from "./display/custom/rect.js";
 import { readFile } from "./files/index.js";
 import { globalGraph } from "./index.js";
 
@@ -62,3 +63,7 @@ readFile("/404.html");
 
 readFile("/projects/demo.html");
 readFile("/projects/view.html");
+
+(new Rect)
+	.setColour("#0000FF")
+	.setTitle("RECTANGLE!");

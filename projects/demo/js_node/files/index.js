@@ -22,7 +22,7 @@ export async function readFile(fileName="", nodeConnector){
 	}
 
 	var fileNode = new Node(fileID);
-	fileNode.addEventListener("shiftclick", () => {
+	fileNode.addEventListener("dblclick", () => {
 		keyboard.setKey("shift", false);
 		showFile(fileNode.display.title);
 	});

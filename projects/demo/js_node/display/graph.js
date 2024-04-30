@@ -2,20 +2,33 @@ import { calcDistance, camera, delta, fps, globalGraph, hexToRgb, hideOptionsPan
 import { keyboard, mouse } from "../../toolkit/keyboard.js";
 import Node from "./nodes.js";
 
-var shiftClickedNode1 = null;
-var shiftClickedNode2 = null;
+var shiftClickedParent = "";
+var shiftClickedChild = "";
 
 export function nodeIsShiftClicked(node=new Node){
-	if(!shiftClickedNode1){
-		shiftClickedNode1 = node;
+	if(shiftClickedParent == ""){
+		shiftClickedParent = node.token;
+		console.log({
+			parent: shiftClickedParent,
+			child: shiftClickedChild
+		});
 		return;
-	}else if(!shiftClickedNode2){
-		shiftClickedNode2 = node;
+	}else if(shiftClickedChild == ""){
+		shiftClickedChild = node.token;
 	}
 
-	shiftClickedNode1.connectTo(shiftClickedNode2);
-	shiftClickedNode2 = null;
-	shiftClickedNode1 = null;
+	console.log({
+		parent: shiftClickedParent,
+		child: shiftClickedChild
+	});
+
+	let parent = globalGraph.getNode(shiftClickedParent);
+	let child = globalGraph.getNode(shiftClickedChild);
+
+	shiftClickedParent = shiftClickedChild;
+	shiftClickedChild = "";
+
+	parent.connectTo(child);
 }
 
 export default class Graph {
@@ -173,6 +186,15 @@ export default class Graph {
 
 	render(){
 
+		if(shiftClickedParent.length > 0 && keyboard.isPressed("shift") == false){
+			shiftClickedParent = "";
+			shiftClickedChild = "";
+			console.log({
+				parent: shiftClickedParent,
+				child: shiftClickedChild
+			});
+		}
+
 		this.canvas.style.cursor = "default";
 		let bg = this.canvas.style.backgroundColor.split(/rgb\((\d*),? ?(\d*),? ?(\d*),? ?(\d*)\)/gm);
 		this.styles.bg.r = bg[1];
@@ -180,11 +202,6 @@ export default class Graph {
 		this.styles.bg.b = bg[3];
 		this.canvas.width = this.canvas.offsetWidth;
 		this.canvas.height = this.canvas.offsetHeight;
-
-		if(shiftClickedNode1 && !keyboard.isPressed("shift")) {
-			shiftClickedNode1 = null;
-			shiftClickedNode2 = null;
-		}
 
 		let context = this.canvas.getContext("2d");
 
