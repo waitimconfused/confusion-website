@@ -5,12 +5,16 @@ import { Pane } from 'https://cdn.skypack.dev/tweakpane';
 
 export var globalGraph = new Graph;
 
-export var camera = {
-	zoom: 3,
-	x: 0,
-	y: 0
+export var camera = new class {
+	zoom = 3;
+	x = 0;
+	y = 0;
+	setDefaultZoom(zoom=this.zoom){
+		this.zoom = zoom;
+		initalCameraZoom = zoom;
+	}
 }
-export const initalCameraZoom = structuredClone(camera.zoom);
+export var initalCameraZoom = structuredClone(camera.zoom);
 
 var lastCalledTime = 0;
 export var fps = 0;

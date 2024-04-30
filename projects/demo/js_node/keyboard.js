@@ -65,6 +65,7 @@ document.onmouseup = () => {
 	mouse.click_l = false;
 }
 document.onmousemove = (e) => {
-	mouse.position.x = e.clientX - globalGraph.canvas.getBoundingClientRect().left;
-	mouse.position.y = e.clientY - globalGraph.canvas.getBoundingClientRect().top;
+	let canvasRect = globalGraph.canvas.getBoundingClientRect();
+	mouse.position.x = e.clientX - canvasRect.left;
+	mouse.position.y = e.clientY - canvasRect.top;
 }

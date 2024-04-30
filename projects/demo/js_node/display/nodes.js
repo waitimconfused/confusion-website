@@ -124,8 +124,8 @@ export default class Node {
 			x: displayX,
 			y: displayY
 		}, {
-			x: mouse.position.x - globalGraph.canvas.getBoundingClientRect().left,
-			y: mouse.position.y - globalGraph.canvas.getBoundingClientRect().top
+			x: mouse.position.x,
+			y: mouse.position.y
 		}) < radius;
 
 		return hovering;

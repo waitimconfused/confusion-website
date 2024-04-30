@@ -7,10 +7,6 @@ import { setKey } from "../keyboard.js";
 var readFiles = [];
 var readFileNodes = [];
 
-function delay(ms=1000) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export async function readFile(fileName="", nodeConnector){
 
 	if(readFileNodes.length > 10) return;

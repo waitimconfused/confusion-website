@@ -1,4 +1,4 @@
-import { calcDistance, camera, delta, fps, hexToRgb, hideOptionsPane, redraw, showOptionsPane } from "../index.js";
+import { calcDistance, camera, delta, fps, hexToRgb, hideOptionsPane, lerp, redraw, showOptionsPane } from "../index.js";
 import { keyPressed, mouse } from "../keyboard.js";
 import Node from "./nodes.js";
 
@@ -24,6 +24,7 @@ export default class Graph {
 	styles = {
 		size: { width: "100%", height: "100%" },
 		bg: { r: 35, g: 35, b: 35, },
+		line: { r: 0, g: 0, b: 0, },
 		tags: {}
 	}
 
@@ -42,6 +43,19 @@ export default class Graph {
 			this.styles.bg.r = rgbArray[1];
 			this.styles.bg.g = rgbArray[2];
 			this.styles.bg.b = rgbArray[3];
+		}
+	}
+	setLineColour(colour=""){
+		if(colour.startsWith("#")){
+			let rgb = hexToRgb(colour);
+			this.styles.line.r = rgb.r;
+			this.styles.line.g = rgb.g;
+			this.styles.line.b = rgb.b;
+		}else if(colour.startsWith("rgb(")){
+			let rgbArray = colour.split(/rgb\((\d*), *(\d*), *(\d*)\)/gm);
+			this.styles.line.r = rgbArray[1];
+			this.styles.line.g = rgbArray[2];
+			this.styles.line.b = rgbArray[3];
 		}
 	}
 	addTag(tag="", options={}){
@@ -63,8 +77,6 @@ export default class Graph {
 		this.canvas = document.createElement("canvas");
 		document.body.appendChild(this.canvas);
 		this.canvas.style.position = "fixed";
-		this.canvas.style.top = 0;
-		this.canvas.style.left = 0;
 		this.canvas.style.userSelect = "none";
 		this.canvas.style.zIndex = -1;
 		window.onresize = () => {
@@ -211,16 +223,17 @@ export default class Graph {
 
 				let a = Math.max(node.lerp.radius, child.lerp.radius);
 				let nodeColour = node.getStyling().background;
+				let lineColour = this.styles.line;
 				let rgb = {
-					r: nodeColour.r*a,
-					g: nodeColour.g*a,
-					b: nodeColour.b*a
+					r: lerp(lineColour.r, nodeColour.r, a),
+					g: lerp(lineColour.g, nodeColour.g, a),
+					b: lerp(lineColour.b, nodeColour.b, a)
 				};
 				if(a == child.lerp.radius) {
 					let nodeColour = child.getStyling().background;
-					rgb.r = nodeColour.r*a;
-					rgb.g = nodeColour.g*a;
-					rgb.b = nodeColour.b*a;
+					rgb.r = lerp(lineColour.r, nodeColour.r, a);
+					rgb.g = lerp(lineColour.g, nodeColour.g, a);
+					rgb.b = lerp(lineColour.b, nodeColour.b, a);
 				}
 				drawArrow(context, nodeDisplayX, nodeDisplayY, childDisplayX, childDisplayY, 0.5, rgb);
 			}
@@ -240,11 +253,11 @@ export default class Graph {
 			context.fill();
 		}
 
-		context.fillStyle = "white";
-		context.font = "bold 48px serif";
-		context.textAlign = "start";
-		context.textBaseline = "top"
-		context.fillText(Math.round(fps) * 10, 0, 0);
+		// context.fillStyle = "white";
+		// context.font = "bold 48px serif";
+		// context.textAlign = "start";
+		// context.textBaseline = "top"
+		// context.fillText(Math.round(fps) * 10, 0, 0);
 	}
 }
 
