@@ -24,7 +24,7 @@ export default class Graph {
 	styles = {
 		size: { width: "100%", height: "100%" },
 		bg: { r: 35, g: 35, b: 35, },
-		line: { r: 0, g: 0, b: 0, size: 5 },
+		line: { r: 0, g: 0, b: 0, size: 1 },
 		tags: {},
 		text: {
 			minimumZoom: 1.5

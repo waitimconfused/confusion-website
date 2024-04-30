@@ -54,9 +54,9 @@ globalGraph.addTag(".gif", {
 	glyph: "🖼️"
 });
 
-readFile("./index.html");
+// readFile("./index.html");
 
-readFile("/index.html");
+// readFile("/index.html");
 
 readFile("/404.html");
 

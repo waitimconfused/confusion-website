@@ -39,8 +39,9 @@ keyboard.setScript((e) => {
 	if(globalGraph.canvas.matches(':hover') == false) return;
 
 	if(e.type == "keydown") {
-		if(key == "escape"){
+		if(key == "escape" && !escapePressed){
 			redraw = !redraw;
+			escapePressed = true;
 		}
 		if(e.ctrlKey == false) return;
 
@@ -54,6 +55,10 @@ keyboard.setScript((e) => {
 			e.preventDefault();
 			setZoom(initalCameraZoom);
 			cameraTo(0, 0);
+		}
+	}else if(e.type == "keyup"){
+		if(key == "escape"){
+			escapePressed = false;
 		}
 	}
 });
