@@ -49,6 +49,6 @@ var json = fs.existsSync(relativeOutput+"/package.json")?readFileSync(relativeOu
 json = JSON.parse(json);
 json.type = "module";
 json.scripts = json.scripts || {};
-json.scripts["ast-host"] = "nodemon host.ast.js";
+json.scripts["ast-host"] = "node host.ast.js";
 json.scripts["ast-install"] = "node install.ast.js";
 createFile(relativeOutput+"/package.json", JSON.stringify(json, null, 4));
