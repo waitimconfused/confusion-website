@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Confusion</title>
+	<link rel="icon" type="image/*" href="/assets/favicon.png">
+	<link rel="stylesheet" href="/styles/redo/index.css">
+	<link rel="stylesheet" href="/styles/redo/cool_grid.css">
+	<link rel="stylesheet" href="/styles/redo/home.css">
+</head>
+<body>
+	<template from="/components/" id="nav"></template>
+	
+	<header>
+		<div class="gradient"></div>
+		<div class="section">
+			<h1 id="title">Confusion</h1>
+			<div class="separator"></div>
+			<p class="typewriter">A place for even the<br>oddest of ideas</p>
+			<a href="/projects/new">Create a Project</a>
+		</div>
+		<img src="/assets/emoji/brain.svg">
+	</header>
+	
+	<section>
+		<h2>What is this place?</h2>
+		<p>
+			Have you ever had an idea, but no where to put it? What about multiple projects, stored with no organization?
+
+		<strong>THIS</strong> is a place for those kinds of things. Random projects, keeped nice and tidy!
+		</p>
+	</section>
+
+	<div class="card-holder">
+		<section class="card">
+			<div class="background"></div>
+			<img src="/assets/emoji/brain.svg">
+			<h3>Project Title</h3>
+			<p>Short description</p>
+		</section>
+	</div>
+
+	<section>
+		<h2>How It Works</h2>
+		<p>
+			<b><i>Confusion is flexible</i></b>.
+			<br>
+			Each project is assigned one markdown file, and a director to put project files in.
+
+			It's open source, you are able to make changes to all the files.
+			<br><br>
+			Just be sure not to change anyone elses projects :D
+
+			<br>
+
+			<a href="/projects/view?project=testing_page">Example Project</a>
+		</p>
+
+		<template from="/components/" id="cool_grid"></template>
+	</section>
+
+	<section>
+		<h2>How does it work</h2>
+		<p>
+			Have you ever had an idea, but no where to put it? What about multiple projects, stored with no organization?
+
+		<strong>THIS</strong> is a place for those kinds of things. Random projects, keeped nice and tidy!
+		</p>
+	</section>
+
+	<section>
+		<h2>How does it work</h2>
+		<p>
+			Have you ever had an idea, but no where to put it? What about multiple projects, stored with no organization?
+
+		<strong>THIS</strong> is a place for those kinds of things. Random projects, keeped nice and tidy!
+		</p>
+	</section>
+
+	<script src="/components/template.js" defer></script>
+	<script defer>
+		const all_h2 = document.querySelectorAll("h2");
+		var typewriterText = document.getElementsByClassName("typewriter");
+
+		for(let i = 0; i < all_h2.length; i++){
+			let h2 = all_h2[i];
+			h2.id = h2.innerText.replace(/\W/g, '').toLowerCase();
+			h2.style.cursor = "pointer";
+			h2.onclick = () => {
+				// window.location.href = "#"+h2.id;
+				document.querySelector(`h2#${h2.id}`).scrollIntoView({
+					block: "center",
+					inline: "nearest"
+				});
+			}
+		}
+
+		for(let index = 0; index < typewriterText.length; index ++){
+			let element = typewriterText[index];
+			element.style.width = `${element.getBoundingClientRect().width + 40}px`;
+			element.style.height = `${element.getBoundingClientRect().height + 20}px`;
+			element.setAttribute("typing", "true");
+			typeWriter(element, element.innerHTML.replaceAll("<br>", "\n"));
+		}
+
+		function typeWriter(element=new HTMLElement, text="", stepCounter=0){
+			while(text.endsWith("&#9608")) text = text.replace(/\&\#9608$/, "");
+			if(text.match(/\s$/) == false) text = text + " ";
+
+			let ending = "&#9608";
+
+			element.innerHTML = text.slice(0, stepCounter) + ending;
+			element.innerHTML = element.innerHTML.replaceAll("\n", "<br>");
+			stepCounter += 1;
+
+			if(stepCounter <= text.length){
+				function nextStep(time){
+					setTimeout(() => {
+						typeWriter(element, text, stepCounter);
+					}, time);
+				}
+				if(text[stepCounter-1].match(/\W/)) nextStep(100);
+				else nextStep(50);
+			}else{
+				setTimeout(() => {
+					element.innerHTML = text;
+					element.innerHTML = element.innerHTML.replaceAll("\n", "<br>");
+				}, 500);
+			}
+		}
+		function isScrolledIntoView(elem=new HTMLElement){
+			var docViewTop = window.scrollY;
+			var docViewBottom = docViewTop + window.innerHeight;
+
+			var elemTop = elem.getBoundingClientRect().top;
+			var elemBottom = elemTop + elem.getBoundingClientRect().height;
+
+			return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+		}
+	</script>
+</body>
+</html>

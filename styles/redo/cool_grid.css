@@ -1,0 +1,31 @@
+:root {
+	--random-grid-size: 14rem;
+}
+
+div.grid {
+	position: absolute;
+	cursor: grab;
+	top: 1rem;
+	right: 1rem;
+	user-select: none;
+	display: grid;
+	gap: 1rem;
+	height: var(--random-grid-size);
+	aspect-ratio: 1 / 1;
+	transition: grid, grid-template-columns, grid-template-rows;
+	transition-duration: 1s;
+	background: var(--background);
+	border-radius: 2rem;
+	padding: 1rem;
+	box-sizing: border-box;
+}
+div.grid:active {
+	cursor: grabbing;
+}
+
+.grid div.card {
+	background: transparent;
+	border-radius: 1rem;
+	transition: background;
+	transition-duration: 400ms;
+}

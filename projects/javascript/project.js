@@ -1,5 +1,5 @@
-import { hideOptionsPane, globalGraph, camera } from "./demo/js_node/index.js";
-import Node from "./demo/js_node/display/nodes.js";
+import { hideOptionsPane, globalGraph, camera } from "./js_node/index.js";
+import Node from "./js_node/display/nodes.js";
 
 hideOptionsPane();
 

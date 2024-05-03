@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="/assets/favicon.png" type="image/*">
+	<title>Confusion | Create</title>
+	<link rel="stylesheet" href="/styles/redo/index.css">
+	<script> localStorage.setItem("nav-always-solid", "true");</script>
+	<script src="/components/template.js" defer></script>
+	<style>
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: var(--background);
+	overflow: hidden;
+}
+
+h2 {
+	text-decoration: none;
+}
+h2:before {
+	content: none;
+}
+
+#regForm {
+	position: relative;
+    left: 50%;
+	top: 6rem;
+    transform: translate(-50%, 0px);
+	background-color: var(--background-other);
+	border-radius: 2rem;
+	font-family: Raleway;
+	padding: 40px;
+	width: 50%;
+	min-width: 300px;
+	max-width: 1000px;
+	height: calc(100vh - 7rem);
+}
+
+h1 {
+	text-align: center;  
+}
+
+input {
+	padding: 10px;
+	width: 100%;
+	font-size: 17px;
+	font-family: "JetBrains Mono";
+	border: 1px solid var(--accent);
+	border-radius: 1rem;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+	background-color: var(--secondary);
+	border-color: var(--primary);
+}
+@keyframes invalid {
+	from, to {
+		translate: 0px 0px;
+	}
+	25% {
+		translate: -25px 0px;
+		background-color: var(--primary);
+	}
+	75% {
+		translate: 25px 0px;
+		background-color: var(--primary);
+	}
+}
+
+/* Hide all steps by default: */
+.tab {
+	display: none;
+}
+
+button {
+	background-color: var(--primary);
+	color: #ffffff;
+	border: none;
+	padding: 10px 20px;
+	font-size: 17px;
+	font-family: "JetBrains Mono";
+	cursor: pointer;
+	transition: background, color;
+	transition-duration: 400ms;
+	border-radius: 1rem;
+}
+
+button:hover {
+	background-color: var(--secondary);
+}
+
+#step-holder {
+	position: absolute;
+	bottom: 1rem;
+	left: 50%;
+	transform: translate(-50%, 0px);
+}
+.step {
+	height: 15px;
+	width: 15px;
+	margin: 0 2px;
+	background-color: var(--secondary);
+	border: none;  
+	border-radius: 100%;
+	display: inline-block;
+}
+
+.step.active {
+	background-color: var(--primary);
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+	background-color: var(--primary);
+}
+	</style>
+</head>
+<body>
+	<template from="/components/" id="nav"></template>
+
+	<form id="regForm" action="javascript:this.remove()">
+		<h1>Creating a Confusing Project</h1>
+
+		<div class="tab">
+			<h2>Cloning the repo</h2>
+			<p>
+				<ol>
+					<li>Go to the <a href="https://github.com/Dev-384/confusion-website" target="_blank">GitHub Repo</a></li>
+					<li>Press <a class="button disabled">&lt &gt Code</a></li>
+					<li>Download the zip</li>
+					<li>Extract the zip</li>
+				</ol>
+			</p>
+		</div>
+
+		<div class="tab">
+			<h2>Opening the server</h2>
+			<p>
+				<ol>
+					<li>Inside the cloned repo, run <code>npm run ast-host</code></li>
+					<li><a id="localhost-link">Go to localhost</a></li>
+				</ol>
+			</p>
+			<p><input placeholder="GitHub username" name="fname"></p>
+			<p><input placeholder="Username" name="fname"></p>
+		</div>
+
+		<div class="tab">
+			<h2>Project Information</h2>
+			<p><input placeholder="GitHub username" name="fname"></p>
+			<p><input placeholder="Username" name="fname"></p>
+		</div>
+
+		<div style="overflow:auto;">
+			<div style="float:right;">
+				<button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+				<button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+			</div>
+		</div>
+
+		<div id="step-holder"></div>
+	</form>
+
+	<script>
+	  	var currentTab = 0;
+		var dotHolder = document.getElementById("step-holder");
+		var numberOfForms = document.querySelectorAll("form div.tab").length;
+		var inputs = document.querySelectorAll("form div.tab p input");
+
+		for(let index = 0; index < numberOfForms; index ++){
+			dotHolder.innerHTML += '<span class="step"></span>';
+		}
+
+		for(let index = 0; index < inputs.length; index ++){
+			let input = inputs[index];
+			input.oninput = () => {
+				input.className = "";
+			}
+		}
+
+		showTab(currentTab);
+		
+		function showTab(index) {
+			let tabs = document.getElementsByClassName("tab");
+			tabs[index].style.display = "block";
+			if(index == 0){
+				document.getElementById("prevBtn").style.display = "none";
+			}else{
+				document.getElementById("prevBtn").style.display = "inline";
+			}
+			if (index == (tabs.length - 1)) {
+				document.getElementById("nextBtn").innerHTML = "Submit";
+			} else {
+				document.getElementById("nextBtn").innerHTML = "Next";
+			}
+			fixStepIndicator(index);
+		}
+		
+		function nextPrev(index) {
+			// This function will figure out which tab to display
+			let tabs = document.getElementsByClassName("tab");
+			// Exit the function if any field in the current tab is invalid:
+			if (index == 1 && !validateForm()) return false;
+			// Hide the current tab:
+			tabs[currentTab].style.display = "none";
+			// Increase or decrease the current tab by 1:
+			currentTab = currentTab + index;
+			// if you have reached the end of the form...
+			if (currentTab >= tabs.length) {
+				// ... the form gets submitted:
+				document.getElementById("regForm").submit();
+				return false;
+			}
+			// Otherwise, display the correct tab:
+			showTab(currentTab);
+		}
+		
+		function validateForm() {
+			let valid = true;
+			let tabs = document.getElementsByClassName("tab");
+			let inputs = tabs[currentTab].getElementsByTagName("input");
+			for(let index = 0; index < inputs.length; index++){
+				if(inputs[index].value != "") continue;
+				inputs[index].className += " invalid";
+				inputs[index].style.animation = "invalid 400ms forwards";
+				setTimeout(() => {
+					inputs[index].style.animation = null;
+				}, 400);
+				valid = false;
+			}
+			if(valid){
+				document.getElementsByClassName("step")[currentTab].className += " finish";
+			}
+			return valid;
+		}
+		
+		function fixStepIndicator(index) {
+			let tabs = document.getElementsByClassName("step");
+			for (let dotIndex = 0; dotIndex < tabs.length; dotIndex++) {
+				tabs[dotIndex].className = tabs[dotIndex].className.replace(" active", "");
+			}
+			tabs[index].className += " active";
+		}
+		</script>
+
+	<script type="module">
+		import packageJSON from "/package.json" with {type: "json"};
+		document.getElementById("localhost-link").href = `http://localhost:${packageJSON.port}/projects/new`
+	</script>
+</body>
+</html>

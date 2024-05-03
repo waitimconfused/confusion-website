@@ -63,15 +63,24 @@ export function draw(
 	else CropHeight = Math.floor(CropHeight);
 
 	try {
-		context.drawImage(
-			CacheImage(imgSource),
-
-			CropXPos, CropYPos,
-			CropWidth, CropHeight,
-
-			DestinationXPos, DestinationYPos,
-			DestinationWidth, DestinationHeight,
-		);
+		if(CropXPos && CropYPos & CropWidth && CropHeight){
+			context.drawImage(
+				CacheImage(imgSource),
+	
+				CropXPos, CropYPos,
+				CropWidth, CropHeight,
+	
+				DestinationXPos, DestinationYPos,
+				DestinationWidth, DestinationHeight,
+			);
+		}else{
+			context.drawImage(
+				CacheImage(imgSource),
+	
+				DestinationXPos, DestinationYPos,
+				DestinationWidth, DestinationHeight,
+			);
+		}
 	}catch {
 		context.drawImage(
 			ErrorImage,

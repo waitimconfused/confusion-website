@@ -7,6 +7,67 @@
 	<title>Component Templates | Confusion</title>
 </head>
 <body>
+	
+	<template id="nav">
+		<nav>
+			<div class="site">
+				<img src="/assets/emoji/brain.svg">
+				<h1>Confusion</h1>
+			</div>
+			<div class="links">
+				<a class="item" href="/projects/new">Create</a>
+				<a class="item" href="/home#whatisthisplace">About</a>
+				<a class="item" href="/projects">Projects</a>
+			</div>
+			<script>
+				var nav = document.querySelector("nav");
+				var logoLink = document.querySelector("nav div.site");
+				function onscroll(){
+					let scrollY = window.scrollY;
+					nav = document.querySelector("nav");
+					if(!nav) return;
+					nav.classList.add("solid");
+
+					window.onscroll = () => {};
+					window.onresize = () => {};
+					if(scrollY >= 80){
+						nav.classList.add("solid");
+					}else{
+						nav.classList.remove("solid");
+					}
+				}
+				if(localStorage.getItem("nav-always-solid") == null){
+					window.addEventListener("scroll", onscroll);
+					window.addEventListener("resize", onscroll);
+					onscroll();
+				}else{
+					nav.classList.add("solid");
+				}
+				localStorage.removeItem("nav-always-solid");
+
+				logoLink.style.cursor = "pointer";
+				logoLink.onclick = () => {
+					window.location.href = "/home";
+				}
+			</script>
+		</nav>
+	</template>
+
+	<template id="cool_grid">
+		<div class="grid">
+			<div class="card"></div>
+			<div class="card"></div>
+			<div class="card"></div>
+			<div class="card"></div>
+			<div class="card"></div>
+			<div class="card"></div>
+			<div class="card"></div>
+			<div class="card"></div>
+			<div class="card"></div>
+		</div>
+		<script src="/styles/redo/cool_grid.js"></script>
+	</template>
+
 	<template id="header">
 		<header>
 			<div class="title">

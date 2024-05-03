@@ -1,5 +1,6 @@
 {
     "type": "module",
+	"port": 1200,
     "scripts": {
         "ast-host": "node host.ast.js",
         "ast-host": "node host.ast.js",

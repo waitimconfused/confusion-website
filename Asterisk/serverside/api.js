@@ -63,8 +63,8 @@ export function handleRequest(data, endpoint="", IP=""){
 		content: {status: 403}
 	};
 
-	let returnData = api.callback(data, IP);
-	returnData.status = returnData.status || 200;
+	let returnData = api.callback(data, IP) || {};
+	if(typeof returnData.status != "number") returnData.status = 200;
 
 	return {
 		type: undefined,
