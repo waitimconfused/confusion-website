@@ -20,7 +20,7 @@
 		var path = "projects/markdown/PROJECT.md";
 		var content = "my new file contents";
 
-		await octokit.request(`PUT /repos/${owner}/${repo}/contents/${path}`, {
+		await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
 			owner: owner,
 			repo: repo,
 			path: path,
