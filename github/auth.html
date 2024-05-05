@@ -12,9 +12,19 @@
 		var token = window.location.href.match(/code=([^&]*)/)[1];
 		sessionStorage.setItem("github-code", token);
 
+		let response = await fetch('https://api.github.com/user', {
+			headers: {
+				'Authorization': 'Bearer ${token}'
+			}
+		})
+		let data = await response.json();
+		console.log(data);
+
+
 		const octokit = new Octokit({
 			auth: token
 		});
+
 		var owner = "Dev-384";
 		var repo = "confusion-website"
 		var path = "projects/markdown/PROJECT.md";
