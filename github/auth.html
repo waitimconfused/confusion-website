@@ -9,6 +9,60 @@
 	<script>
 		var token = window.location.href.match(/code=([^&]*)/)[1];
 		sessionStorage.setItem("github-code", token);
+
+		createDirectoryAndFile(token, "NEW_PROJECT");
+
+		async function createDirectoryAndFile(token="", projectName="") {
+			var username = 'Dev-384';
+			var repo = 'confusion-website';
+
+			// Create a new directory
+			var newDirectoryPath = `/projects/demo/${projectName}`;
+			var newFilePath = `/projects/markdown/${projectName}.md`;
+
+			// Base64 encode the directory and file paths
+			var encodedDirectoryPath = btoa(newDirectoryPath);
+			var encodedFilePath = btoa(newFilePath);
+
+			try {
+				// Create the new directory
+				var response = await fetch(`https://api.github.com/repos/${username}/${repo}/git/trees`, {
+					headers: {
+						'Authorization': 'token ' + token,
+						'Content-Type': 'application/json'
+					},
+					method: 'POST',
+					body: JSON.stringify({
+						base_tree: 'master', // Assuming you want to add to the master branch
+						tree: [{
+							path: encodedDirectoryPath,
+							mode: '040000', // Directory type
+							type: 'tree'
+						}]
+					})
+				});
+				var data = await response.json();
+				console.log('Directory created:', data);
+
+				// Create the new file
+				response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents${newFilePath}`, {
+					headers: {
+						'Authorization': 'token ' + token,
+						'Content-Type': 'application/json'
+					},
+					method: 'PUT',
+					body: JSON.stringify({
+						message: `Create ${projectName}.md`,
+						content: btoa(`# ${projectName}\n`),
+						branch: 'master' // Assuming you want to add to the master branch
+					})
+				});
+				data = await response.json();
+				console.log('File created:', data);
+			} catch (error) {
+				console.error('Error:', error);
+			}
+		}
 	</script>
 </body>
 </html>
