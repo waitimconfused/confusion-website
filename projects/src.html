@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{PROJECT_NAME}} | Source</title>
+	<link rel="shortcut icon" href="/assets/favicon.png" type="image/*">
+	<style>
+		li {
+			list-style-type: none;
+			padding-left: 2rem;
+			background-color: #232323;
+		}
+		li div.title {
+			padding: 0.5rem;
+			color: white;
+			cursor: pointer;
+		}
+		li div.title li,
+		li div.title span {
+			display: inline;
+			overflow: hidden;
+		}
+		div.title:hover {
+			background-color: red;
+		}
+		body div.dir {
+			max-width: 20rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="dir"></div>
+	<script src="https://kit.fontawesome.com/55f363fd8f.js" crossorigin="anonymous"></script>
+	<script type="module">
+		const folderDiv = document.querySelector("div.dir");
+
+		async function showFolder(path="/", element=folderDiv){
+			let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-website/contents/${path}`);
+			let folderContents = await response.json();
+
+			for(let folderIndex = 0; folderIndex < folderContents.length; folderIndex ++){
+				let content = folderContents[folderIndex];
+
+				let itemElement = document.createElement("li");
+				element.appendChild(itemElement);
+
+				let titleElement = document.createElement("div");
+				titleElement.classList.add("title");
+				itemElement.appendChild(titleElement);
+
+				let icon = document.createElement("i");
+				icon.classList.add("fa-solid");
+				icon.classList.add((content.type == "dir")?"fa-folder-open":"fa-file");
+				titleElement.appendChild(icon);
+
+				let path = document.createElement("span");
+				titleElement.appendChild(path);
+				path.innerText = content.path;
+
+				if(content.type == "dir"){
+					let subdirElement = document.createElement("div");
+					subdirElement.classList.add("dir");
+					itemElement.appendChild(subdirElement);
+					titleElement.onclick = () => {
+						if(subdirElement.childElementCount == 0){
+							showFolder(content.path, subdirElement);
+						}else{
+							subdirElement.innerHTML = "";
+						}
+					};
+				}
+			}
+
+			console.log(folderContents);
+		}
+		showFolder("");
+	</script>
+</body>
+</html>

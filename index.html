@@ -1,30 +1,62 @@
-<!DOCTYPE html>
 <html>
-	<head>
-		<title>Confusion</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="icon" type="image/*" href="/assets/favicon.png">
-		<link rel="stylesheet" href="/styles/index.css">
-		<link rel="stylesheet" href="/styles/projects.css">
-		<script src="/components/template.js" defer></script>
-	</head>
+<head>
+	<title>Confusion</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/*" href="/assets/favicon.png">
+	<link rel="stylesheet" href="/styles/index.css">
+	<link rel="stylesheet" href="/styles/projects.css">
+	<script src="/components/template.js" defer=""></script>
+</head>
+<body>
+	<header>
+		<div class="title">
+			<img src="/assets/favicon.png">
+			<h1 id="title">Confusion</h1>
+		</div>
+	</header>
 
-	<body>
-		<header>
-			<div class="title">
-				<img src="/assets/favicon.png">
-				<h1 id="title"></h1>
-			</div>
-		</header>
+	<content>	
+		<aside>
+			<section>
+				<h1>Recently Updated</h1>
+				<div>
+					<a href="/projects/view?project=toolkit">Toolkit</a>
+					<a href="/projects/view?project=components">Components</a>
+					<a href="/projects/view?project=testing_page">Testing Page</a>
+				</div>
+			</section>
+			<section>
+				<h1>Newly Created</h1>
+				<div>
+					<a href="/projects/view?project=toolkit">Toolkit</a>
+					<a href="/projects/view?project=components">Components</a>
+					<a href="/projects/view?project=iso-world">Iso-world</a>
+					<a href="/projects/view?project=pixjs">Pix-JS</a>
+					<a href="/projects/view?project=js_node">JS Node Viewer</a>
+					<a href="/projects/view?project=faker_banker">Faker Banker</a>
+					<a href="/projects/view?project=asterisk">Asterisk</a>
+					<a href="/projects/view?project=confusion">Confusion</a>
+				</div>
+			</section>
+		</aside>
 
-		<content>
-			<template from="/components/" id="projects"></template>
-		
-			<main idz="content"></main>
-		</content>
-		
-		<template from="/components/" id="footer"></template>
-	</body>
+		<main id="content"></main>
+	</content>
+	
+	
+	<footer>
+		<a class="title" href="/">
+			<img src="/assets/favicon.png">
+			<h1>Confusion</h1>
+		</a>
+	
+		<div>
+			<a href="https://github.com/Dev-384/confusion-website" target="_blank" stylize="false" class="link">
+				GitHub
+				<img src="/assets/github/github-mark-white.svg">
+			</a>
+		</div>
+	</footer>
 
 	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 	<script type="module">
@@ -33,4 +65,5 @@
 
 		await loadProject("confusion");
 	</script>
+</body>
 </html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Confusion</title>
 	<link rel="icon" type="image/*" href="/assets/favicon.png">
 	<link rel="stylesheet" href="/styles/redo/index.css">
@@ -16,7 +17,7 @@
 			<h1 id="title">Confusion</h1>
 			<div class="separator"></div>
 			<p class="typewriter">A place for even the<br>oddest of ideas</p>
-			<a href="/projects/new">Create a Project</a>
+			<a href="/dashboard/">Log In</a>
 		</div>
 		<img src="/assets/emoji/brain.svg">
 	</header>
@@ -29,15 +30,6 @@
 		<strong>THIS</strong> is a place for those kinds of things. Random projects, keeped nice and tidy!
 		</p>
 	</section>
-
-	<div class="card-holder">
-		<section class="card">
-			<div class="background"></div>
-			<img src="/assets/emoji/brain.svg">
-			<h3>Project Title</h3>
-			<p>Short description</p>
-		</section>
-	</div>
 
 	<section>
 		<h2>How It Works</h2>
@@ -56,6 +48,30 @@
 		</p>
 
 		<template from="/components/" id="cool_grid"></template>
+	</section>
+
+	<section class="invisible">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+			<path fill="var(--secondary)" fill-opacity="1" d="M0,160L30,170.7C60,181,120,203,180,213.3C240,224,300,224,360,234.7C420,245,480,267,540,261.3C600,256,660,224,720,186.7C780,149,840,107,900,96C960,85,1020,107,1080,138.7C1140,171,1200,213,1260,218.7C1320,224,1380,192,1410,176L1440,160L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"></path>
+		</svg>
+
+		<div style="background: var(--secondary); margin: -24px 0px -20px 0px;">
+			<h2 style="color: black;">Popular Projects</h2>
+			<div class="card-holder">
+				<section class="card">
+					<div class="background"></div>
+					<img src="/assets/emoji/brain.svg">
+					<h3>JavaScript Node Viewer</h3>
+					<p>Just a bunch of floating nodes, drifting about</p>
+					<a href="/projects/view?project=js_node">View Project</a>
+				</section>
+			</div>
+			<br>
+		</div>
+	
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+			<path fill="var(--secondary)" fill-opacity="1" d="M0,96L40,85.3C80,75,160,53,240,69.3C320,85,400,139,480,160C560,181,640,171,720,181.3C800,192,880,224,960,213.3C1040,203,1120,149,1200,112C1280,75,1360,53,1400,42.7L1440,32L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path>
+		</svg>
 	</section>
 
 	<section>

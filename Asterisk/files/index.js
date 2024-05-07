@@ -63,6 +63,14 @@ export function get(path=""){
 	if(path.split(/(\w*\.\w*)$/).length == 1 && !path.endsWith("/")){
 		if(fs.existsSync(path+".html")) path += ".html";
 		else if(fs.existsSync(path+".htm")) path += ".htm";
+		else if(fs.existsSync(path+"/")) return {
+			type: "text/plain",
+			header: {
+				Location: "/"+path+"/"
+			},
+			content: "",
+			status: 302
+		};
 		else {
 			MESSAGES.code("404", path);
 			let content404 = get(page_404);

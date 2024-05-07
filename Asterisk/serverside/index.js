@@ -86,10 +86,12 @@ export function onRequest(request=http.IncomingMessage, response=http.ServerResp
 		let filePath = req_url;
 		let file = FILES.get(filePath);
 		let fileType = file.type;
+		let fileHeader = file.header || {};
 		let fileContent = file.content;
+
+		fileHeader["Content-Type"] = fileType;
 		
-		if(typeof fileType) response.setHeader("Content-Type", fileType);
-		response.statusCode = file.status;
+		response.writeHead(file.status, fileHeader);
 		response.end( fileContent );
 	}
 }
