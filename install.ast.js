@@ -3,47 +3,45 @@ console.clear();
 import fs, { readFileSync } from "node:fs";
 import node_path from "node:path";
 
-const relativeOutput = "./";
-const startingFile = "https://raw.githubusercontent.com/Dev-384/confusion-website/main/host.ast.js"
+const relativeOutput = "./Asterisk/";
+const startingFile = "https://dev-384.github.io/confusion-projects/asterisk/index.js"
 
-function createFolder(path){
+removeFolder(relativeOutput);
+
+function createFolder(path=""){
+	if(!path.endsWith("/")) path += "/";
 	if(!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
 }
+function removeFolder(path=""){
+	fs.rmSync(path, { recursive: true, force: true });
+}
 
-function createFile(path, content){
+function createFile(path="", content=""){
 	createFolder(node_path.dirname(path));
 	fs.writeFileSync(path, content);
 }
 
+async function downloadFromGithub(username="", repo="", path="", downloadDir=""){
+	let response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${path}`);
+	if(response.status != 200) return;
+	let fileContents = await response.json();
 
-async function readFileFromURL(url=""){
-	let response = await fetch(url);
-	let content = await response.text();
-	return content;
+	for(let i = 0; i < fileContents.length; i++){
+		let folderItem = fileContents[i];
+		let localPath = folderItem.path.replace(path, "");
+		if(folderItem.type == "dir"){
+			createFolder(downloadDir+"/"+localPath);
+			downloadFromGithub(username, repo, folderItem.path, downloadDir+"/"+localPath);
+			continue;
+		}
+		let response = await fetch(`https://raw.githubusercontent.com/${username}/${repo}/main/${folderItem.path}`);
+		let fileContent = await response.text();
+		createFile(downloadDir+"/"+localPath, fileContent);
+		console.log(downloadDir+"/"+localPath);
+	}
 }
 
-const importRegex = /(import|export) ([*\w]+ as \w+|[\w \{\}]+?) from "(.+?)"/g;
-async function recursiveImport(mainFilePath="", relativePath){
-	let fileContent = await readFileFromURL(mainFilePath);
-	let importStatements = fileContent.match(importRegex);
-	if(!importStatements) return;
-	importStatements.forEach(async (statement) => {
-		let dir = node_path.dirname(mainFilePath);
-		let importedPath = statement.split(importRegex)[3];
-		if(importedPath.startsWith("node")) return;
-		let importedFile = await readFileFromURL(dir + "/" + importedPath);
-		createFile(relativePath + "/" + importedPath, importedFile);
-		let newRelativeDir = node_path.dirname(relativePath + "/" + importedPath);
-		recursiveImport(dir + "/" + importedPath, newRelativeDir);
-	});
-}
-
-recursiveImport(startingFile, relativeOutput);
-
-if(!fs.existsSync(relativeOutput+"/host.ast.js")){
-	let serverFile = await readFileFromURL(startingFile)
-	createFile(relativeOutput+"/host.ast.js", serverFile);
-}
+downloadFromGithub("Dev-384", "confusion-projects", "asterisk", "Asterisk");
 
 var json = fs.existsSync(relativeOutput+"/package.json")?readFileSync(relativeOutput+"/package.json"):"{}";
 json = JSON.parse(json);
