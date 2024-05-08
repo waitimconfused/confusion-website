@@ -37,7 +37,7 @@ header div.gradient {
 	right: calc( var(--size) / -2 );
 	width: var(--size);
 	aspect-ratio: 1 / 1;
-	background: radial-gradient(circle calc(var(--size) / 2), #df6767 0%, #df6767 80%, transparent 100%);
+	background: radial-gradient(circle calc(var(--size) / 2), var(--primary) 0%, var(--primary) 80%, transparent 100%);
 	transform-origin: 50% 50%;
 	z-index: -1;
 }
