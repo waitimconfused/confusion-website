@@ -5,7 +5,7 @@ const favicon = document.querySelector("head link[rel=icon]");
 const meta_themeColor = document.querySelector("head meta[name=theme-color]");
 
 let src = "/404.html";
-if(projectName) src = `./demo/${projectName}/`;
+if(projectName) src = `https://dev-384.github.io/confusion-projects/${projectName}/`;
 // window.location.href = src;
 
 let iframe = document.createElement("iframe");

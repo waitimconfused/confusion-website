@@ -1,22 +1,6 @@
-export default function viewProject(project="", forceLoad=false){
-
-	let root = window.location.protocol + "//" + window.location.host + "/";
-	let isHomePage = window.location.href == root;
-	if(project == "confusion" && !isHomePage && !forceLoad){
-		window.location.href = "/";
-	}
-
-	let tempTitle = project
-		.toLowerCase()
-		.replaceAll("_", " ")
-		.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
-
-	document.title = tempTitle;
-	document.getElementById("title").innerText = tempTitle;
-	
-	let markdownPath = `/projects/markdown/${project}.md`;
-	if(project == "confusion") markdownPath = "/README.md";
-
+function getMarkdown(project="", markdownPath=""){
+	if(!markdownPath) markdownPath = `https://dev-384.github.io/confusion-projects/${project}/readme.md`;
+	if(markdownPath.endsWith("undefined")) return "";
 	fetch(markdownPath).then((response) => {
 		if(response.status !== 200){
 			let iframe = document.createElement("iframe");
@@ -47,7 +31,35 @@ export default function viewProject(project="", forceLoad=false){
 		makeContent(sections);
 
 		return markdown;
+	}).catch(() => {
+		markdownPath = markdownPath.replace(/README$/, "undefined");
+		markdownPath = markdownPath.replace(/README\.md$/, "README");
+		markdownPath = markdownPath.replace(/readme$/, "README.md");
+		markdownPath = markdownPath.replace(/readme\.md$/, "readme");
+		return getMarkdown(project, markdownPath);
 	});
+}
+
+export default function viewProject(project="", forceLoad=false){
+
+	let root = window.location.protocol + "//" + window.location.host + "/";
+	let isHomePage = window.location.href == root;
+	if(project == "confusion" && !isHomePage && !forceLoad){
+		window.location.href = "/";
+	}
+
+	let tempTitle = project
+		.toLowerCase()
+		.replaceAll("_", " ")
+		.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+
+	document.title = tempTitle;
+	document.getElementById("title").innerText = tempTitle;
+	
+	let markdownPath = `https://raw.githubusercontent.com/Dev-384/confusion-projects/main/${project}/readme.md`;
+	if(project == "confusion") markdownPath = "/README.md";
+
+	return getMarkdown(project);
 }
 
 function options(markdown="", project=""){

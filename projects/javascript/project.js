@@ -1,5 +1,5 @@
-import { hideOptionsPane, globalGraph, camera } from "../demo/js_node/index.js";
-import Node from "../demo/js_node/display/nodes.js";
+import { hideOptionsPane, globalGraph, camera } from "https://dev-384.github.io/confusion-projects/js_node/index.js";
+import Node from "https://dev-384.github.io/confusion-projects/js_node/display/nodes.js";
 
 hideOptionsPane();
 
@@ -27,9 +27,15 @@ let projectDemo = (new Node)
 	.setGlyph("🪀")
 	.setColour("#FFB3B3");
 
-let response = await fetch('https://api.github.com/repos/Dev-384/confusion-website/contents/projects/markdown');
+let response = await fetch('https://api.github.com/repos/Dev-384/confusion-projects/contents/');
 let json = await response.json();
-let projects = json.map(file => file.name);
+let projects = json.map((file) => {
+	return (file.type == "dir")?file.name:undefined
+});
+
+projects = projects.filter((projectName) => {
+	return !!projectName;
+});
 
 projects.forEach((project="") => {
 	let projectName = project.replace(/\.\w+?$/, "");
