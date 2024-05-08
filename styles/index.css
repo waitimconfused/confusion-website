@@ -1,324 +1,180 @@
-@import url("./fonts/fonts.css");
-@import url("./root.css");
+@import url("../fonts/fonts.css");
+:root {
+	--random-grid-size: 15rem;
+}
 
-html {
-	padding: 0px;
-	margin: 0px;
+@media (prefers-color-scheme: light) {
+	:root {
+		--text: #000000;
+		--background: #ebebeb;
+		--background-other: #dbdbdb;
+		--primary: #8d0202;
+		--secondary: #4d0000;
+		--accent: #3f8d4d;
+		color-scheme: light;
+	}
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--text: #ffffff;
+		--background: #151515;
+		--background-other: #232323;
+		--primary: #fd7170;
+		--secondary: #ffb3b3;
+		--accent: #72bf80;
+		color-scheme: dark;
+	}
+}
+
+html { 
 	scroll-behavior: smooth;
 }
 body {
-	margin: 0px;
-	background: var(--background);
-	padding: var(--padding);
-	top: 0px;
-	left: 0px;
-	box-sizing: border-box;
-	font-family: "Cairo Play";
-	scroll-behavior: smooth;
-}
-
-header {
-	position: relative;
-	background: var(--section-background);
-	border-radius: var(--border-radius);
-	padding: var(--padding);
-	box-sizing: border-box;
-	display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-}
-header a {
-	position: absolute;
-	min-width: max-content;
-	bottom: var(--padding);
-	right: var(--padding);
-	border-radius: calc(var(--border-radius) - var(--padding) ) !important;
-}
-header img {
-	width: 138px;
-	height: 138px;
-}
-header h1 {
-	width: max-content;
-	color: var(--text-color);
-	font-size: 5rem;
-	height: 138px;
-	line-height: 138px;
-    margin: 0px;
-    font-weight: 900;
-}
-
-p, div.code, code {
-	font-size: 16px;
-	text-wrap: wrap;
-}
-div.code, code {
-	max-width: calc(100vw - var(--padding)* 7 - 20rem);
-	color: white;
-	position: relative;
-	display: inline-block;
-	font-family: monospace;
-	font-weight: normal;
-	border: 1px solid hsl(225 calc( 1 * 6.3%) 12.5% / 1);
-	background: hsl(220 calc( 1 * 6.5%) 18%);
-	padding: 0.5rem;
-	border-radius: calc(var(--border-radius) - var(--padding));
-}
-pre:first-child { margin-top: 0px; }
-pre:last-child { margin-bottom: 0px; }
-code { padding: 0.25rem 0.5rem; }
-code:is(.md, .js)::before {
-	content: "File";
-	background-color: rgba(0, 0, 0, 0.5);
-	position: absolute;
-	display: block;
+	background-color: var(--background);
+	color: var(--text);
+	font-family: "JetBrains Mono", 'Courier New', Courier, monospace;
+	background-size: auto 100vh;
 	width: 100%;
-	top: 0px;
-	left: 0px;
-	padding: 0.5rem 2rem;
-	box-sizing: border-box;
-	border-top-left-radius: calc(var(--border-radius) - var(--padding) - 1px);
-	border-top-right-radius: calc(var(--border-radius) - var(--padding) - 1px);
-}
-code:is(.md, .js) {
-	display: block;
-	padding-top: 2.5rem;
-}
-code.md::before { content: "Markdown"; }
-code.js::before { content: "Javascript"; }
-
-content {
-	display: flex;
-	width: 100%;
-	align-items: flex-start;
-	justify-content: space-between;
-	gap: var(--padding)
-}
-
-aside {
-	float: left;
-	min-width: var(--sidebar-width);
-	box-sizing: border-box;
-	width: 0px;
-	max-height: calc(100vh - var(--padding) * 2);
-    overflow: auto;
-	border-radius: var(--border-radius);
-    margin-top: var(--padding);
-	display: flex;
-	flex-direction: column;
-    gap: var(--padding);
-}
-aside section {
-	background: var(--section-background);
-	padding: var(--padding);
-	border-radius: var(--border-radius);
-	box-sizing: border-box;
-	color: var(--text-color);
-}
-aside section:first-of-type {
-	margin-top: 0px;
-}
-aside::-webkit-scrollbar {
-	display: none;
-}
-aside section div {
-	border-radius: calc(var(--border-radius) - var(--padding));
-	padding: calc( var(--padding) / 2 );
-	box-sizing: border-box;
-	background: var(--background);
-	margin-top: var(--padding);
-	overflow: auto;
-	max-height: calc(1rem + 3rem * 4);
-}
-aside section div:first-of-type {
-	margin-top: 0px;
-}
-aside section div div {
-	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
-	padding: calc( var(--padding) / 4 );
-	box-sizing: border-box;
-	background: var(--section-background);
-	margin-top: calc( var(--padding) / 2 );
-}
-aside section div div:first-child {
-	margin-top: 0px;
-}
-aside img {
-	width: 1rem;
-	height: 1rem;
-}
-main {
-	width: 100%;
-	margin-top: var(--padding);
-	display: flex;
-	flex-direction: column;
-    gap: var(--padding);
-}
-main section,
-main footer {
-	background: var(--section-background);
-	padding: var(--padding);
-	border-radius: var(--border-radius);
-	box-sizing: border-box;
-	color: var(--text-color);
-	width: 100%;
-}
-
-main section img {
-    display: inline-flex;
-    float: left;
-    width: max-content;
-    max-width: 100%;
-    aspect-ratio: 2 / 1;
-    object-fit: cover;
-    object-position: center center;
-    box-sizing: border-box;
-    border-radius: calc(var(--border-radius) - var(--padding));
-    max-height: 20rem;
-}
-
-
-
-@media only screen and (width < 750px) {
-	content {
-		display: flex;
-		flex-direction: column-reverse;
-	}
-	aside {
-		width: 100%;
-		max-height: none;
-		height: auto;
-	}
-	main {
-		width: 100%;
-	}
-	header h1 {
-		font-size: clamp(0px, 7.5vw, 5rem);
-	}
-
-	aside section div {
-		display: block;
-		max-height: 10rem;
-		overflow: auto;
-	}
-}
-
-@media only screen and (width > 900px) {
-	aside {
-		position: sticky;
-		top: var(--padding);
-	}
-}
-
-p {
-	margin: 0px;
-}
-
-a:not([stylize=false]) {
-	color: var(--text-color);
-	text-decoration: underline;
-	transition: background 400ms, color 400ms;
-	text-align: center;
-	/* background: var(--accent1); */
-	
-	text-decoration-color: var(--accent1);
-}
-
-aside a {
-	display: block;
-}
-aside section div a:not([stylize=false]) {
-
-	color: var(--text-color);
-	text-decoration: none;
-	transition: background 400ms, color 400ms;
-	text-align: center;
-	background: var(--accent1);
-	box-sizing: border-box;;
-	width: 100%;
-	border-radius: calc(var(--border-radius) - var(--padding) - ( var(--padding) / 2 ) );
-	padding: calc( var(--padding) / 4 );
-	margin-top: calc( var(--padding) / 2 );
-}
-aside section div a:not([stylize=false]):first-child {
-	margin-top: 0px;
-}
-
-a:not([stylize=false]):hover,
-a:not([stylize=false]):active {
-	text-decoration-color: var(--accent2);
-}
-a:visited,
-a:active,
-a:link {
-	color: var(--text-color);
-}
-aside section div a:not([stylize=false]):hover,
-aside section div a:not([stylize=false]):active {
-	background: var(--accent2);
-	color: black;
-}
-
-
-footer {
-	background: var(--section-background);
-	border-radius: var(--border-radius);
-	padding: var(--padding);
-	box-sizing: border-box;
-	margin-top: var(--padding);
-}
-
-footer img {
-	width: 69px;
-	height: 69px;
-}
-
-footer h1 {
-	font-size: 2.5rem;
 	padding: 0px;
-	height: 69px;
-	line-height: 69px;
 	margin: 0px;
+	background-repeat: no-repeat;
+	background-position: top left;
 }
-
-.title {
+nav {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 5.5rem;
+	background-color: var(--background);
 	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 0px 1rem;
+	z-index: 100;
+	transition: background-color, height;
+	transition-duration: 400ms;
+}
+nav.solid {
+	background-color: color-mix(in srgb, var(--background), black 50%);
+	height: 5rem;
+}
+@media (prefers-color-scheme: light){
+	nav {
+		background-color: color-mix(in srgb, var(--background) 90%, transparent);
+	}
+	nav:after {
+		content: "";
+		position: absolute;
+		top: calc(5rem - 5px);
+		left: 1rem;
+		width: calc(100% - 2rem);
+		height: 10px;
+		background-color: var(--primary);
+		border-radius: 5px;
+		opacity: 0;
+		transition: opacity, transform;
+		transition-duration: 400ms;
+	}
+	nav.solid {
+		background-color: var(--background);
+	}
+	nav.solid:after {
+		opacity: 1;
+	}
+}
+nav div.site {
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: row;
 	align-items: center;
 }
-
-a.title { text-decoration: none; width: min-content; }
-a.title h1 { position: relative; }
-a.title h1:after {
-	content: "";
-    position: absolute;
-    display: inline-block;
-    width: 0%;
-    height: 4px;
-    left: 0px;
-    bottom: 10px;
-    background-color: transparent;
-	transition: all ease-out 300ms;
+nav div.site h1 {
+	display: inline-block;
+	margin: 0px;
 }
-a.title:hover h1:after {
-    bottom: 14px;
+nav div.site img {
+	height: 3rem;
+}
+h1, h2 {
+	font-family: 'Cairo Play', 'Courier New', Courier, monospace;
+}
+h2 {
+	text-decoration: underline;
+	text-decoration-color: #72bf80;
+}
+p { margin: 0px; }
+h2:before {
+	content: "## ";
+	color: #72bf80;
+}
+div.separator {
+	display: block;
+	background: var(--accent);
+	height: 10px;
 	width: 100%;
-    background-color: var(--accent1);
-}
-footer {
-	position: relative;
-}
-footer .link {
-	position: absolute;
-	bottom: var(--padding);
-	right: var(--padding);
-	padding-right: calc(26.6px + var(--padding) / 2);
+	border-radius: 5px;
 }
 
-footer .link img {
-	width: 26.6px;
-	height: 26.6px;
-	bottom: 0px;
+a.item {
+	font-size: large;
+	position: relative;
+	color: var(--text);
+	text-decoration: none;
+	margin: 0px 0px 0px 2rem;
+}
+a.item:after {
+	content: "";
 	position: absolute;
-    right: 0px;
-    bottom: 0px;
+	left: 0px;
+	bottom: -5px;
+	background-color: var(--accent);
+	border-radius: 2.5px;
+	width: 0%;
+	height: 5px;
+	opacity: 0;
+	transform: translate(0px, 5px);
+	transform-origin: top left;
+	transition: opacity, transform, width;
+	transition-duration: 400ms;
+}
+a.item:hover:after {
+	opacity: 1;
+	transform: translate(0px, 0px);
+	width: 100%;
+}
+a[href]:not(a.item),
+a[onclick]:not(a.item),
+.button:not(.item) {
+	font-family: "JetBrains Mono";
+	display: inline-block;
+	width: max-content;
+	box-sizing: border-box;
+	padding: 0.5rem 1rem;
+	background: var(--primary);
+	border-radius: 1rem;
+	color: var(--text);
+	text-decoration: none;
+	transition: background;
+	transition-duration: 400ms;
+	cursor: pointer;
+	outline: var(--accent);
+	border: none;
+}
+a[href]:active {
+	cursor:wait;
+}
+a[href]:not(a.item, a.disabled):hover,
+a[onclick]:not(a.item, a.disabled):hover,
+.button:not(.item, .disabled):hover {
+	background: var(--secondary);
+	color: var(--background);
+}
+a.disabled[href]:not(a.item),
+a.disabled[onclick]:not(a.item),
+.button.disabled:not(a.item) {
+	background: color-mix(in srgb, var(--primary), rgb(127.5, 127.5, 127.5) 75%);
+	color: var(--background);
+	cursor: no-drop;
 }

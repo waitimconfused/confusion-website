@@ -42,7 +42,7 @@ header div.gradient {
 	z-index: -1;
 }
 
-section {
+section:not(.invisible) {
 	position: relative;
 	background-color: var(--background-other);
 	border-radius: 2rem;
@@ -50,7 +50,7 @@ section {
 	padding: 1rem;
 	margin-bottom: 1rem;
 }
-section:not(.card) {
+section:not(.invisible, .card) {
 	width: 80%;
 	position: relative;
 	left: 50%;
@@ -62,13 +62,13 @@ div.card-holder {
 	justify-content: center;
 	margin-bottom: 1rem;
 }
-section.card {
+section:not(.invisible).card {
 	position: relative;
 	width: 15rem;
 	aspect-ratio: 0.75 / 1;
 	margin: 0px 0.5rem;
 }
-section.card div.background {
+section:not(.invisible).card div.background {
 	position: relative;
 	width: 100%;
 	height: 5rem;
@@ -76,10 +76,10 @@ section.card div.background {
 	border-radius: 0.5rem;
 }
 
-section.card img {
+section:not(.invisible).card img {
 	position: absolute;
 }
 
-section:has(div.grid) > *:not(div.grid) {
+section:not(.invisible):has(div.grid) > *:not(div.grid) {
 	max-width: calc(100% - var(--random-grid-size) - 1rem);
 }
