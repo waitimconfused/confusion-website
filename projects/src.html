@@ -36,7 +36,7 @@
 		const folderDiv = document.querySelector("div.dir");
 
 		async function showFolder(path="/", element=folderDiv){
-			let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-website/contents/${path}`);
+			let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-projects/contents/${path}`);
 			let folderContents = await response.json();
 
 			for(let folderIndex = 0; folderIndex < folderContents.length; folderIndex ++){

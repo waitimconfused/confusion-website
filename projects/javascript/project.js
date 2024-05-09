@@ -4,7 +4,7 @@ import Node from "https://dev-384.github.io/confusion-projects/js_node/display/n
 hideOptionsPane();
 
 globalGraph.disableEditing();
-globalGraph.setBG("#151515");
+globalGraph.setBG("#0b0b0b");
 globalGraph.setSize(500, 500);
 globalGraph.styles.text.minimumZoom = 0.5;
 globalGraph.styles.line.size = 4;

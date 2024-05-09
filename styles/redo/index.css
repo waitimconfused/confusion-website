@@ -97,6 +97,70 @@ nav div.site h1 {
 nav div.site img {
 	height: 3rem;
 }
+
+footer {
+	background: var(--background-other);
+	padding: 2rem;
+	box-sizing: border-box;
+	margin-top: 2rem;
+	display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+footer img {
+	width: 69px;
+	height: 69px;
+}
+
+footer h1 {
+	font-size: 2.5rem;
+	padding: 0px;
+	height: 69px;
+	line-height: 69px;
+	margin: 0px;
+}
+
+footer .title {
+	display: flex;
+	align-items: center;
+}
+
+footer a.title { text-decoration: none; width: min-content; }
+footer a.title h1 { position: relative; }
+footer a.title h1:after {
+	content: "";
+    position: absolute;
+    display: inline-block;
+    width: 0%;
+    height: 4px;
+    left: 0px;
+    bottom: 10px;
+    background-color: transparent;
+	transition: all ease-out 300ms;
+}
+footer a.title:hover h1:after {
+    bottom: 14px;
+	width: 100%;
+    background-color: var(--accent1);
+}
+footer {
+	position: relative;
+}
+footer .link {
+	position: absolute;
+	padding-right: calc(26.6px + 1rem);
+}
+
+footer .link img {
+	width: 26.6px;
+	height: 26.6px;
+	bottom: 0px;
+	position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
 h1, h2 {
 	font-family: 'Cairo Play', 'Courier New', Courier, monospace;
 }
@@ -144,8 +208,8 @@ a.item:hover:after {
 	transform: translate(0px, 0px);
 	width: 100%;
 }
-a[href]:not(a.item),
-a[onclick]:not(a.item),
+a[href]:not(.item),
+a[onclick]:not(.item),
 .button:not(.item) {
 	font-family: "JetBrains Mono";
 	display: inline-block;
@@ -165,15 +229,15 @@ a[onclick]:not(a.item),
 a[href]:active {
 	cursor:wait;
 }
-a[href]:not(a.item, a.disabled):hover,
-a[onclick]:not(a.item, a.disabled):hover,
+a[href]:not(.item, .disabled):hover,
+a[onclick]:not(.item, .disabled):hover,
 .button:not(.item, .disabled):hover {
 	background: var(--secondary);
 	color: var(--background);
 }
 a.disabled[href]:not(a.item),
 a.disabled[onclick]:not(a.item),
-.button.disabled:not(a.item) {
+.button.disabled:not(.item) {
 	background: color-mix(in srgb, var(--primary), rgb(127.5, 127.5, 127.5) 75%);
 	color: var(--background);
 	cursor: no-drop;
