@@ -56,8 +56,9 @@ for(let i = 0; i < projects.length; i++){
 	viewNode.setColour("#E06767");
 	viewNode.setGlyph("📁");
 	viewNode.addEventListener("dblclick", () => {
-		window.open(`/projects/view?project=${projectName}`)
-	})
+		window.open(`/projects/view?project=${projectName}`);
+	});
+	viewNode.setAttribute("title", "Double click to open");
 	projectView.connectTo(viewNode);
 
 	console.log(fileNames);
