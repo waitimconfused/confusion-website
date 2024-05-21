@@ -27,18 +27,30 @@ let projectDemo = (new Node)
 	.setGlyph("🪀")
 	.setColour("#FFB3B3");
 
-let response = await fetch('https://api.github.com/repos/Dev-384/confusion-projects/contents/');
+homepage.connectTo(projectView);
+homepage.connectTo(projectDemo);
+
+let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-projects/contents/`);
 let json = await response.json();
 let projects = json.map((file) => {
 	return (file.type == "dir")?file.name:undefined
 });
 
-projects = projects.filter((projectName) => {
-	return !!projectName;
-});
+for(let i = 0; i < projects.length; i++){
+	let projectPath = projects[i];
 
-projects.forEach((project="") => {
-	let projectName = project.replace(/\.\w+?$/, "");
+	let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-projects/contents/${projectPath}/`);
+	let json = await response.json();
+
+	let fileNames = json.map((file) => {
+		return (file.type == "file")?file.name:undefined
+	});
+
+	if(!fileNames.includes("readme.md") && !fileNames.includes("README.md") && !fileNames.includes("readme") && !fileNames.includes("README")){
+		continue;
+	}
+
+	let projectName = projectPath.replace(/\.\w+?$/, "");
 	let viewNode = new Node;
 	viewNode.setTitle(projectName);
 	viewNode.setColour("#E06767");
@@ -48,7 +60,5 @@ projects.forEach((project="") => {
 	})
 	projectView.connectTo(viewNode);
 
-});
-
-homepage.connectTo(projectView);
-homepage.connectTo(projectDemo);
+	console.log(fileNames);
+}
