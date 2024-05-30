@@ -22,6 +22,16 @@
 			<script>
 				var nav = document.querySelector("nav");
 				var logoLink = document.querySelector("nav div.site");
+				var meta_themeColor = document.createElement("meta");
+				meta_themeColor.name = "theme-color";
+				meta_themeColor.content = "#151515";
+				document.head.appendChild(meta_themeColor);
+				function update_meta_themeColor(){
+					let bgColor = window.getComputedStyle(nav).backgroundColor;
+					meta_themeColor.setAttribute("content", bgColor);
+					window.requestAnimationFrame(update_meta_themeColor);
+				}
+				update_meta_themeColor();
 				function onscroll(){
 					let scrollY = window.scrollY;
 					nav = document.querySelector("nav");

@@ -43,9 +43,6 @@ async function getGithubContents(path=""){
 	return data;
 }
 
-let mainDir = await getGithubContents("");
-console.log(mainDir);
-
 let json = await getGithubContents("");
 let projects = json.map((file) => {
 	return (file.type == "dir")?file.name:undefined
@@ -55,6 +52,8 @@ for(let i = 0; i < projects.length; i++){
 	let projectPath = projects[i];
 
 	let json = await getGithubContents(projectPath);
+
+	console.log(json);
 
 	let fileNames = json.map((file) => {
 		return (file.type == "file")?file.name:undefined

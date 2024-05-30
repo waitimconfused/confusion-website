@@ -8,12 +8,17 @@
 	height: 100vh;
 	font-family: "JetBrains Mono";
 }
+
 .codespace .sidebar {
-	position: absolute;
-	width: 15rem;
-	height: 100%;
-	background-color: #1C1C1E;
+	padding: 1rem;
+    position: absolute;
+    width: 15rem;
+    height: 100%;
+    background-color: #1C1C1E;
+    box-sizing: border-box;
+    color: white;
 }
+
 .codespace .tabs {
 	position: absolute;
 	display: flex;
@@ -25,6 +30,7 @@
 	color: white;
 	cursor: pointer;
 }
+
 .codespace .tabs div {
 	display: flex;
 	width: max-content;
@@ -35,33 +41,45 @@
 	justify-content: space-between;
 	gap: 0.5rem;
 }
+
 .codespace .tabs div.selected {
 	background-color: color-mix(in srgb, #1A1B1F, white 5%);
 }
+
 .codespace .tabs div.selected i.fa-xmark,
 .codespace .tabs div:hover i.fa-xmark {
 	visibility: visible;
 }
+
 .codespace .tabs div:not(:first-child) {
 	border-left: 2px solid color-mix(in srgb, #1A1B1F, white 5%);
 }
+
 .codespace .tabs div i.fa-xmark {
 	color: red;
 	visibility: hidden;
 }
-.codespace .file-content {
-position: absolute;
-top: 2rem;
-left: 15rem;
-width: 100%;
-height: 100%;
-background-color: #17181C;
-box-sizing: border-box;
-padding: 1rem;
-color: white;
+
+.codespace .CodeMirror {
+	position: absolute;
+	top: 2rem;
+	left: 15rem;
+	width: 100%;
+	height: 100%;
 }
 
-.codespace .fa-js { color: #F7DF1E; }
-.codespace .fa-code { color: #E34C26; }
-.codespace .fa-markdown { color: #005B96; }
-.codespace .fa-circle-info { color: #005B96; }
+.codespace .fa-js {
+	color: #F7DF1E;
+}
+
+.codespace .fa-code {
+	color: #E34C26;
+}
+
+.codespace .fa-markdown {
+	color: #005B96;
+}
+
+.codespace .fa-circle-info {
+	color: #005B96;
+}

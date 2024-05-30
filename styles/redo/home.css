@@ -50,6 +50,15 @@ section:not(.invisible) {
 	padding: 1rem;
 	margin-bottom: 1rem;
 }
+@media (width <= 600px) {
+	section:not(.invisible, .card) {
+		min-width: calc(100vw - 2rem);
+	}
+	div.links {
+		display: none;
+		visibility: hidden;
+	}
+}
 section:not(.invisible, .card) {
 	width: 80%;
 	position: relative;
