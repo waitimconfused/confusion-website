@@ -1,8 +1,8 @@
 import { hideOptionsPane, globalGraph, camera } from "https://dev-384.github.io/confusion-projects/js_node/index.js";
 import Node from "https://dev-384.github.io/confusion-projects/js_node/display/nodes.js";
-import { Octokit } from "https://esm.sh/octokit";
+// import { Octokit } from "https://esm.sh/octokit";
 
-const octokit = new Octokit({ auth: `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` });
+// const octokit = new Octokit({ auth: "" });
 
 hideOptionsPane();
 
@@ -34,11 +34,15 @@ homepage.connectTo(projectView);
 homepage.connectTo(projectDemo);
 
 async function getGithubContents(path=""){
-	let result = await octokit.rest.repos.getContent({
-		owner: "Dev-384",
-		repo: "confusion-projects",
-		path: path
-	})
+	let response = await fetch("https://api.github.com/repos/Dev-384/github-projects/git/trees/main?recursive=1");
+	let result = await response.json();
+
+	// await octokit.rest.repos.getContent({
+	// 	owner: "Dev-384",
+	// 	repo: "confusion-projects",
+	// 	path: path
+	// })
+
 	let data = result.data;
 	return data;
 }
