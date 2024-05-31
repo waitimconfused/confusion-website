@@ -1,11 +1,19 @@
+import packageJSON from "../../package.json" with { type: "json" };
+
+const port = packageJSON.port;
+
 const urlParams = new URLSearchParams(window.location.search);
 const projectName = urlParams.get('project');
+const isLocal = urlParams.has("local");
 
 const favicon = document.querySelector("head link[rel=icon]");
 const meta_themeColor = document.querySelector("head meta[name=theme-color]");
 
 let src = "/404.html";
-if(projectName) src = `https://dev-384.github.io/confusion-projects/${projectName}/`;
+if(projectName){
+	if(!isLocal) src = `https://dev-384.github.io/confusion-projects/${projectName}/`;
+	else src = `http://localhost:${port+1}/${projectName}`;
+}
 // window.location.href = src;
 
 let iframe = document.createElement("iframe");
@@ -19,25 +27,30 @@ iframe.style.border = "none";
 iframe.style.outline = "none";
 
 iframe.onload = () => {
-	let iframeDoc = iframe.contentWindow.document;
-	document.title = iframeDoc.title;
+	try{
+		let iframeDoc = iframe.contentWindow || iframe.contentWindow.document;
+		console.log(iframeDoc.body.innerHTML);
+		// document.title = iframeDoc.title;
 
-	let iframeFavicon = iframeDoc.querySelector("head link[rel=icon]");
-	if(iframeFavicon) {
-		if(iframeFavicon.href.startsWith("./")) {
-			iframeFavicon.href = `${iframe.src}/${iframeFavicon.href}`
-		}
-		favicon.href = iframeFavicon.href;
-		favicon.type = iframeFavicon.type;
+		// let iframeFavicon = iframeDoc.querySelector("head link[rel=icon]");
+		// if(iframeFavicon) {
+		// 	if(iframeFavicon.href.startsWith("./")) {
+		// 		iframeFavicon.href = `${iframe.src}/${iframeFavicon.href}`
+		// 	}
+		// 	favicon.href = iframeFavicon.href;
+		// 	favicon.type = iframeFavicon.type;
+		// }
+
+		// let iframeMetaThemeColor = iframeDoc.querySelector("head meta[name=theme-color]");
+		// if(iframeMetaThemeColor) {
+		// 	meta_themeColor.content = iframeMetaThemeColor.content
+		// }
+
+		// iframe.focus();
+		// console.groupEnd();
+		// console.group("Page: " + iframeDoc.location.pathname);
+	} catch (error) {
+		console.error("Error accessing iframe content:", error);
 	}
-
-	let iframeMetaThemeColor = iframeDoc.querySelector("head meta[name=theme-color]");
-	if(iframeMetaThemeColor) {
-		meta_themeColor.content = iframeMetaThemeColor.content
-	}
-
-	iframe.focus();
-	console.groupEnd();
-	console.group("Page: " + iframeDoc.location.pathname);
 }
 document.body.prepend(iframe);

@@ -1,8 +1,17 @@
-function getMarkdown(project="", markdownPath=""){
-	if(!markdownPath) markdownPath = `https://dev-384.github.io/confusion-projects/${project}/readme.md`;
+import packageJSON from "../../package.json" with { type: "json" };
+
+const port = packageJSON.port;
+
+function getMarkdown(project="", markdownPath="", isLocal=false){
+	if(!markdownPath){
+		if(!isLocal) markdownPath = `https://dev-384.github.io/confusion-projects/${project}/readme.md`;
+		else markdownPath = `http://localhost:${port+1}/${project}/readme.md`;
+	}
 	if(markdownPath.endsWith("undefined")) return "";
+	console.log(markdownPath);
 	fetch(markdownPath).then((response) => {
-		if(response.status !== 200){
+		console.log("Status:", response.status);
+		if(response.status == 404){
 			let iframe = document.createElement("iframe");
 			document.documentElement.innerHTML = "";
 			iframe.src = "/404";
@@ -17,7 +26,7 @@ function getMarkdown(project="", markdownPath=""){
 		return response.text();
 	}).then((markdown) => {
 		if(typeof markdown == "number") return;
-		options(markdown, project);
+		options(markdown, project, isLocal);
 		markdown = markdown.replace(/(\.\.\.[\S\s]+?\.\.\.\n*)/, "");
 		let h1 = markdown.split(/^# {0,}(.*)/gm)[1];
 
@@ -40,7 +49,7 @@ function getMarkdown(project="", markdownPath=""){
 	});
 }
 
-export default function viewProject(project="", forceLoad=false){
+export default function viewProject(project="", forceLoad=false, isLocal=false){
 
 	let root = window.location.protocol + "//" + window.location.host + "/";
 	let isHomePage = window.location.href == root;
@@ -57,12 +66,13 @@ export default function viewProject(project="", forceLoad=false){
 	document.getElementById("title").innerText = tempTitle;
 	
 	let markdownPath = `https://raw.githubusercontent.com/Dev-384/confusion-projects/main/${project}/readme.md`;
+	if(isLocal) markdownPath = `http://localhost:${port+1}/${project}/readme.md`;
 	if(project == "confusion") markdownPath = "/README.md";
 
-	return getMarkdown(project);
+	return getMarkdown(project, "", isLocal);
 }
 
-function options(markdown="", project=""){
+function options(markdown="", project="", isLocal=false){
 	let optionsObject = {};
 	if(markdown.startsWith("\.\.\.")){
 		let options = markdown.split("\.\.\.")[1].split(/(\S+?): *([\S ]*)/g);
@@ -88,7 +98,7 @@ function options(markdown="", project=""){
 		let demoButton = document.createElement("a");
 		demoButton.innerText = "Try It";
 		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
-		demoButton.href = `/projects/demo?project=${project}`;
+		demoButton.href = `/projects/demo?project=${project}${ isLocal?"&local":"" }`;
 		document.querySelector("header").appendChild(demoButton);
 	}
 }
