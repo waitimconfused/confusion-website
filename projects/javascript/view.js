@@ -1,11 +1,17 @@
 import packageJSON from "../../package.json" with { type: "json" };
+const PORT = packageJSON.port;
 
-const port = packageJSON.port;
+var IP = sessionStorage.getItem("machine-key");
+while(!IP){
+	IP = prompt("Enter your machine key:");
+	sessionStorage.setItem("machine-key", IP);
+}
+IP = atob(IP);
 
 function getMarkdown(project="", markdownPath="", isLocal=false){
 	if(!markdownPath){
 		if(!isLocal) markdownPath = `https://dev-384.github.io/confusion-projects/${project}/readme.md`;
-		else markdownPath = `http://localhost:${port+1}/${project}/readme.md`;
+		else markdownPath = `http://${IP}:${PORT+1}/${project}/readme.md`;
 	}
 	if(markdownPath.endsWith("undefined")) return "";
 	console.log(markdownPath);
@@ -66,7 +72,7 @@ export default function viewProject(project="", forceLoad=false, isLocal=false){
 	document.getElementById("title").innerText = tempTitle;
 	
 	let markdownPath = `https://raw.githubusercontent.com/Dev-384/confusion-projects/main/${project}/readme.md`;
-	if(isLocal) markdownPath = `http://localhost:${port+1}/${project}/readme.md`;
+	if(isLocal) markdownPath = `http://${IP}:${PORT+1}/${project}/readme.md`;
 	if(project == "confusion") markdownPath = "/README.md";
 
 	return getMarkdown(project, "", isLocal);

@@ -1,6 +1,12 @@
 import packageJSON from "../../package.json" with { type: "json" };
+const PORT = packageJSON.port;
 
-const port = packageJSON.port;
+var IP = sessionStorage.getItem("machine-key");
+while(!IP){
+	IP = prompt("Enter your machine key:");
+	sessionStorage.setItem("machine-key", IP);
+}
+IP = atob(IP);
 
 const urlParams = new URLSearchParams(window.location.search);
 const projectName = urlParams.get('project');
@@ -12,7 +18,7 @@ const meta_themeColor = document.querySelector("head meta[name=theme-color]");
 let src = "/404.html";
 if(projectName){
 	if(!isLocal) src = `https://dev-384.github.io/confusion-projects/${projectName}/`;
-	else src = `http://localhost:${port+1}/${projectName}`;
+	else src = `http://${IP}:${PORT+1}/${projectName}`;
 }
 // window.location.href = src;
 
