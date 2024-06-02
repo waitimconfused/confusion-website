@@ -18,7 +18,7 @@ let homepage = (new Node)
 	.moveTo(0, 0)
 	.setAttribute("title", "Double click to go home")
 	.addEventListener("dblclick", () => {
-		window.open(`/`);
+		window.open(`/`, "_self");
 	});
 
 let projectView = (new Node)
@@ -33,7 +33,7 @@ let projectDemo = (new Node)
 	.setColour("#FFB3B3")
 	.setAttribute("title", "Double click to view project demos")
 	.addEventListener("dblclick", () => {
-		window.open(`/projects/demo`);
+		window.open(`/projects/demo`, "_self");
 	});
 
 homepage.connectTo(projectView);
