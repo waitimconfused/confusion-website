@@ -15,17 +15,26 @@ let homepage = (new Node)
 	.setTitle("Confusion")
 	.setGlyph("🏠")
 	.setColour("#FFB3B3")
-	.moveTo(0, 0);
+	.moveTo(0, 0)
+	.setAttribute("title", "Double click to go home")
+	.addEventListener("dblclick", () => {
+		window.open(`/`);
+	});
 
 let projectView = (new Node)
 	.setTitle("View")
 	.setGlyph("👁️")
-	.setColour("#FFB3B3");
+	.setColour("#FFB3B3")
+	.setAttribute("title", "Currently visiting");
 
 let projectDemo = (new Node)
 	.setTitle("Demo")
 	.setGlyph("🪀")
-	.setColour("#FFB3B3");
+	.setColour("#FFB3B3")
+	.setAttribute("title", "Double click to view project demos")
+	.addEventListener("dblclick", () => {
+		window.open(`/projects/demo`);
+	});
 
 homepage.connectTo(projectView);
 homepage.connectTo(projectDemo);
