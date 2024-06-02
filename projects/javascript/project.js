@@ -1,8 +1,5 @@
 import { hideOptionsPane, globalGraph, camera } from "https://dev-384.github.io/confusion-projects/js_node/index.js";
 import Node from "https://dev-384.github.io/confusion-projects/js_node/display/nodes.js";
-// import { Octokit } from "https://esm.sh/octokit";
-
-// const octokit = new Octokit({ auth: "" });
 
 hideOptionsPane();
 
@@ -33,21 +30,8 @@ let projectDemo = (new Node)
 homepage.connectTo(projectView);
 homepage.connectTo(projectDemo);
 
-async function getGithubContents(path=""){
-	let response = await fetch("https://api.github.com/repos/Dev-384/github-projects/git/trees/main?recursive=1");
-	let result = await response.json();
-
-	// await octokit.rest.repos.getContent({
-	// 	owner: "Dev-384",
-	// 	repo: "confusion-projects",
-	// 	path: path
-	// })
-
-	let data = result.data;
-	return data;
-}
-
-let json = await getGithubContents("");
+let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-projects/contents/`);
+let json = await response.json();
 let projects = json.map((file) => {
 	return (file.type == "dir")?file.name:undefined
 });
@@ -55,9 +39,8 @@ let projects = json.map((file) => {
 for(let i = 0; i < projects.length; i++){
 	let projectPath = projects[i];
 
-	let json = await getGithubContents(projectPath);
-
-	console.log(json);
+	let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-projects/contents/${projectPath}/`);
+	let json = await response.json();
 
 	let fileNames = json.map((file) => {
 		return (file.type == "file")?file.name:undefined
@@ -75,6 +58,8 @@ for(let i = 0; i < projects.length; i++){
 	viewNode.addEventListener("dblclick", () => {
 		window.open(`/projects/view?project=${projectName}`);
 	});
-	viewNode.setAttribute("title", "Double click to open project");
+	viewNode.setAttribute("title", "Double click to open");
 	projectView.connectTo(viewNode);
+
+	console.log(fileNames);
 }
