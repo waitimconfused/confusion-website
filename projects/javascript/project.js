@@ -35,6 +35,9 @@ let json = await response.json();
 let projects = json.map((file) => {
 	return (file.type == "dir")?file.name:undefined
 });
+projects = projects.filter((fileName) => {
+	return !!fileName
+})
 
 for(let i = 0; i < projects.length; i++){
 	let projectPath = projects[i];
