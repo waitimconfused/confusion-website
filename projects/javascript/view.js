@@ -8,11 +8,9 @@ while(!IP){
 }
 IP = atob(IP);
 
-function getMarkdown(project="", markdownPath="", isLocal=false){
-	if(!markdownPath){
-		if(!isLocal) markdownPath = `https://dev-384.github.io/confusion-projects/${project}/readme.md`;
-		else markdownPath = `http://${IP}:${PORT+1}/${project}/readme.md`;
-	}
+function getMarkdown(project="", markdownPath=""){
+	if(!markdownPath) markdownPath = `https://dev-384.github.io/confusion-projects/${project}/readme.md`;
+
 	if(markdownPath.endsWith("undefined")) return "";
 	console.log(markdownPath);
 	fetch(markdownPath).then((response) => {
@@ -32,7 +30,7 @@ function getMarkdown(project="", markdownPath="", isLocal=false){
 		return response.text();
 	}).then((markdown) => {
 		if(typeof markdown == "number") return;
-		options(markdown, project, isLocal);
+		options(markdown, project);
 		markdown = markdown.replace(/(\.\.\.[\S\s]+?\.\.\.\n*)/, "");
 		let h1 = markdown.split(/^# {0,}(.*)/gm)[1];
 
@@ -55,7 +53,7 @@ function getMarkdown(project="", markdownPath="", isLocal=false){
 	});
 }
 
-export default function viewProject(project="", forceLoad=false, isLocal=false){
+export default function viewProject(project="", forceLoad=false){
 
 	let root = window.location.protocol + "//" + window.location.host + "/";
 	let isHomePage = window.location.href == root;
@@ -72,13 +70,12 @@ export default function viewProject(project="", forceLoad=false, isLocal=false){
 	document.getElementById("title").innerText = tempTitle;
 	
 	let markdownPath = `https://raw.githubusercontent.com/Dev-384/confusion-projects/main/${project}/readme.md`;
-	if(isLocal) markdownPath = `http://${IP}:${PORT+1}/${project}/readme.md`;
 	if(project == "confusion") markdownPath = "/README.md";
 
-	return getMarkdown(project, "", isLocal);
+	return getMarkdown(project, "");
 }
 
-function options(markdown="", project="", isLocal=false){
+function options(markdown="", project=""){
 	let optionsObject = {};
 	if(markdown.startsWith("\.\.\.")){
 		let options = markdown.split("\.\.\.")[1].split(/(\S+?): *([\S ]*)/g);
@@ -104,7 +101,7 @@ function options(markdown="", project="", isLocal=false){
 		let demoButton = document.createElement("a");
 		demoButton.innerText = "Try It";
 		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
-		demoButton.href = `/projects/demo?project=${project}${ isLocal?"&local":"" }`;
+		demoButton.href = `/projects/demo?project=${project}`;
 		document.querySelector("header").appendChild(demoButton);
 	}
 }

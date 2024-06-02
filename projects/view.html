@@ -29,8 +29,7 @@
 
 		const urlParams = new URLSearchParams(window.location.search);
 		const projectName = urlParams.get('project');
-		const isLocal = urlParams.has('local');
 
-		viewProject(projectName, false, isLocal);
+		viewProject(projectName, false);
 	</script>
 </html>
