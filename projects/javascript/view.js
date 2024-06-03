@@ -1,13 +1,3 @@
-import packageJSON from "../../package.json" with { type: "json" };
-const PORT = packageJSON.port;
-
-var IP = sessionStorage.getItem("machine-key");
-while(!IP){
-	IP = prompt("Enter your machine key:");
-	sessionStorage.setItem("machine-key", IP);
-}
-IP = atob(IP);
-
 function getMarkdown(project="", markdownPath=""){
 	if(!markdownPath) markdownPath = `https://dev-384.github.io/confusion-projects/${project}/readme.md`;
 

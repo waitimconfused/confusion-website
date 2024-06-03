@@ -1,6 +1,3 @@
-import packageJSON from "../../package.json" with { type: "json" };
-const PORT = packageJSON.port;
-
 const urlParams = new URLSearchParams(window.location.search);
 const projectName = urlParams.get('project');
 
