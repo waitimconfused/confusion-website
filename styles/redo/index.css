@@ -66,9 +66,6 @@ nav div.links {
 	align-items: center;
 	justify-content: flex-end;
 }
-nav div.links div.clickables {
-	/* opacity: 0; */
-}
 nav div.links svg#menu-toggle {
 	padding: 10px;
 	height: 24px;
