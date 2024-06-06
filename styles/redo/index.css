@@ -56,9 +56,23 @@ nav {
 	transition: background-color, height;
 	transition-duration: 400ms;
 }
-nav.solid {
+nav.solid,
+nav:has(svg#menu-toggle.open) {
 	background-color: color-mix(in srgb, var(--background), black 50%);
 	height: 5rem;
+}
+nav div.links {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+nav div.links svg#menu-toggle {
+	padding: 10px;
+	height: 24px;
+	display: none;
+}
+nav div.links svg#menu-toggle path {
+	fill: var(--primary);
 }
 @media (prefers-color-scheme: light){
 	nav {
@@ -241,4 +255,52 @@ a.disabled[onclick]:not(a.item),
 	background: color-mix(in srgb, var(--primary), rgb(127.5, 127.5, 127.5) 75%);
 	color: var(--background);
 	cursor: no-drop;
+}
+
+@media (width <= 600px) {
+	section:not(.invisible, .card) {
+		min-width: calc(100vw - 2rem);
+	}
+	nav div.links div.clickables {
+		display: flex;
+		opacity: 0;
+		transition: opacity, top;
+		transition-duration: 400ms;
+		display: flex;
+		flex-direction: column;
+		position: fixed;
+		top: 5.5rem;
+		left: 0px;
+		width: 100vw;
+		z-index: 9999999999;
+		background-color: color-mix(in srgb, var(--background), black 50%);
+		box-sizing: border-box;
+		padding: 2rem 1rem;
+	}
+	nav div.links div.clickables a {
+		margin: 1rem 0px 1rem 1rem;
+	}
+	nav.solid div.links div.clickables,
+	nav:has(svg#menu-toggle.open) div.links div.clickables {
+		top: 5rem;
+	}
+	footer {
+		padding: 2rem 1rem;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	footer a.title {
+		margin-left: 0px;
+	}
+
+	nav div.links svg#menu-toggle {
+		display: block;
+	}
+	nav div.links svg#menu-toggle.open {
+		scale: -1 1;
+	}
+	nav div.links:has(svg#menu-toggle.open) div.clickables {
+		padding: 2rem 1rem;
+		opacity: 1;
+	}
 }

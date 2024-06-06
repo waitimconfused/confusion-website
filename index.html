@@ -17,7 +17,7 @@
 		<div class="section">
 			<h1 id="title">Confusion</h1>
 			<div class="separator"></div>
-			<p class="typewriter">A place for even the<br>oddest of ideas</p>
+			<p class="typewriter">A place for even the oddest of ideas</p>
 			<a href="/projects/new">Create a Project</a>
 		</div>
 		<img src="/assets/emoji/brain.svg">
@@ -126,8 +126,8 @@
 
 		for(let index = 0; index < typewriterText.length; index ++){
 			let element = typewriterText[index];
-			element.style.width = `${element.getBoundingClientRect().width + 40}px`;
-			element.style.height = `${element.getBoundingClientRect().height + 20}px`;
+			element.style.width = `${element.getBoundingClientRect().width}px`;
+			element.style.height = `${element.getBoundingClientRect().height+20}px`;
 			element.setAttribute("typing", "true");
 			typeWriter(element, element.innerHTML.replaceAll("<br>", "\n"));
 		}

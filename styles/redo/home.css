@@ -10,8 +10,10 @@ header div.section {
 	position: absolute;
 	display: flex;
 	flex-direction: column;
+	box-sizing: border-box;
 	top: 9rem;
 	left: 10rem;
+	max-width: 28.755rem;
 }
 header div.section h1 {
 	margin: 0px;
@@ -51,10 +53,11 @@ section:not(.invisible) {
 	margin-bottom: 1rem;
 }
 @media (width <= 600px) {
-	section:not(.invisible, .card) {
-		min-width: calc(100vw - 2rem);
+	header div.section {
+		left: 1rem;
+		max-width: calc(100vw - 2rem);
 	}
-	div.links {
+	header img {
 		display: none;
 		visibility: hidden;
 	}
