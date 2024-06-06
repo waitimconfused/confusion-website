@@ -66,6 +66,9 @@ nav div.links {
 	align-items: center;
 	justify-content: flex-end;
 }
+nav div.links div.clickables {
+	/* opacity: 0; */
+}
 nav div.links svg#menu-toggle {
 	padding: 10px;
 	height: 24px;
@@ -278,7 +281,8 @@ a.disabled[onclick]:not(a.item),
 		padding: 2rem 1rem;
 	}
 	nav div.links div.clickables a {
-		margin: 1rem 0px 1rem 1rem;
+		margin: 1rem;
+		width: max-content;
 	}
 	nav.solid div.links div.clickables,
 	nav:has(svg#menu-toggle.open) div.links div.clickables {
