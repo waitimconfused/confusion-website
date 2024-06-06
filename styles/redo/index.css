@@ -294,11 +294,22 @@ a.disabled[onclick]:not(a.item),
 		margin-left: 0px;
 	}
 
+	nav div.links svg#menu-toggle rect {
+		fill: var(--primary);
+		transition: x;
+		transition-duration: 400ms;
+	}
 	nav div.links svg#menu-toggle {
 		display: block;
 	}
-	nav div.links svg#menu-toggle.open {
-		scale: -1 1;
+	nav div.links svg#menu-toggle.open rect:nth-child(1) {
+		x: 82;
+	}
+	nav div.links svg#menu-toggle.open rect:nth-child(2) {
+		x: 18;
+	}
+	nav div.links svg#menu-toggle.open rect:nth-child(3) {
+		x: 82;
 	}
 	nav div.links:has(svg#menu-toggle.open) div.clickables {
 		padding: 2rem 1rem;
