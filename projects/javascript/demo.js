@@ -1,11 +1,21 @@
+import projectList from "https://dev-384.github.io/confusion-projects/projects.json" with { type: "json" };
+
+
 const urlParams = new URLSearchParams(window.location.search);
 const projectName = urlParams.get('project');
+const projectOptions = projectList.find((project) => {
+	return project.title == projectName;
+});
+const linkPath = projectOptions.link;
 
 const favicon = document.querySelector("head link[rel=icon]");
 const meta_themeColor = document.querySelector("head meta[name=theme-color]");
 
 let src = "/404.html";
-if(projectName) src = `https://dev-384.github.io/confusion-projects/${projectName}/`;
+if(projectName) src = `https://dev-384.github.io/confusion-projects/${linkPath}`;
+if(linkPath.startsWith("https://") || linkPath.startsWith("http://") ) {
+	src = linkPath;
+}
 // window.location.href = src;
 
 let iframe = document.createElement("iframe");

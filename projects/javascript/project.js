@@ -1,5 +1,6 @@
 import { hideOptionsPane, globalGraph, camera } from "https://dev-384.github.io/confusion-projects/js_node/index.js";
 import Node from "https://dev-384.github.io/confusion-projects/js_node/display/nodes.js";
+import projectList from "https://dev-384.github.io/confusion-projects/projects.json" with { type: "json" };
 
 hideOptionsPane();
 
@@ -29,7 +30,7 @@ let projectView = (new Node)
 
 let projectDemo = (new Node)
 	.setTitle("Demo")
-	.setGlyph("🪀")
+	.setGlyph("🖥️")
 	.setColour("#FFB3B3")
 	.setAttribute("title", "Double click to view project demos")
 	.addEventListener("dblclick", () => {
@@ -39,39 +40,55 @@ let projectDemo = (new Node)
 homepage.connectTo(projectView);
 homepage.connectTo(projectDemo);
 
-let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-projects/contents/`);
-let json = await response.json();
-let projects = json.map((file) => {
-	return (file.type == "dir")?file.name:undefined
-});
-projects = projects.filter((fileName) => {
-	return !!fileName
-})
+load(projectList, 0);
 
-for(let i = 0; i < projects.length; i++){
-	let projectPath = projects[i];
+function load(projects=[], index=0){
 
-	let response = await fetch(`https://api.github.com/repos/Dev-384/confusion-projects/contents/${projectPath}/`);
-	let json = await response.json();
+	let projectData = projects[index];
 
-	let fileNames = json.map((file) => {
-		return (file.type == "file")?file.name:undefined
-	});
-
-	if(!fileNames.includes("readme.md") && !fileNames.includes("README.md") && !fileNames.includes("readme") && !fileNames.includes("README")){
-		continue;
+	if(projectData.readme){
+		let viewNode = new Node;
+		viewNode.setTitle(projectData.title);
+		viewNode.setColour("#E06767");
+		viewNode.setGlyph("📁");
+		viewNode.addEventListener("dblclick", () => {
+			window.open(`/projects/view?project=${projectData.title}`);
+		});
+		viewNode.setAttribute("title", "Double click to open");
+		projectView.connectTo(viewNode);
 	}
 
-	let projectName = projectPath.replace(/\.\w+?$/, "");
-	let viewNode = new Node;
-	viewNode.setTitle(projectName);
-	viewNode.setColour("#E06767");
-	viewNode.setGlyph("📁");
-	viewNode.addEventListener("dblclick", () => {
-		window.open(`/projects/view?project=${projectName}`);
-	});
-	viewNode.setAttribute("title", "Double click to open");
-	projectView.connectTo(viewNode);
+	if(projectData.link){
+		let demoNode = new Node;
+		demoNode.setTitle(projectData.title);
+		demoNode.setColour("#E06767");
+		demoNode.setGlyph("🖥️");
+		if(projectData.link.startsWith("/")) {
+			demoNode.addEventListener("dblclick", () => {
+				window.open(`/projects/demo?project=${projectData.title}`);
+			});
+		}else{
+			demoNode.addEventListener("dblclick", () => {
+				window.open(projectData.link);
+			});
+		}
+		demoNode.setAttribute("title", "Double click to open");
+		projectDemo.connectTo(demoNode);
+	}
 
-	console.log(fileNames);
+	createCard(projectData);
+
+	window.requestAnimationFrame(() => {
+		load(projects, index+1);
+	});
+}
+
+function createCard(projectData){
+	let cardHolder = document.getElementById("project-cards");
+	let card = document.createElement("div");
+	cardHolder.appendChild(card);
+	card.classList.add("card");
+	let title = document.createElement("h2");
+	card.appendChild(title);
+	title.innerText = projectData.title;
 }

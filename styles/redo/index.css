@@ -294,6 +294,12 @@ a.disabled[onclick]:not(a.item),
 		margin-left: 0px;
 	}
 
+	a.item:after {
+		opacity: 1;
+		transform: translate(0px, 0px);
+		width: 100%;
+	}
+
 	nav div.links svg#menu-toggle rect {
 		fill: var(--primary);
 		transition: x;

@@ -18,6 +18,24 @@
 			border-radius: 2rem;
 			background-color: transparent;
 		}
+		@media (width <= 1251px) {
+			canvas {
+				position: relative;
+				top: -4rem;
+				right: auto;
+				bottom: auto;
+				left: 2rem;
+				width: calc(100vw - 4rem);
+				height: calc(50vh - 7rem);
+
+			}
+		}
+		div#project-cards div.card {
+			display: inline-block;
+			padding: 1rem;
+			background-color: var(--background-other);
+			margin: 0.5rem;
+		}
 	</style>
 	<script src="https://dev-384.github.io/confusion-projects/components/index.js" defer></script>
 </head>
@@ -35,6 +53,8 @@
 
 	<div id="js_node.canvas"></div>
 	<script type="module" src="./javascript/project.js"></script>
+
+	<div id="project-cards"></div>
 	
 	<template from="/components/" id="footer"></template>
 </body>
