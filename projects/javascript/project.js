@@ -44,6 +44,8 @@ load(projectList, 0);
 
 function load(projects=[], index=0){
 
+	if(index >= projects.length) return;
+
 	let projectData = projects[index];
 
 	if(projectData.readme){

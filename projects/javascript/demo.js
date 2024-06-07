@@ -16,7 +16,6 @@ if(projectName) src = `https://dev-384.github.io/confusion-projects/${linkPath}`
 if(linkPath.startsWith("https://") || linkPath.startsWith("http://") ) {
 	src = linkPath;
 }
-// window.location.href = src;
 
 let iframe = document.createElement("iframe");
 iframe.src = src;

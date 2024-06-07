@@ -1,10 +1,15 @@
+import projectList from "https://dev-384.github.io/confusion-projects/projects.json" with { type: "json" };
+
 function getMarkdown(project="", markdownPath=""){
-	if(!markdownPath) markdownPath = `https://dev-384.github.io/confusion-projects/${project}/readme.md`;
+
+	let projectOptions = projectList.find((projectOption) => {
+		return projectOption.title == project;
+	});
+
+	if(!markdownPath) markdownPath = `https://dev-384.github.io/confusion-projects/${projectOptions.readme}`;
 
 	if(markdownPath.endsWith("undefined")) return "";
-	console.log(markdownPath);
 	fetch(markdownPath).then((response) => {
-		console.log("Status:", response.status);
 		if(response.status == 404){
 			let iframe = document.createElement("iframe");
 			document.documentElement.innerHTML = "";
@@ -34,16 +39,16 @@ function getMarkdown(project="", markdownPath=""){
 		makeContent(sections);
 
 		return markdown;
-	}).catch(() => {
-		markdownPath = markdownPath.replace(/README$/, "undefined");
-		markdownPath = markdownPath.replace(/README\.md$/, "README");
-		markdownPath = markdownPath.replace(/readme$/, "README.md");
-		markdownPath = markdownPath.replace(/readme\.md$/, "readme");
-		return getMarkdown(project, markdownPath);
+	}).catch((err) => {
+		throw new Error(err);
 	});
 }
 
 export default function viewProject(project="", forceLoad=false){
+
+	let projectOptions = projectList.find((projectOption) => {
+		return projectOption.title == project;
+	});
 
 	let root = window.location.protocol + "//" + window.location.host + "/";
 	let isHomePage = window.location.href == root;
@@ -51,7 +56,7 @@ export default function viewProject(project="", forceLoad=false){
 		window.location.href = "/";
 	}
 
-	let tempTitle = project
+	let tempTitle = projectOptions.title
 		.toLowerCase()
 		.replaceAll("_", " ")
 		.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
@@ -59,7 +64,7 @@ export default function viewProject(project="", forceLoad=false){
 	document.title = tempTitle;
 	document.getElementById("title").innerText = tempTitle;
 	
-	let markdownPath = `https://raw.githubusercontent.com/Dev-384/confusion-projects/main/${project}/readme.md`;
+	let markdownPath = `https://raw.githubusercontent.com/Dev-384/confusion-projects/main/${projectOptions.readme}`;
 	if(project == "confusion") markdownPath = "/README.md";
 
 	return getMarkdown(project, "");
@@ -91,7 +96,7 @@ function options(markdown="", project=""){
 		let demoButton = document.createElement("a");
 		demoButton.innerText = "Try It";
 		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
-		demoButton.href = `/projects/demo?project=${project}`;
+		demoButton.href = `/projects/demo?project=${btoa(project)}`;
 		document.querySelector("header").appendChild(demoButton);
 	}
 }
