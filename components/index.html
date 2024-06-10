@@ -27,7 +27,8 @@
 					<a class="item" href="/projects/new">Create</a>
 				</div>
 			</div>
-			<script>
+			<script type="module">
+				import * as tk from "https://dev-384.github.io/confusion-projects/toolkit/index.js"
 				var nav = document.querySelector("nav");
 				var logoLink = document.querySelector("nav div.site");
 				var svg = document.getElementById("menu-toggle");
@@ -41,7 +42,7 @@
 					meta_themeColor.setAttribute("content", bgColor);
 					window.requestAnimationFrame(update_meta_themeColor);
 				}
-				update_meta_themeColor();
+				if(tk.isMobile()) update_meta_themeColor();
 				function onscroll(){
 					let scrollY = window.scrollY;
 					nav = document.querySelector("nav");
@@ -103,22 +104,13 @@
 			<section>
 				<h1>Recently Updated</h1>
 				<div>
-					<a href="/projects/view?project=toolkit">Toolkit</a>
-					<a href="/projects/view?project=components">Components</a>
-					<a href="/projects/view?project=testing_page">Testing Page</a>
+					<span style="display: block; text-align: center;">Nothing's here!</span>
 				</div>
 			</section>
 			<section>
 				<h1>Newly Created</h1>
 				<div>
-					<a href="/projects/view?project=toolkit">Toolkit</a>
-					<a href="/projects/view?project=components">Components</a>
-					<a href="/projects/view?project=iso-world">Iso-world</a>
-					<a href="/projects/view?project=pixjs">Pix-JS</a>
-					<a href="/projects/view?project=js_node">JS Node Viewer</a>
-					<a href="/projects/view?project=faker_banker">Faker Banker</a>
-					<a href="/projects/view?project=asterisk">Asterisk</a>
-					<a href="/projects/view?project=confusion">Confusion</a>
+					<span style="display: block; text-align: center;">Nothing's here!</span>
 				</div>
 			</section>
 		</aside>

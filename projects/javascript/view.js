@@ -1,5 +1,10 @@
 import projectList from "https://dev-384.github.io/confusion-projects/projects.json" with { type: "json" };
 
+const urlParams = new URLSearchParams(window.location.search);
+const projectName = urlParams.get('project');
+
+viewProject(projectName, false);
+
 function getMarkdown(project="", markdownPath=""){
 
 	let projectOptions = projectList.find((projectOption) => {
@@ -96,7 +101,7 @@ function options(markdown="", project=""){
 		let demoButton = document.createElement("a");
 		demoButton.innerText = "Try It";
 		demoButton.style.padding = "calc( var(--padding) / 2 ) calc( var(--padding) )";
-		demoButton.href = `/projects/demo?project=${btoa(project)}`;
+		demoButton.href = `/projects/demo?project=${project}`;
 		document.querySelector("header").appendChild(demoButton);
 	}
 }

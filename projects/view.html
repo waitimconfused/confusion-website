@@ -24,12 +24,5 @@
 	</body>
 
 	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
-	<script type="module">
-		import viewProject from "./javascript/view.js";
-
-		const urlParams = new URLSearchParams(window.location.search);
-		const projectName = urlParams.get('project');
-
-		viewProject(projectName, false);
-	</script>
+	<script type="module" src="./javascript/view.js"></script>
 </html>
