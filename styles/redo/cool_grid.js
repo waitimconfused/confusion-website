@@ -1,4 +1,4 @@
-import * as tk from "https://dev-384.github.io/confusion-projects/toolkit/index.js";
+import * as tk from "https://dev-384.github.io/confusion-projects/toolbelt/toolbelt.js";
 
 const gridCells = document.querySelectorAll(".grid div.card");
 const gridHolders = document.querySelectorAll(".grid");
