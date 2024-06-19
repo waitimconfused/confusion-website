@@ -42,19 +42,41 @@
 	</body>
 
 	<script type="module">
+
+		import projectList from "https://dev-384.github.io/confusion-projects/projects.json" with {type: "json"};
+
+
 		let path = location.pathname.replace("/", "");
-		
-		if(path != "404" && path.match(/(\S+?$|\S+?\/\S+?$)/)) {
-			let pathParts = path.split("/");
-			let projectName = pathParts[0];
-			let projectPath = pathParts[1] || "view";
-			let markdownURL = `/projects/markdown/${projectName}.md`;
-			let response = await fetch(markdownURL);
-			let isProject = (response.status == 200);
-			if(isProject) {
-				let projectURL = `/projects/${projectPath}?project=${projectName}`;
-				location.href = projectURL;
-			}
+		let pathParts = path.split("/");
+
+		if(window.location.pathname.match(/^\/projects\/(\w+?)\/(.+)$/)){
+			pathParts = window.location.pathname.split(/^\/projects\/(\w+?)\/(.+)$/);
+			pathParts = pathParts.filter((part) => {
+				return !!part;
+			});
+			pathParts = pathParts.reverse();
+		}
+
+		console.log(pathParts);
+
+		let projectName = pathParts[0];
+		let projectPath = "view";
+
+		if(pathParts[1] == "demo") projectPath = "demo";
+
+		let projectJSON = projectList.find((project) => {
+			return project.title == projectName;
+		});
+
+		if(projectJSON) {
+			let projectURL = `/projects/${projectPath}?project=${projectName}`;
+			// location.href = projectURL;
+			let meta = document.createElement("meta");
+			meta.httpEquiv = "refresh";
+			meta.content = `1; url=${projectURL}`;
+			document.head.appendChild(meta);
+			document.body.innerHTML = `<h1>Redirecting to: '${projectURL}'</h1>`
+			// <meta http-equiv="refresh" content="0; url=https://www.conductor.com/">
 		}
 	</script>
 
