@@ -70,13 +70,7 @@
 
 		if(projectJSON) {
 			let projectURL = `/projects/${projectPath}?project=${projectName}`;
-			// location.href = projectURL;
-			let meta = document.createElement("meta");
-			meta.httpEquiv = "refresh";
-			meta.content = `1; url=${projectURL}`;
-			document.head.appendChild(meta);
-			document.body.innerHTML = `<h1>Redirecting to: '${projectURL}'</h1>`
-			// <meta http-equiv="refresh" content="0; url=https://www.conductor.com/">
+			location.href = projectURL;
 		}
 	</script>
 
