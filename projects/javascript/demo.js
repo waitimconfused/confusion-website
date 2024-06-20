@@ -4,7 +4,7 @@ import projectList from "https://dev-384.github.io/confusion-projects/projects.j
 const urlParams = new URLSearchParams(window.location.search);
 const projectName = urlParams.get('project');
 const projectOptions = projectList.find((project) => {
-	return project.title == projectName;
+	return project.title.toLowerCase() == projectName.toLowerCase();
 });
 
 if(!projectOptions) {
