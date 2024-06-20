@@ -52,8 +52,21 @@ function getMarkdown(project="", markdownPath=""){
 export default function viewProject(project="", forceLoad=false){
 
 	let projectOptions = projectList.find((projectOption) => {
-		return projectOption.title == project;
+		return projectOption.title.toLowerCase() == project.toLowerCase();
 	});
+
+	if(!projectOptions) {
+		let iframe = document.createElement("iframe");
+		document.documentElement.innerHTML = "";
+		iframe.src = "/404";
+		iframe.style.display = "none";
+		iframe.onload = () => {
+			console.dir(iframe);
+			document.documentElement.innerHTML = iframe.contentDocument.documentElement.innerHTML;
+		}
+		document.body.appendChild(iframe);
+		return;
+	}
 
 	let root = window.location.protocol + "//" + window.location.host + "/";
 	let isHomePage = window.location.href == root;

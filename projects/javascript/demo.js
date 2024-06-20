@@ -6,6 +6,19 @@ const projectName = urlParams.get('project');
 const projectOptions = projectList.find((project) => {
 	return project.title == projectName;
 });
+
+if(!projectOptions) {
+	let iframe = document.createElement("iframe");
+	document.documentElement.innerHTML = "";
+	iframe.src = "/404";
+	iframe.style.display = "none";
+	iframe.onload = () => {
+		console.dir(iframe);
+		document.documentElement.innerHTML = iframe.contentDocument.documentElement.innerHTML;
+	}
+	document.body.appendChild(iframe);
+}
+
 const linkPath = projectOptions.link;
 
 const favicon = document.querySelector("head link[rel=icon]");
