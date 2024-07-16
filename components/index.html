@@ -28,7 +28,7 @@
 				</div>
 			</div>
 			<script type="module">
-				import * as tk from "https://dev-384.github.io/confusion-projects/toolbelt/toolbelt.js";
+				import * as toolbelt from "https://dev-384.github.io/confusion-projects/toolbelt/toolbelt.js";
 				var nav = document.querySelector("nav");
 				var logoLink = document.querySelector("nav div.site");
 				var svg = document.getElementById("menu-toggle");
@@ -42,7 +42,7 @@
 					meta_themeColor.setAttribute("content", bgColor);
 					window.requestAnimationFrame(update_meta_themeColor);
 				}
-				if(tk.isMobile()) update_meta_themeColor();
+				if(toolbelt.device.isMobile()) update_meta_themeColor();
 				function onscroll(){
 					let scrollY = window.scrollY;
 					nav = document.querySelector("nav");
