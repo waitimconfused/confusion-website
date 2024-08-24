@@ -1,4 +1,4 @@
-import * as Ast from "./Asterisk/index.js";
+import * as Ast from "../confusion-projects/Asterisk/index.js";
 
 Ast.clearLogs();
 Ast.serverside.open(1200);
