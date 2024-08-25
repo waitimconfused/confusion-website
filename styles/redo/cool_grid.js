@@ -1,4 +1,4 @@
-import * as tk from "https://dev-384.github.io/confusion-projects/toolbelt/toolbelt.js";
+import { device, mouse } from "https://dev-384.github.io/confusion-projects/toolbelt/toolbelt.js";
 
 const gridCells = document.querySelectorAll(".grid div.card");
 const gridHolders = document.querySelectorAll(".grid");
@@ -19,7 +19,7 @@ function shuffleGrid(element){
 	var nextShuffle = function(){
 		shuffleGrid(element);
 	}
-	if( tk.isMobile() || (element.matches(":hover") == false && element.matches(":active") == false)){
+	if( device.isMobile() || (element.matches(":hover") == false && element.matches(":active") == false)){
 		let sideLength = Math.sqrt(element.childElementCount);
 		shuffleGridCells();
 
@@ -42,11 +42,9 @@ function shuffleGrid(element){
 	}else{
 		let elementRect = element.getBoundingClientRect();
 		let elementWidth = elementRect.width;
-		let relativePos = tk.mouse.position.relative(element);
+		let relativePos = mouse.position.relative(element);
 		let relativeX = relativePos.x;
 		let relativeY = relativePos.y;
-
-		// console.log(tk.mouse);
 
 		let gap = 16;
 		let centerWidth = elementWidth / 3;
