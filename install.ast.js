@@ -4,7 +4,7 @@ import fs, { readFileSync } from "node:fs";
 import node_path from "node:path";
 
 const relativeOutput = "./Asterisk/";
-const startingFile = "https://dev-384.github.io/confusion-projects/asterisk/index.js"
+const startingFile = "https://waitimconfused.github.io/confusion-projects/asterisk/index.js"
 
 removeFolder(relativeOutput);
 

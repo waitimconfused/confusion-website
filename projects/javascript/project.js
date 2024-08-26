@@ -1,6 +1,6 @@
-import { hideOptionsPane, globalGraph, camera } from "https://dev-384.github.io/confusion-projects/js_node/index.js";
-import Node from "https://dev-384.github.io/confusion-projects/js_node/display/nodes.js";
-import projectList from "https://dev-384.github.io/confusion-projects/projects.json" with { type: "json" };
+import { hideOptionsPane, globalGraph, camera } from "https://waitimconfused.github.io/confusion-projects/js_node/index.js";
+import Node from "https://waitimconfused.github.io/confusion-projects/js_node/display/nodes.js";
+import projectList from "https://waitimconfused.github.io/confusion-projects/projects.json" with { type: "json" };
 
 hideOptionsPane();
 

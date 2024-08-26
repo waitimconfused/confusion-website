@@ -1,4 +1,4 @@
-import { device, mouse } from "https://dev-384.github.io/confusion-projects/toolbelt/toolbelt.js";
+import { device, mouse } from "https://waitimconfused.github.io/confusion-projects/toolbelt/toolbelt.js";
 
 const gridCells = document.querySelectorAll(".grid div.card");
 const gridHolders = document.querySelectorAll(".grid");

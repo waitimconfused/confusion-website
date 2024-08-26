@@ -1,4 +1,4 @@
-import projectList from "https://dev-384.github.io/confusion-projects/projects.json" with { type: "json" };
+import projectList from "https://waitimconfused.github.io/confusion-projects/projects.json" with { type: "json" };
 
 const urlParams = new URLSearchParams(window.location.search);
 const projectName = urlParams.get('project');
@@ -11,7 +11,7 @@ function getMarkdown(project="", markdownPath=""){
 		return projectOption.title == project;
 	});
 
-	if(!markdownPath) markdownPath = `https://dev-384.github.io/confusion-projects/${projectOptions.readme}`;
+	if(!markdownPath) markdownPath = `https://waitimconfused.github.io/confusion-projects/${projectOptions.readme}`;
 
 	if(markdownPath.endsWith("undefined")) return "";
 	fetch(markdownPath).then((response) => {
