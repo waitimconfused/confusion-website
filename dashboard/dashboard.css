@@ -1,0 +1,10 @@
+@import url("/redesign.css");
+
+.card {
+	position: relative;
+}
+.delete {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+}

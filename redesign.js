@@ -1,3 +1,8 @@
+import packageJSON from "/package.json" with {type: "json"};
+import { reloadTemplateElements } from "https://waitimconfused.github.io/confusion-projects/components/index-module.js";
+
+await reloadTemplateElements();
+
 const banner = new class Banner {
 	content = "";
 	show(skipAnimation=false) {
@@ -35,8 +40,12 @@ document.onscroll = (e) => {
 		else document.querySelector("nav").classList.remove("scroll")
 	}
 }
-
-banner.setContent("<strong>SALE!</strong> 100% off! <spanw style='margin-left: 1rem'></span> Sale ends NEVER!");
+let bannerText = packageJSON.banner;
+bannerText = bannerText.replaceAll("\t", " <span style='margin-left: 1rem'></span> ");
+bannerText = bannerText.replaceAll(/\*\*(.+?)\*\*/gm, "<strong>$1</strong>");
+bannerText = bannerText.replaceAll("\n", " — ");
+bannerText = bannerText.replaceAll(/\[(.+?)\]\((.+?)\)/gm, "<a href='$2'>$1</a>");
+banner.setContent(bannerText);
 banner.setColour("accent");
 banner.show(true);
 
@@ -108,4 +117,3 @@ for (let i = 0; i < documentLinks_scrollToID.length; i ++) {
 		linkedElement.scrollIntoView();
 	}
 }
-console.log(documentLinks_scrollToID);

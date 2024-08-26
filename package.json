@@ -4,5 +4,7 @@
     "scripts": {
         "serve": "node host.ast.js",
         "init": "node install.ast.js"
-    }
+    },
+
+	"banner": "**SALE!** 100% off!\tSale ends NEVER!"
 }

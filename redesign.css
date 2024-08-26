@@ -159,10 +159,17 @@ section {
 	width: 100%;
 }
 
+.button {
+	padding: 1rem 4rem;
+	background-color: var(--accent);
+	border-radius: 1rem;
+	border: 1px solid color-mix(in srgb, var(--accent), black 25%);
+}
+
 [href], [onclick] { cursor: pointer; }
 
-[href]:not(.hilight),
-[onclick]:not(.hilight) {
+[href]:not(.hilight, .button),
+[onclick]:not(.hilight, .button) {
 	color: color-mix(in srgb, var(--text), var(--primary) 50%);
 	text-decoration: none;
 	cursor: pointer;
@@ -185,6 +192,7 @@ section {
 	transition-duration: 300ms;
 	border-radius: 0.25rem;
 }
+
 .hilight {
 	position: relative;
 	color: var(--text);
@@ -270,7 +278,6 @@ section {
 	background-color: var(--secondary);
 	box-sizing: border-box;
 	padding: 1rem;
-	height: 21rem;
 }
 .card:not(.constant) {
 	transition: scale, filter;
@@ -490,4 +497,27 @@ div#theme-change-cover.animate[theme-to="dark"] {
 
 .clickable {
 	cursor: pointer;
+}
+
+
+.icon-dark_mode {
+	background-color: var(--text);
+	mask-image: url("/assets/dark_mode.svg");
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+}
+.icon-light_mode {
+	background-color: var(--text);
+	mask-image: url("/assets/light_mode.svg");
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+}
+.icon-trashcan {
+	background-color: var(--text);
+	mask-image: url("/assets/trashcan.svg");
+	display: inline-block;
+	width: 24px;
+	height: 24px;
 }

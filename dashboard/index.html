@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Confusion</title>
+		<link rel="stylesheet" href="/redesign.css">
+		<link rel="stylesheet" href="./dashboard.css">
+		<link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+		<style>
+			.material-symbols-outlined {
+			  font-variation-settings:
+			  'FILL' 1,
+			  'wght' 400,
+			  'GRAD' 0,
+			  'opsz' 24
+			}
+		</style>
+	</head>
+
+	<body class="column v-center" style="gap: 3rem;">
+
+		<template from="/redesign-components.html" id="theme-change-cover"></template>
+
+		<template from="/redesign-components.html" id="nav"></template>
+
+		<section class="row" style="height: min-content;">
+			<div class="column" style="background-color: color-mix(in srgb, var(--accent), transparent 75%); height: 100%; padding: 1rem; border-radius: 1rem;">
+				<button class="row v-center" onclick="displayProjects()">
+					<img src="/assets/lightbulb.svg" alt="">
+					Projects
+				</button>
+				<button class="row v-center">
+					<img src="/assets/gear.svg" alt="">
+					Preferences
+				</button>
+			</div>
+			<div id="tiles" style="display: grid; width: 100%; height: max-content; gap: 1rem; grid-template-columns: 1fr 1fr 1fr 1fr;"></div>
+		</section>
+
+		<template from="/redesign-components.html" id="footer"></template>
+
+		<script src="/redesign.js" type="module" defer></script>
+		<script src="./app.js"></script>
+
+	</body>
+</html>
