@@ -14,6 +14,7 @@ request.onsuccess = function (event) {
 		let request = index.get(projectName);
 		request.onsuccess = function (event) {
 			let project = event.target.result;
+			console.log(project);
 			if (project.type == "code") {
 				location.href = `./project/code?p=${projectName}`;
 			} else if (project.type == "art") {
