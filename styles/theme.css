@@ -168,6 +168,22 @@ nav .menu {
 	nav .menu {
 		display: inline-block;
 	}
+	nav .links.show {
+		display: flex;
+		position: fixed;
+		width: 100%;
+		flex-direction: column-reverse;
+		align-items: center;
+		top: 3rem;
+		left: 0px;
+		background-color: var(--background);
+		box-sizing: border-box;
+		padding: 0.5rem 0.5rem;
+		border-bottom: 1px solid color-mix(in srgb, var(--text), transparent 90%);
+	}
+	nav:has(.banner.show):not(.scroll) .links.show {
+		top: 7.2rem;
+	}
 }
 
 header {

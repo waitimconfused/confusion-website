@@ -1,5 +1,22 @@
 @import url("./theme.css");
 
+#project-list {
+	display: grid;
+	width: 100%;
+	height: max-content;
+	gap: 1rem;
+	grid-template-columns: repeat(auto-fit, 225px);
+	container-type: inline-size;
+}
+#project-list > * {
+	height: 145px;
+}
+@media (width < 800px) {
+	#project-list {
+		grid-template-columns: 1fr;
+	}
+}
+
 .card {
 	position: relative;
 	border-radius: 1rem;
@@ -50,4 +67,15 @@
 	scale: 3;
 	transform-origin: top right;
 	background-color: var(--primary);
+}
+
+section {
+	display: inline-flex;
+	flex-direction: row;
+	gap: 1rem;
+}
+@media only screen and (width < 700px) {
+	section {
+		flex-direction: column;
+	}
 }

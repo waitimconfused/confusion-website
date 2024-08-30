@@ -9,7 +9,6 @@ request.onupgradeneeded = function (event) {
 
 request.onsuccess = function (event) {
 	db = event.target.result;
-	console.log(db);
 	displayProjects();
 };
 
@@ -36,11 +35,6 @@ function displayProjects() {
 			card.setAttribute("draggable", "true")
 			projectsList.prepend(card);
 
-			let title = document.createElement("h4");
-			title.innerHTML = projectName;
-			title.style.marginBottom = "4rem";
-			card.appendChild(title);
-
 			let projectTypeIcon = document.createElement("span");
 			projectTypeIcon.classList.add(`project-icon`);
 			if (projectType == "code") {
@@ -52,6 +46,11 @@ function displayProjects() {
 			}
 			card.appendChild(projectTypeIcon);
 
+			let title = document.createElement("h4");
+			title.innerHTML = projectName;
+			title.style.marginBottom = "4rem";
+			card.appendChild(title);
+
 			let buttonDiv = document.createElement("div");
 			buttonDiv.classList.add("options");
 			card.appendChild(buttonDiv);
@@ -59,7 +58,7 @@ function displayProjects() {
 			let openButton = document.createElement("a");
 			openButton.classList.add("icon", "icon-link_open");
 			openButton.href = `./project?p=${encodeURIComponent(projectName)}`;
-			openButton.target = "_blank"
+			openButton.target = "_blank";
 			openButton.style.backgroundColor = "var(--danger)";
 			buttonDiv.appendChild(openButton);
 

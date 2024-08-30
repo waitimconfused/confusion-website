@@ -1,9 +1,13 @@
 import packageJSON from "/package.json" with {type: "json"};
 import { reloadTemplateElements } from "https://waitimconfused.github.io/confusion-projects/components/index-module.js";
 
+await reloadTemplateElements();
+
 var animateThemeChange = true;
 
-await reloadTemplateElements();
+const navMenu = document.querySelector("nav .menu");
+const navLinks = document.querySelector("nav .links");
+const metaThemeColour = document.createElement("meta");
 
 const banner = new class Banner {
 	content = "";
@@ -76,12 +80,13 @@ document.documentElement.setAttribute("data-theme", localStorage.getItem("theme"
 localStorage.setItem("theme", document.documentElement.getAttribute("data-theme"));
 document.body.querySelector(`#theme-toggle > [data-theme=${localStorage.getItem("theme")}]`).classList.add("hide");
 
-let metaThemeColour = document.createElement("meta");
 metaThemeColour.name = "theme-color";
 metaThemeColour.content = getComputedStyle(document.documentElement).getPropertyValue('--background');
 document.head.appendChild(metaThemeColour);
 
 document.onscroll = (e) => {
+
+	navLinks.classList.remove("show");
 
 	if (banner.content) {
 		if ( window.scrollY > 10 ) {
@@ -146,4 +151,12 @@ for (let i = 0; i < documentLinks_scrollToID.length; i ++) {
 	element.onclick = () => {
 		linkedElement.scrollIntoView();
 	}
+}
+
+navMenu.onclick = () => {
+	navLinks.classList.toggle("show");
+}
+
+window.onresize = () => {
+	if (window.innerWidth >= 700) navLinks.classList.remove("show");
 }

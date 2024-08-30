@@ -16,13 +16,13 @@
 
 		<template from="/components" id="nav"></template>
 
-		<section class="row" style="height: min-content;">
-			<div class="column" style="background-color: color-mix(in srgb, var(--accent), transparent 75%); padding: 1rem; border-radius: 1rem;">
-				<button class="row v-center" onclick="panel.show('projects')">
+		<section style="height: min-content;">
+			<div id="panel-lables" class="column" style="background-color: color-mix(in srgb, var(--accent), transparent 75%); padding: 1rem; border-radius: 1rem;">
+				<button class="row v-center" panel="projects">
 					<span class="icon-lightbulb"></span>
 					Projects
 				</button>
-				<button class="row v-center" onclick="panel.show('preferences')">
+				<button class="row v-center" panel="preferences">
 					<span class="icon-gear"></span>
 					Preferences
 				</button>
@@ -49,12 +49,13 @@
 						<button class="button" onclick="document.getElementById('project-create').close(); addProject();">Add Project</button>
 					</dialog>
 
-					<div id="project-list" style="display: grid; width: 100%; height: max-content; gap: 1rem; grid-template-columns: 1fr 1fr 1fr 1fr;"></div>
+					<div id="project-list"></div>
 				</div>
-				<div id="preferences" style="display: grid; width: 100%; height: max-content; gap: 1rem; grid-template-columns: 1fr 1fr 1fr 1fr;">
-					<div>
-						<h2>Preferences</h2>
+				<div id="preferences">
+					<div class="row v-center card constant" style="width: 100%; background-color: var(--primary); justify-content: space-between; padding: 1rem 3rem">
+						<h3 style="margin: 0px; color: var(--background);">Preferences</h3>
 					</div>
+					<p>Nothing's here!</p>
 				</div>
 			</div>
 		</section>
@@ -80,6 +81,22 @@
 					document.querySelector("div#panel-holder div.show").classList.remove("show");
 					document.querySelector("div#panel-holder div#"+panelName).classList.remove("hide");
 					document.querySelector("div#panel-holder div#"+panelName).classList.add("show");
+
+					document.querySelector("div#panel-lables button.show").classList.add("hide");
+					document.querySelector("div#panel-lables button.show").classList.remove("show");
+					document.querySelector("div#panel-lables button[panel=\""+panelName+"\"]").classList.remove("hide");
+					document.querySelector("div#panel-lables button[panel=\""+panelName+"\"]").classList.add("show");
+				}
+			}
+
+			const panelLables = document.querySelectorAll("div#panel-lables button[panel]");
+
+			for (let i = 0; i < panelLables.length; i ++) {
+				let currentPanel = panelLables[i];
+				let panelAttribute = currentPanel.getAttribute("panel");
+				if (i == 0) currentPanel.classList.add("show");
+				currentPanel.onclick = () => {
+					panel.show(panelAttribute);
 				}
 			}
 		</script>

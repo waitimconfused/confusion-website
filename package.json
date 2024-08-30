@@ -6,5 +6,5 @@
         "init": "node install.ast.js"
     },
 
-	"banner": ""
+	"banner": "Hello World!"
 }
