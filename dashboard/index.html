@@ -4,45 +4,85 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Confusion</title>
-		<link rel="stylesheet" href="/redesign.css">
-		<link rel="stylesheet" href="./dashboard.css">
-		<link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+		<link rel="stylesheet" href="/styles/theme.css">
+		<link rel="stylesheet" href="/styles/dashboard.css">
+		<link rel="shortcut icon" href="/assets/favicon.png" type="image/*">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-		<style>
-			.material-symbols-outlined {
-			  font-variation-settings:
-			  'FILL' 1,
-			  'wght' 400,
-			  'GRAD' 0,
-			  'opsz' 24
-			}
-		</style>
 	</head>
 
 	<body class="column v-center" style="gap: 3rem;">
 
-		<template from="/redesign-components.html" id="theme-change-cover"></template>
+		<template from="/components" id="theme-change-cover"></template>
 
-		<template from="/redesign-components.html" id="nav"></template>
+		<template from="/components" id="nav"></template>
 
 		<section class="row" style="height: min-content;">
-			<div class="column" style="background-color: color-mix(in srgb, var(--accent), transparent 75%); height: 100%; padding: 1rem; border-radius: 1rem;">
-				<button class="row v-center" onclick="displayProjects()">
-					<img src="/assets/lightbulb.svg" alt="">
+			<div class="column" style="background-color: color-mix(in srgb, var(--accent), transparent 75%); padding: 1rem; border-radius: 1rem;">
+				<button class="row v-center" onclick="panel.show('projects')">
+					<span class="icon-lightbulb"></span>
 					Projects
 				</button>
-				<button class="row v-center">
-					<img src="/assets/gear.svg" alt="">
+				<button class="row v-center" onclick="panel.show('preferences')">
+					<span class="icon-gear"></span>
 					Preferences
 				</button>
 			</div>
-			<div id="tiles" style="display: grid; width: 100%; height: max-content; gap: 1rem; grid-template-columns: 1fr 1fr 1fr 1fr;"></div>
+			<div id="panel-holder" style="width: 100%;">
+				<div id="projects" class="column" style="width: 100%;">
+
+					<div class="row v-center card constant" style="width: 100%; background-color: var(--primary); justify-content: space-between; padding: 1rem 3rem">
+						<h3 style="margin: 0px; color: var(--background);">Projects</h3>
+						<span class="icon-plus" style="background-color: var(--background);" onclick="document.getElementById('project-create').showModal()"></span>
+					</div>
+
+					<dialog id="project-create">
+						<h4 style="margin-top: 0px;">Create Project</h4>
+						<span class="icon-close" style="position: absolute; top: 1rem; right: 1rem" onclick="document.getElementById('project-create').close()"></span>
+						<input type="text" id="projectNameInput" class="button" placeholder="Enter project name">
+						<select id="projectType">
+							<option value="" disabled selected>Select Project Type</option>
+							<option value="code">Code</option>
+							<option value="note">Note</option>
+							<option value="art">Art</option>
+						</select>
+						<br><br>
+						<button class="button" onclick="document.getElementById('project-create').close(); addProject();">Add Project</button>
+					</dialog>
+
+					<div id="project-list" style="display: grid; width: 100%; height: max-content; gap: 1rem; grid-template-columns: 1fr 1fr 1fr 1fr;"></div>
+				</div>
+				<div id="preferences" style="display: grid; width: 100%; height: max-content; gap: 1rem; grid-template-columns: 1fr 1fr 1fr 1fr;">
+					<div>
+						<h2>Preferences</h2>
+					</div>
+				</div>
+			</div>
 		</section>
 
-		<template from="/redesign-components.html" id="footer"></template>
+		<template from="/components" id="footer"></template>
 
-		<script src="/redesign.js" type="module" defer></script>
-		<script src="./app.js"></script>
+		<script src="/index.js" type="module" defer></script>
+		<script src="./dashboard.js"></script>
+
+		<script>
+			const panel = new class Panel {
+				panelHolder = document.getElementById("panel-holder");
+
+				constructor() {
+					for (let panel of this.panelHolder.children) {
+						if (panel == this.panelHolder.firstElementChild) panel.classList.add("show");
+						else panel.classList.add("hide");
+					}
+				}
+
+				show(panelName="") {
+					document.querySelector("div#panel-holder div.show").classList.add("hide");
+					document.querySelector("div#panel-holder div.show").classList.remove("show");
+					document.querySelector("div#panel-holder div#"+panelName).classList.remove("hide");
+					document.querySelector("div#panel-holder div#"+panelName).classList.add("show");
+				}
+			}
+		</script>
 
 	</body>
 </html>

@@ -1,0 +1,251 @@
+/* ICONS */
+
+.icon-array {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/array.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-burger_menu {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/burger_menu.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-close,
+.icon-x {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/close.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-code {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/code.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-css {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/css.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-draw {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/draw.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-file {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/file.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-folder {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/folder.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-gear,
+.icon-setting,
+.icon-settings {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/gear.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-html {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/html.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-info {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/info.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-javascript {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/javascript.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-lightbulb {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/lightbulb.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-link_open {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/link_open.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-markdown {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/markdown.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-moon,
+.icon-dark_mode {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/moon.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-note_edit {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/note_edit.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-note {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/note.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-object {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/object.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-pencil {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/pencil.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-php {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/php.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-plus {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/plus.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-save {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/save.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-shapes {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/shapes.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-squiggle {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/squiggle.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-sun,
+.icon-light_mode {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/sun.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-trashcan,
+.icon-trash {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/trashcan.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}

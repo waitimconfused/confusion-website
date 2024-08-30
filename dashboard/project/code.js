@@ -1,14 +1,25 @@
 var db;
-const request = indexedDB.open("projectsDB", 1);
+var editor;
 
-request.onsuccess = function (event) {
-	db = event.target.result;
-	displayFiles();
-};
+require.config({ paths: { vs: '/library/monaco-editor/min/vs' } });
+require(['vs/editor/editor.main'], function () {
+	editor = monaco.editor.create(document.getElementById('code'), {
+		value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
+		language: 'javascript'
+	});
 
-request.onerror = function (event) {
-	console.error("Database error: " + event.target.errorCode);
-};
+	let request = indexedDB.open("projectsDB", 1);
+	
+	request.onsuccess = function (event) {
+		db = event.target.result;
+		console.log(db);
+		displayFiles();
+	};
+
+	request.onerror = function (event) {
+		console.error("Database error: " + event.target.errorCode);
+	};
+});
 
 function getProjectNameFromURL() {
 	let urlParams = new URLSearchParams(window.location.search);

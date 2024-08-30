@@ -16,6 +16,8 @@ var contentField = new SimpleMDE({
 		"fullscreen"
 	]
 });
+document.querySelector(".editor-toolbar").classList.add("fullscreen");
+document.querySelector(".CodeMirror.cm-s-paper").classList.add("CodeMirror-fullscreen");
 request.onsuccess = function (event) {
 	db = event.target.result;
 	display();
