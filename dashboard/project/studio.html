@@ -44,6 +44,7 @@
 			const colourPickerSize = screen.pixelDepth * 20;
 
 			const projectName = ( new URLSearchParams(window.location.search) ).get("p");
+			document.querySelector("title").innerText = document.querySelector("title").innerText.replace("■■■■■", projectName);
 
 			var db;
 			var editor;
