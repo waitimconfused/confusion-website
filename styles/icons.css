@@ -129,6 +129,15 @@
 	height: 24px;
 	padding: 0 0 0 0 !important;
 }
+.icon-link {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/link.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
 .icon-markdown {
 	background-color: var(--text);
 	mask-image: url("/assets/icons/markdown.svg");

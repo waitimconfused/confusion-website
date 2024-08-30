@@ -8,41 +8,58 @@
 	grid-template-columns: repeat(auto-fit, 225px);
 	container-type: inline-size;
 }
-#project-list > * {
-	height: 145px;
-}
-@media (width < 800px) {
-	#project-list {
-		grid-template-columns: 1fr;
-	}
+.icon {
+	position: relative;
+	cursor: pointer;
 }
 
 .card {
 	position: relative;
 	border-radius: 1rem;
+	padding: 1rem 1rem !important;
+}
+.card h4 {
+	margin: 0px !important;
+	max-width: calc(100% - 72px);
+	max-height: calc(100%);
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	/* text-wrap: wrap;
+	overflow-wrap: break-word;
+	overflow-y: hidden; */
 }
 
-.card .options {
-	position: absolute;
-	bottom: 1rem;
-	right: 1rem;
+@media (width > 800px) {
+	#project-list > * {
+		height: 145px;
+	}
+	.card .options {
+		position: absolute;
+		bottom: 1rem;
+		right: 1rem;
+	}
+	.icon:not(:first-child) {
+		margin-left: 0.5rem;
+	}
 }
-.icon {
-	position: relative;
-	cursor: pointer;
+
+@media (width <= 800px) {
+	#project-list {
+		grid-template-columns: 1fr;
+	}
+	#project-list > * {
+		height: 108.75px;
+	}
+	.card .options {
+		position: absolute;
+		bottom: 1rem;
+		left: 1rem;
+	}
+	.icon:not(:last-child) {
+		margin-right: 0.5rem;
+	}
 }
-.icon:not(:first-child) {
-	margin-left: 0.5rem;
-}
-/* .icon::after {
-	content: "";
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	background-color: cyan;
-} */
 
 .material-symbols-outlined {
 	font-variation-settings:
@@ -74,7 +91,7 @@ section {
 	flex-direction: row;
 	gap: 1rem;
 }
-@media only screen and (width < 700px) {
+@media only screen and (width < 500px) {
 	section {
 		flex-direction: column;
 	}

@@ -160,13 +160,13 @@ nav .menu {
 }
 @media only screen and (width < 700px) {
 	nav {
-		padding: 0.5rem 0.5rem;
+		padding: 0.5rem 1rem;
 	}
 	nav .links {
 		display: none;
 	}
 	nav .menu {
-		display: inline-block;
+		display: flex;
 	}
 	nav .links.show {
 		display: flex;
@@ -324,20 +324,10 @@ section {
 	}
 }
 
-:root[data-theme="dark"] .gradient {
-	background: linear-gradient(120deg, var(--secondary), var(--accent));
-}
-:root[data-theme="light"] .gradient,
-:root:not([data-theme]) .gradient {
+.gradient {
 	background: linear-gradient(120deg, var(--primary), var(--accent));
 }
-:root[data-theme="dark"] .text-gradient {
-	background: linear-gradient(120deg, var(--secondary), var(--accent));
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-:root[data-theme="light"] .text-gradient,
-:root:not([data-theme]) .text-gradient {
+.text-gradient {
 	background: linear-gradient(120deg, var(--primary), var(--accent));
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -359,6 +349,15 @@ section {
 }
 *:has(.card:not(.constant):hover) > .card:not(.constant):not(:hover) {
 	filter: brightness(80%);
+}
+@media (pointer: none), (pointer: coarse) {
+	.card:not(.constant):hover {
+		z-index: initial;
+		scale: 1;
+	}
+	*:has(.card:not(.constant):hover) > .card:not(.constant):not(:hover) {
+		filter: brightness(100%);
+	}
 }
 
 .text-gradient span {
