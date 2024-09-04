@@ -63,7 +63,7 @@ const preferences = new class Preferences {
 
 		if (key == "theme") {
 			let theme = this["theme"].value;
-			if (this["themeChangeAnimation"] == "true") {
+			if (this["themeChangeAnimation"].value == "true") {
 				let themeToggleButton = document.getElementById("theme-toggle");
 				let themeToggleButtonClickEvent = themeToggleButton.onclick;
 				themeToggleButton.onclick = () => {};

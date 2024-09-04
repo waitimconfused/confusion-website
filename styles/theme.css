@@ -233,7 +233,7 @@ header {
 
 header .explode {
 	width: 138px;
-	aspect-ratio: 1 / 1;
+	height: 138px;
 	transform-origin: top left;
 	/* --slope: 0.00703112840467;
 	--y-int: -5.42171206226;

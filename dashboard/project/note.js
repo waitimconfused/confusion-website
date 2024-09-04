@@ -1,6 +1,5 @@
 var db;
 const request = indexedDB.open("projectsDB", 1);
-var projectName = "Untitled";
 // Most options demonstrate the non-default behavior
 var contentField = new SimpleMDE({
 	element: document.getElementById("content"),
