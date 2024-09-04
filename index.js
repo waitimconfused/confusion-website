@@ -104,11 +104,13 @@ for (let i = 0; i < documentLinks_scrollToID.length; i ++) {
 	let element = documentLinks_scrollToID[i];
 	let id = element.href.split("#")[1];
 	let linkedElement = document.querySelector(`#${id}`);
-	element.removeAttribute("href");
-	element.classList.add("clickable");
-	// element.setAttribute("onclick", `document.querySelector("#${id}").scrollIntoView()`);
-	element.onclick = () => {
-		linkedElement.scrollIntoView();
+	if (linkedElement) {
+		element.removeAttribute("href");
+		element.classList.add("clickable");
+		// element.setAttribute("onclick", `document.querySelector("#${id}").scrollIntoView()`);
+		element.onclick = () => {
+			linkedElement.scrollIntoView();
+		}
 	}
 }
 
