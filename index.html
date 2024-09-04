@@ -96,16 +96,21 @@
 			<div class="card constant" style="width: 100%;">
 				<h3>Zero sign up!</h3>
 				<p>
-					Confusion uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDB API</a> to create and manage your projects.
+					Confusion uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" target="_blank">IndexedDB API</a> to create and manage your projects.
 					This means that you don't have to worry about security because all your projects stay only on your device.
 					<br><br>
-					Because of this, you can't share your projects with the world without connecting to <a href="https://github.com/">GitHub</a>.
+					Because of this, you can't share your projects with the world without connecting to <a href="https://github.com/" target="_blank">GitHub</a>.
 				</p>
 			</div>
 		</section>
 
 		<template from="/components" id="footer"></template>
+		<script src="/preferences.js"></script>
 		<script src="/index.js" type="module" defer></script>
+
+		<script>
+			window.preferences.get("ABC");
+		</script>
 
 	</body>
 </html>

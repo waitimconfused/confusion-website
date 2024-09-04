@@ -1,18 +1,27 @@
 var db;
 var editor;
+const iframe = document.createElement("iframe");
+const projectName = ( new URLSearchParams(window.location.search) ).get("p");
+document.querySelector("title").innerText = document.querySelector("title").innerText.replace("■■■■■", projectName);
 
 require.config({ paths: { vs: '/library/monaco-editor/min/vs' } });
 require(['vs/editor/editor.main'], function () {
 	editor = monaco.editor.create(document.getElementById('code'), {
-		value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
-		language: 'javascript'
+		value: `<!DOCTYPE html>\n<html>\n\n\t<head>\n\t\t<style>\n\t\t\th1 {\n\t\t\t\tcolor: red;\n\t\t\t}\n\t\t</style>\n\t</head>\n\n\t<body>\n\t\t<h1>Hello World!</h1>\n\t</body>\n\n</html>`,
+		language: 'html'
 	});
+	document.body.appendChild(iframe);
+	iframe.contentWindow.document.documentElement.innerHTML = editor.getValue();
+	
+	editor.getModel().onDidChangeContent((event) => {
+		iframe.contentWindow.document.documentElement.innerHTML = editor.getValue();
+	});
+	  
 
 	let request = indexedDB.open("projectsDB", 1);
 	
 	request.onsuccess = function (event) {
 		db = event.target.result;
-		console.log(db);
 		displayFiles();
 	};
 
@@ -21,13 +30,7 @@ require(['vs/editor/editor.main'], function () {
 	};
 });
 
-function getProjectNameFromURL() {
-	let urlParams = new URLSearchParams(window.location.search);
-	return urlParams.get('p');
-}
-
 function displayFiles() {
-	let projectName = getProjectNameFromURL();
 	let filesList = document.getElementById("filesList");
 	filesList.innerHTML = "";
 

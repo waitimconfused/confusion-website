@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Confusion</title>
+		<title>Dashboard | Confusion</title>
 		<link rel="stylesheet" href="/styles/theme.css">
 		<link rel="stylesheet" href="/styles/dashboard.css">
 		<link rel="shortcut icon" href="/assets/favicon.png" type="image/*">
@@ -48,19 +48,20 @@
 						<button class="button" onclick="document.getElementById('project-create').close(); addProject();">Add Project</button>
 					</dialog>
 
-					<div id="project-list"></div>
+					<div id="project-list" sort="age-start"></div>
 				</div>
 				<div id="preferences">
 					<div class="row v-center card constant" style="width: 100%; background-color: var(--primary); justify-content: space-between; padding: 1rem 3rem">
 						<h3 style="margin: 0px; color: var(--background);">Preferences</h3>
 					</div>
-					<p>Nothing's here!</p>
+					<div id="preferences-list"></div>
 				</div>
 			</div>
 		</section>
 
 		<template from="/components" id="footer"></template>
 
+		<script src="/preferences.js"></script>
 		<script src="/index.js" type="module" defer></script>
 		<script src="./dashboard.js"></script>
 
@@ -81,22 +82,113 @@
 					document.querySelector("div#panel-holder div#"+panelName).classList.remove("hide");
 					document.querySelector("div#panel-holder div#"+panelName).classList.add("show");
 
-					document.querySelector("div#panel-lables button.show").classList.add("hide");
-					document.querySelector("div#panel-lables button.show").classList.remove("show");
-					document.querySelector("div#panel-lables button[panel=\""+panelName+"\"]").classList.remove("hide");
-					document.querySelector("div#panel-lables button[panel=\""+panelName+"\"]").classList.add("show");
+					let currentlyShownButton = document.querySelector("div#panel-lables button.show");
+					let newlyShownButton = document.querySelector("div#panel-lables button[panel=\""+panelName+"\"]");
+					if (currentlyShownButton) {
+						currentlyShownButton.classList.add("hide");
+						currentlyShownButton.classList.remove("show");
+					}
+					if (newlyShownButton) {
+						newlyShownButton.classList.remove("hide");
+						newlyShownButton.classList.add("show");
+					}
 				}
 			}
 
+			function getSectionNameFromURL() {
+				let urlParams = new URLSearchParams(window.location.search);
+				return urlParams.get("q");
+			}
+
 			const panelLables = document.querySelectorAll("div#panel-lables button[panel]");
+			const URLspecifiedPanel = getSectionNameFromURL();
+			let URLspecifiedPanelExists = false;
 
 			for (let i = 0; i < panelLables.length; i ++) {
 				let currentPanel = panelLables[i];
 				let panelAttribute = currentPanel.getAttribute("panel");
-				if (i == 0) currentPanel.classList.add("show");
+
+				if (panelAttribute == URLspecifiedPanel) {
+					URLspecifiedPanelExists = true;
+					panel.show(panelAttribute);
+				}
 				currentPanel.onclick = () => {
 					panel.show(panelAttribute);
 				}
+			}
+			if (URLspecifiedPanelExists == false) {
+				panel.show(panelLables[0].getAttribute("panel"));
+			}
+
+			const preferencesList = document.getElementById("preferences-list");
+			for ( let preference in window.preferences ) {
+				let preferenceValue = window.preferences.get(preference);
+				let preferenceOptions = window.preferences.getOptions(preference);
+				let div = document.createElement("div");
+				preferencesList.appendChild(div);
+
+				let title = document.createElement("lable");
+				title.setAttribute("for", preference);
+				title.innerText = camelCaseToWords(preference);
+				div.appendChild(title);
+
+				if (arraysEqual(preferenceOptions, ['true', 'false'])) {
+					let toggle = document.createElement("input");
+					toggle.type = "checkbox";
+					toggle.role = "switch";
+					toggle.id = preference;
+					if (preferenceValue == "true") {
+						toggle.checked = true;
+					}
+					toggle.onchange = () => {
+						let value = JSON.stringify(toggle.checked);
+						window.preferences.set(preference, value);
+					}
+					div.appendChild(toggle);
+				} else if (Array.isArray(preferenceOptions)) {
+					let select = document.createElement("select");
+					select.id = preference;
+					for (let i = 0; i < preferenceOptions.length; i ++) {
+						let preferenceOption = preferenceOptions[i];
+						let option = document.createElement("option");
+						option.value = preferenceOption;
+						option.innerHTML = camelCaseToWords(preferenceOption);
+						select.appendChild(option);
+						if (preferenceOption == preferenceValue) {
+							select.value = preferenceValue;
+						}
+					}
+					select.onchange = () => {
+						let showThemeAnimation = window.preferences.get("themeChangeAnimation");
+						window.preferences.set("themeChangeAnimation", false);
+						window.preferences.set(preference, select.value);
+						window.preferences.set("themeChangeAnimation", showThemeAnimation);
+					}
+					div.appendChild(select);
+				}
+
+			}
+
+			function camelCaseToWords(text="") {
+				let result = text.replace(/([A-Z])/g, " $1");
+				let finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+				return finalResult;
+			}
+			function arraysEqual(a, b) {
+				if (!Array.isArray(a) || !Array.isArray(b)) return false;
+				if (a === b) return true;
+				if (a == null || b == null) return false;
+				if (a.length !== b.length) return false;
+
+				// If you don't care about the order of the elements inside
+				// the array, you should sort both arrays here.
+				// Please note that calling sort on an array will modify that array.
+				// you might want to clone your array first.
+
+				for (var i = 0; i < a.length; ++i) {
+					if (a[i] !== b[i]) return false;
+				}
+				return true;
 			}
 		</script>
 

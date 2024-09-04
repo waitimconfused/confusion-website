@@ -16,6 +16,8 @@ var contentField = new SimpleMDE({
 		"fullscreen"
 	]
 });
+const projectName = ( new URLSearchParams(window.location.search) ).get("p");
+document.querySelector("title").innerText = document.querySelector("title").innerText.replace("■■■■■", projectName);
 document.querySelector(".editor-toolbar").classList.add("fullscreen");
 document.querySelector(".CodeMirror.cm-s-paper").classList.add("CodeMirror-fullscreen");
 request.onsuccess = function (event) {
@@ -27,13 +29,7 @@ request.onerror = function (event) {
 	console.error("Database error: " + event.target.errorCode);
 };
 
-function getProjectNameFromURL() {
-	let urlParams = new URLSearchParams(window.location.search);
-	return urlParams.get('p');
-}
-
 function display() {
-	projectName = getProjectNameFromURL();
 	contentField.innerHTML = "";
 
 	if (projectName) {

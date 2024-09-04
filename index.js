@@ -3,7 +3,7 @@ import { reloadTemplateElements } from "https://waitimconfused.github.io/confusi
 
 await reloadTemplateElements();
 
-var animateThemeChange = true;
+var themeChangeAnimation = window.preferences.get("themeChangeAnimation") == "true";
 
 const nav = document.querySelector("nav");
 const navMenu = document.querySelector("nav .menu");
@@ -68,20 +68,7 @@ document.querySelector("nav .sitename").onmouseleave = (e) => {
 	document.querySelector("nav .sitename .img").classList.remove("animate");
 }
 
-function getPreferredColorScheme() {
-	if (window.matchMedia) {
-		if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-			return 'dark';
-		} else {
-			return 'light';
-		}
-	}
-	return 'light';
-}
-
-document.documentElement.setAttribute("data-theme", localStorage.getItem("theme") || getPreferredColorScheme());
-localStorage.setItem("theme", document.documentElement.getAttribute("data-theme"));
-document.body.querySelector(`#theme-toggle > [data-theme=${localStorage.getItem("theme")}]`).classList.add("hide");
+document.documentElement.setAttribute("data-theme", preferences.get("theme"));
 
 metaThemeColour.name = "theme-color";
 metaThemeColour.content = getComputedStyle(document.documentElement).getPropertyValue('--background');
@@ -105,34 +92,9 @@ document.onscroll = (e) => {
 // window.onresize();
 
 function toggleTheme() {
-	let theme = localStorage.getItem("theme");
+	let theme = window.preferences.get("theme");
 	theme = (theme=="light")?"dark":"light";
-
-	document.body.querySelector(`#theme-toggle > :not([data-theme=${theme}])`).classList.remove("hide");
-	document.body.querySelector(`#theme-toggle > [data-theme=${theme}]`).classList.add("hide");
-
-	if (animateThemeChange) {
-		themeToggleButton.onclick = () => {};
-
-		document.body.querySelector(`div#theme-change-cover`).setAttribute("theme-to", theme);
-		document.body.querySelector(`div#theme-change-cover`).classList.add("animate");
-
-		setTimeout(() => {
-			document.documentElement.setAttribute("data-theme", theme);
-			localStorage.setItem("theme", theme);
-			metaThemeColour.content = getComputedStyle(document.documentElement).getPropertyValue('--background');
-		}, 500);
-
-		setTimeout(() => {
-			document.body.querySelector(`div#theme-change-cover`).classList.remove("animate");
-			document.body.querySelector(`div#theme-change-cover`).removeAttribute("theme-to");
-			themeToggleButton.onclick = toggleTheme;
-		}, 1000);
-	} else {
-		document.documentElement.setAttribute("data-theme", theme);
-		localStorage.setItem("theme", theme);
-		metaThemeColour.content = getComputedStyle(document.documentElement).getPropertyValue('--background');
-	}
+	window.preferences.set("theme", theme);
 }
 
 themeToggleButton.onclick = toggleTheme;

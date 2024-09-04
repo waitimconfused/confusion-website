@@ -30,21 +30,25 @@
 	overflow-y: hidden; */
 }
 
-@media (width > 800px) {
-	#project-list > * {
-		height: 145px;
-	}
-	.card .options {
-		position: absolute;
-		bottom: 1rem;
-		right: 1rem;
-	}
-	.icon:not(:first-child) {
-		margin-left: 0.5rem;
+#project-list > * {
+	height: 145px;
+}
+.card .options {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+}
+.icon:not(:first-child) {
+	margin-left: 0.5rem;
+}
+
+@media (width < 1120px) {
+	#project-list {
+		grid-template-columns: 1fr 1fr;
 	}
 }
 
-@media (width <= 800px) {
+@media (width < 820px) {
 	#project-list {
 		grid-template-columns: 1fr;
 	}
