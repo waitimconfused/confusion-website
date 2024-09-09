@@ -87,7 +87,8 @@
 	right: 1rem;
 	scale: 3;
 	transform-origin: top right;
-	background-color: var(--primary);
+	/* background-color: var(--primary); */
+	background-color: color-mix(in srgb, var(--secondary), black 25%)
 }
 
 section {

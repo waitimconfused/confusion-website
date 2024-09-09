@@ -483,7 +483,7 @@ div#theme-toggle>[data-theme=light] {
 	transition: translate, rotate, scale, opacity;
 	transition-duration: 400ms;
 	user-select: none;
-	transition-timing-function: cubic-bezier(1, 0, 0.5, 1);
+	transition-timing-function: cubic-bezier(1, 0, 1, 0);
 }
 
 .explode *:nth-child(1) {
@@ -663,44 +663,75 @@ dialog {
 lable[for] {
 	margin-right: 1rem;
 }
-input:where([type="checkbox"][role="switch"]) {
-	-webkit-appearance: none;
-	-moz-appearance: none;
+
+input[role=switch] {
+	--time: 1s;
+	--state-off: var(--primary);
+	--state-on: var(--secondary);
+	--dot-size: 13px;
+	--dot-margin: 3px;
+	--border-thickness: 0.1254em;
+	--border-color: var(--primary);
+	font-size: 1.5rem;
 	appearance: none;
-	position: relative;
-	color: inherit;
-	font-size: inherit;
-	width: 2rem;
-	height: 1rem;
-	box-sizing: content-box;
-	border: 1px solid;
-	border-radius: 1rem;
-	vertical-align: text-bottom;
-	margin: auto;
-}
-
-input:where([type="checkbox"][role="switch"])::before {
-	content: "";
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translate(0, -50%);
 	box-sizing: border-box;
-	width: 0.7rem;
-	height: 0.7rem;
-	margin: 0 0.15rem;
-	border: 1px solid;
-	border-radius: 50%;
-	background: currentcolor;
-	transition: left;
-	transition-duration: 400ms;
-	transition-timing-function: ease;
+	border: var(--border-thickness) solid var(--border-color);
+	width: calc(var(--dot-margin) * 2 + var(--dot-size) * 3);
+	height: calc(var(--dot-margin) * 2 + var(--dot-size));
+	box-sizing: content-box;
+	border-radius: calc(var(--dot-size) + var(--dot-margin));
+	position: relative;
+	overflow: hidden;
+	background: var(--background);
+	transition: background 200ms;
+
+	&:before {
+		content: "";
+		border-radius: 50%;
+		position: absolute;
+		top: var(--dot-margin);
+		left: var(--dot-margin);
+		width: var(--dot-size);
+		height: var(--dot-size);
+		background: var(--state-on);
+		border-radius: calc(var(--dot-size) / 2);
+		transition: width, left, background;
+		transition-duration: 200ms;
+	}
+
+	&:checked {
+		background: var(--state-on);
+
+		&:before {
+			z-index: 1;
+			left: calc(100% - var(--dot-size) - var(--dot-margin));
+			background: var(--state-off);
+		}
+	}
+
+	&:active:not([disabled]) {
+		&:before {
+			width: calc(var(--dot-size) * 1.5);
+		}
+
+		&:checked:before {
+			left: calc(100% - var(--dot-size) * 1.5 - var(--dot-margin));
+		}
+	}
+
+	&[disabled] {
+		border-color: color-mix(in srgb, white 50%, var(--border-color));
+
+		&:checked {
+			background: color-mix(in srgb, white 50%, var(--state-on));
+		}
+
+		&:not(:checked):before {
+			background: color-mix(in srgb, white 50%, var(--state-on));
+		}
+	}
 }
 
-input:where([type="checkbox"][role="switch"]):checked::before {
-	left: 1rem;
-}
-
-input:where([type="checkbox"][role="switch"]):disabled {
-	opacity: 0.4;
+:focus-visible {
+	outline: 3px solid var(--accent);
 }

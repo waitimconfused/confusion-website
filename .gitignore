@@ -1,3 +1,4 @@
 archive/
-Asterisk/
+node_modules/
+package-lock.json
 local/

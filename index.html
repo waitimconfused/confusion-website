@@ -7,15 +7,6 @@
 		<link rel="stylesheet" href="/styles/theme.css">
 		<link rel="shortcut icon" href="/assets/favicon.png" type="image/*">
 		<link rel="apple-touch-icon" href="/assets/favicon.png" type="image/*">
-		<style>
-			.material-symbols-outlined {
-			  font-variation-settings:
-			  'FILL' 1,
-			  'wght' 400,
-			  'GRAD' 0,
-			  'opsz' 24
-			}
-		</style>
 	</head>
 
 	<body class="column v-center" style="gap: 3rem;">
@@ -103,6 +94,15 @@
 				</p>
 			</div>
 		</section>
+
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<filter id="goo">
+					<feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
+					<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 10 -7"/>
+				</filter>
+			</defs>
+		</svg>
 
 		<template from="/components" id="footer"></template>
 		<script src="/preferences.js"></script>

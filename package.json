@@ -1,10 +1,10 @@
 {
-    "type": "module",
-    "port": 1200,
-    "scripts": {
-        "serve": "node host.ast.js",
-        "init": "node install.ast.js"
-    },
-
+	"port": 1200,
+	"scripts": {
+		"serve": "node host.js"
+	},
+	"dependencies": {
+		"asterisk-server": "^1.0.6"
+	},
 	"banner": "Hello World!"
 }
