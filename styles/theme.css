@@ -32,6 +32,34 @@
 	--danger: #A50F0F;
 }
 
+/* :root[data-theme="light"],
+:root:not([data-theme]) {
+	color-scheme: light;
+
+	--text: #010513;
+	--background: #f0f2ff;
+	--primary: #576bef;
+	--secondary: #fe8176;
+	--accent: #fede3e;
+
+	--okay: #186727;
+	--warning: #AfA220;
+	--danger: #811818;
+}
+:root[data-theme="dark"] {
+	color-scheme: dark;
+
+	--text: #ebeffe;
+	--background: #00020e;
+	--primary: #1024a7;
+	--secondary: #890c01;
+	--accent: #c1a101;
+
+	--okay: #09C42C;
+	--warning: #DECF20;
+	--danger: #A50F0F;
+} */
+
 html {
 	scroll-behavior: smooth;
 	scroll-padding-top: calc(68px + 4rem);
@@ -43,7 +71,7 @@ body {
 	font-family: 'Inter';
 	font-weight: 400;
 	padding: 1rem 10%;
-	padding-top: calc(68px + 4rem);
+	padding-top: 68px;
 	margin: 0px;
 	width: 100%;
 	box-sizing: border-box;
@@ -252,10 +280,10 @@ section {
 	width: 100%;
 }
 
-.button {
+.button,
+button {
 	padding: 0.5em 2em;
 	background-color: var(--primary);
-	color: var(--background);
 	border-radius: 0.5rem;
 	transition: transform ease 0.2s, box-shadow ease 0.2s;
 	display: inline-block;
@@ -263,9 +291,11 @@ section {
 	z-index: 2;
 	white-space: nowrap;
 	border: none;
+	cursor: pointer;
 }
 
-.button:hover {
+.button:hover,
+button:hover {
 	transform: translate(0, -3px);
 	box-shadow: 0 20px 80px -10px var(--primary);
 }

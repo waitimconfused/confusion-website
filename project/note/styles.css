@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+
+body {
+	font-family: "Inter", Arial !important;
+	padding-top: 10rem;
+	padding-bottom: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+}
+
+header {
+	position: fixed;
+	display: block;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: max-content;
+	box-sizing: border-box;
+	padding: 15px;
+	gap: 15px;
+	box-shadow: 0 0 20px 1px #0000001A, 0 0 0 1px #0000001A;
+	border-radius: 0px 0px 20px 20px;
+	background: white;
+}
+
+header h1 {
+	font-size: 18px;
+	font-weight: 400;
+	font-family: "Inter", Arial !important;
+}
+
+div.tools {
+	display: block;
+	width: 100%;
+	height: max-content;
+	box-sizing: border-box;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 15px;
+	gap: 15px;
+	box-shadow: 0 0 20px 1px #0000001A, 0 0 0 1px #0000001A;
+	border-radius: 20px;
+	background: var(--accent);
+}
+
+main {
+	width: 800px;
+}

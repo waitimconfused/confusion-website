@@ -1,0 +1,148 @@
+.sidenav {
+	position: fixed;
+	top: 0px;
+	width: max-content;
+	padding: 0.5rem 2rem;
+	height: 100vh;
+	--background: white;
+	background: var(--background);
+	transition: translate 400ms;
+}
+
+.sidenav.left {
+	left: 0px;
+	border-right: 2px solid #E5E5E5;
+	translate: -100% 0px;
+}
+
+.sidenav.right {
+	right: 0px;
+	border-left: 2px solid #E5E5E5;
+	translate: 100% 0px;
+}
+.sidenav.open {
+	z-index: 2147483647;
+	translate: 0px 0px;
+}
+
+
+.sidenav .handle {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 0.5rem;
+	--width: 3rem;
+	top: 50px;
+	width: var(--width);
+	height: 100px;
+	background: var(--background);
+	border: 2px solid #E5E5E5;
+	user-select: none;
+}
+
+.sidenav.left .handle {
+	right: calc(var(--width) * -1);
+	border-radius: 0 1rem 1rem 0;
+	border-left: none;
+}
+
+.sidenav.left .handle:focus-visible,
+.sidenav.left .handle:focus {
+	outline: none;
+	box-shadow: 2px 0px 0px 1px var(--accent);
+}
+
+.sidenav.right .handle {
+	left: calc(var(--width) * -1);
+	border-radius: 1rem 0 0 1rem;
+	border-right: none;
+}
+
+.sidenav.right .handle:focus-visible,
+.sidenav.right .handle:focus {
+	outline: none;
+	box-shadow: -2px 0px 0px 1px var(--accent);
+}
+
+.sidenav .handle > * {
+	z-index: 1;
+}
+
+.sidenav .handle .dots {
+	width: 20px;
+	height: 50px;
+	background: white;
+	background-image: radial-gradient(#0F0F0F 1px, transparent 0);
+	background-size: 10px 10px;
+	border-radius: 6px;
+	padding: 0.5rem 0.1rem;
+	box-sizing: border-box;
+}
+
+.sidenav .handle:hover .dots,
+.sidenav .handle .dots:active {
+	background: rgba(0, 0, 0, 0.1);
+	background-image: radial-gradient(#0F0F0F 1px, transparent 0);
+	background-size: 10px 10px;
+}
+
+
+.sidenav .handle::before {
+	content: "";
+	position: absolute;
+	background-color: transparent;
+	bottom: -52px;
+	height: 50px;
+	width: 25px;
+	border-top: 2px solid #E5E5E5;
+	pointer-events: none;
+}
+
+.sidenav.left .handle::before {
+	left: 1px;
+	border-top-left-radius: 25px;
+	border-left: 2px solid #E5E5E5;
+	box-shadow: -2px -25px 0 0 var(--background);
+}
+
+.sidenav.right .handle::before {
+	right: 1.6px;
+	border-top-right-radius: 25px;
+	border-right: 2px solid #E5E5E5;
+	box-shadow: 2px -25px 0 0 var(--background);
+}
+
+.sidenav .handle::after {
+	content: "";
+	position: absolute;
+	background-color: transparent;
+	top: -51.5px;
+	height: 50px;
+	width: 25px;
+	border-bottom: 2px solid #E5E5E5;
+	pointer-events: none;
+}
+
+.sidenav.left .handle::after {
+	left: 2px;
+	border-bottom-left-radius: 25px;
+	border-left: 2px solid #E5E5E5;
+	box-shadow: -2px 25px 0 0 var(--background);
+}
+
+.sidenav.right .handle::after {
+	right: 2px;
+	border-bottom-right-radius: 25px;
+	border-right: 2px solid #E5E5E5;
+	box-shadow: 2px 25px 0 0 var(--background);
+}
+
+.sidenav .content .row .preview {
+	border-radius: 6px;
+}
+
+.sidenav .content .row .header {
+	margin: 0px;
+}

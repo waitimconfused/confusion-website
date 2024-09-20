@@ -106,6 +106,12 @@
 
 		<template from="/components" id="footer"></template>
 		<script src="/preferences.js"></script>
+		<script>
+			console.log(window.preferences.get("redirectToDashboard"));
+			if (window.preferences.get("redirectToDashboard") == "true") {
+				window.location = "/dashboard/";
+			}
+		</script>
 		<script src="/index.js" type="module" defer></script>
 
 	</body>

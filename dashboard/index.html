@@ -54,7 +54,13 @@
 					<div class="row v-center card constant" style="width: 100%; background-color: var(--primary); justify-content: space-between; padding: 1rem 3rem">
 						<h3 style="margin: 0px; color: var(--background);">Preferences</h3>
 					</div>
-					<div id="preferences-list"></div>
+					<div id="preferences-list">
+						<h4>Themes</h4>
+						<div>
+							<lable for="themeChangeAnimation">Theme Change Animation</lable>
+							<input type="checkbox" role="switch" id="themeChangeAnimation">
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -97,7 +103,7 @@
 
 			function getSectionNameFromURL() {
 				let urlParams = new URLSearchParams(window.location.search);
-				return urlParams.get("q");
+				return urlParams.get("panel");
 			}
 
 			const panelLables = document.querySelectorAll("div#panel-lables button[panel]");

@@ -1,0 +1,25 @@
+@import url("./colour-picker.css");
+@import url("./sidenav.css");
+
+body {
+	background-color: #E0E0E0;
+}
+
+nav {
+	animation: hide 750ms forwards;
+}
+
+@keyframes hide {
+	from {
+		translate: 0 0;
+	}
+
+	to {
+		translate: 0 -100%;
+	}
+}
+
+canvas {
+	z-index: -10;
+	user-select: none;
+}

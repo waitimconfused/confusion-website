@@ -37,6 +37,15 @@
 	height: 24px;
 	padding: 0 0 0 0 !important;
 }
+.icon-colour {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/colours.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
 .icon-css {
 	background-color: var(--text);
 	mask-image: url("/assets/icons/css.svg");
@@ -105,6 +114,15 @@
 .icon-javascript {
 	background-color: var(--text);
 	mask-image: url("/assets/icons/javascript.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-layers {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/layers.svg");
 	mask-repeat: no-repeat;
 	display: inline-block;
 	width: 24px;

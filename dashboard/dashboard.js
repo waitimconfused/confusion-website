@@ -1,8 +1,14 @@
 var db;
 const request = indexedDB.open("projectsDB", 1);
 
-var databaseSortMode = "type";
-var databaseFilterMode = "note";
+/**
+ * @type { "age-young" | "age-old" }
+ */
+var databaseSortMode = "age-old";
+/**
+ * @type { "none" | "type:code" | "type:note" | "type:art" }
+ */
+var databaseFilterMode = "none";
 
 request.onupgradeneeded = function (event) {
 	db = event.target.result;
@@ -12,7 +18,7 @@ request.onupgradeneeded = function (event) {
 
 request.onsuccess = function (event) {
 	db = event.target.result;
-	displayProjects(databaseSortMode);
+	displayProjects(databaseSortMode, databaseFilterMode);
 };
 
 request.onerror = function (event) {
@@ -77,8 +83,9 @@ function displayProjectElements(projects) {
 		let projectName = project.projectName;
 		let projectType = project.type;
 		let card = document.createElement("a");
+		let href = `/project?p=${encodeURIComponent(projectName)}`;
 		card.classList.add("card");
-		card.href = `./project?p=${encodeURIComponent(projectName)}`;
+		card.href = href;
 		card.style.cursor = "default";
 		card.setAttribute("draggable", "true")
 		projectsList.prepend(card);
@@ -105,7 +112,7 @@ function displayProjectElements(projects) {
 
 		let openButton = document.createElement("a");
 		openButton.classList.add("icon", "icon-link_open");
-		openButton.href = `./project?p=${encodeURIComponent(projectName)}`;
+		openButton.href = href;
 		openButton.target = "_blank";
 		openButton.style.backgroundColor = "var(--danger)";
 		buttonDiv.appendChild(openButton);
@@ -118,10 +125,10 @@ function displayProjectElements(projects) {
 		}
 		buttonDiv.appendChild(deleteButton);
 
-		card.onclick = (e) => {
+		card.addEventListener("click", (e) => {
 			if (e.target != card && e.target.getAttribute("href")) return;
 			e.preventDefault();
-		};
+		});
 	}
 }
 
@@ -140,13 +147,17 @@ function addProject() {
 			type: projectType
 		};
 		if (projectType == "code") data.files = [];
-		if (projectType == "art") data.layers = [];
+		if (projectType == "art") {
+			data.width = 500;
+			data.height = 500;
+			data.layers = [];
+		}
 		if (projectType == "note") data.notes = [];
 		let request = objectStore.add(data);
 
 		request.onsuccess = function () {
 			projectNameInput.value = "";
-			displayProjects(databaseSortMode);
+			displayProjects(databaseSortMode, databaseFilterMode);
 		};
 
 		request.onerror = function (event) {

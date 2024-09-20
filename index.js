@@ -1,9 +1,8 @@
 import packageJSON from "/package.json" with {type: "json"};
-import { reloadTemplateElements } from "https://waitimconfused.github.io/confusion-projects/components/index-module.js";
+import { reloadTemplateElements } from "https://waitimconfused.github.io/confusion-projects/components/index-async.js";
 
-await reloadTemplateElements();
+await reloadTemplateElements(false);
 
-var themeChangeAnimation = window.preferences.get("themeChangeAnimation") == "true";
 
 const nav = document.querySelector("nav");
 const navMenu = document.querySelector("nav .menu");
@@ -33,6 +32,7 @@ const banner = new class Banner {
 		document.querySelector("nav .banner").classList.add("show");
 	}
 	hide() {
+		console.log("40");
 		document.querySelector("nav .banner").classList.remove("show");
 	}
 	toggle() {
@@ -42,7 +42,6 @@ const banner = new class Banner {
 	setContent(text="") {
 		this.content = text;
 		document.querySelector("nav .banner").innerHTML = `<p>${this.content}</p>`;
-		this.show();
 	}
 	setColour(colour="") {
 		document.querySelector("nav .banner").style.backgroundColor = `var(--${colour})`;
@@ -68,7 +67,7 @@ document.querySelector("nav .sitename").onmouseleave = (e) => {
 	document.querySelector("nav .sitename .img").classList.remove("animate");
 }
 
-document.documentElement.setAttribute("data-theme", preferences.get("theme"));
+document.documentElement.setAttribute("data-theme", window.preferences.get("theme"));
 
 metaThemeColour.name = "theme-color";
 metaThemeColour.content = getComputedStyle(document.documentElement).getPropertyValue('--background');
