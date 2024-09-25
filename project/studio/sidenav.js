@@ -1,49 +1,16 @@
+console.clear();
+
 import * as tb from "https://waitimconfused.github.io/confusion-projects/toolbelt/toolbelt.js";
 
-const sideNavs = document.querySelectorAll(".sidenav");
+const sidenavs = document.querySelectorAll(".sidenav");
 
-var lastMousePos = { x: 0, y: 0 };
-for (let i = 0; i < sideNavs.length; i ++) {
-	let layerMenu = document.body.querySelector(`.sidenav:nth-of-type(${i+1})`);
-	let layerMenuToggle = document.body.querySelector(`.sidenav:nth-of-type(${i+1}) .handle`);
-	let layerMenuToggleDots = document.body.querySelector(`.sidenav:nth-of-type(${i+1}) .handle .dots`);
-
-	layerMenuToggle.style.top = i * 150 + 25 + "px";
-
-	layerMenu.setAttribute("dragging", "false")
-
-	layerMenuToggle.addEventListener("mousedown", (e) => {
-		lastMousePos = tb.mouse.position;
-	});
-
-	layerMenuToggle.addEventListener("mouseup", (e) => {
-		if (lastMousePos.x != tb.mouse.position.x && lastMousePos.y != tb.mouse.position.y) return;
-		lastMousePos = tb.mouse.position;
-		if (layerMenu.classList.contains("open")) {
-			closeSidenav(layerMenu);
-		} else {
-			openSidenav(layerMenu);
-		}
-	});
-
-	layerMenuToggle.addEventListener("keydown", (e) => {
-		if (e.key != " ") return;
-		if (layerMenu.getAttribute("dragging") == "true") return;
-		if (layerMenu.classList.contains("open")) {
-			closeSidenav(layerMenu);
-		} else {
-			openSidenav(layerMenu);
-		}
-	});
-
-	dragElement(layerMenuToggle, layerMenuToggleDots);
+for (let i = 0; i < sidenavs.length; i++) {
+	let sidenav = sidenavs[i];
+	let popupOptions = sidenav.querySelector(".popup-options");
+	let popupOptions_drag = popupOptions.querySelector(".drag");
+	dragElement(popupOptions, popupOptions_drag);
 }
 
-/**
- * 
- * @param { HTMLElement } elmnt
- * @param { HTMLElement } handle
- */
 function dragElement(elmnt, handle) {
 	let startX = 0;
 	let startY = 0;
@@ -76,9 +43,18 @@ function dragElement(elmnt, handle) {
 		let parentRect = elmnt.parentElement.getBoundingClientRect();
 		let elmntHandleRect = handle.getBoundingClientRect();
 
-		elmnt.style.top = tb.toRange(25,  e.clientY - handle.offsetTop - elmntHandleRect.height/2, window.innerHeight - 25) + "px";
+		let side = "";
 
-		let side = elmnt.parentNode.classList.contains("right") ? "right" : "left";
+		if (elmnt.parentNode.classList.contains("right")) side = "right";
+		if (elmnt.parentNode.classList.contains("left")) side = "left";
+		if (elmnt.parentNode.classList.contains("float")) side = "float";
+
+		if (["left", "right"].includes(side)) {
+			elmnt.style.top = tb.toRange(25, e.clientY - handle.offsetTop - elmntHandleRect.height / 2, window.innerHeight - 25) + "px";
+		} else if (side == "float") {
+			elmnt.parentNode.style.top = tb.toRange(8, e.clientY - handle.offsetTop - elmntHandleRect.height / 2, window.innerHeight - parentRect.height - 8) + "px";
+			elmnt.parentNode.style.left = tb.toRange(8, e.clientX - handle.offsetLeft - elmntHandleRect.width / 2, window.innerWidth - parentRect.width - 8) + "px";
+		}
 
 		if (side == "right" && e.clientX < window.innerWidth / 2) {
 			elmnt.parentNode.classList.remove("right");
@@ -90,14 +66,14 @@ function dragElement(elmnt, handle) {
 
 		if (
 			elmnt.parentNode.classList.contains("open") == false &&
-			(side == "right" && e.clientX < window.innerWidth - parentRect.width/2) ||
-			(side == "left" && e.clientX > parentRect.width/2)
+			(side == "right" && e.clientX < window.innerWidth - parentRect.width / 2) ||
+			(side == "left" && e.clientX > parentRect.width / 2)
 		) {
 			openSidenav(elmnt.parentNode);
 		} else if (
 			elmnt.parentNode.classList.contains("open") &&
-			(side == "right" && e.clientX > window.innerWidth - parentRect.width/2) ||
-			(side == "left" && e.clientX < parentRect.width/2)
+			(side == "right" && e.clientX > window.innerWidth - parentRect.width / 2) ||
+			(side == "left" && e.clientX < parentRect.width / 2)
 		) {
 			closeSidenav(elmnt.parentNode);
 		}
@@ -113,7 +89,7 @@ function dragElement(elmnt, handle) {
 function openSidenav(sidenav) {
 	let side = sidenav.classList.contains("right") ? "right" : "left";
 	let openTabs = document.querySelectorAll(`.sidenav.${side}.open`);
-	for (let i = 0; i < openTabs.length; i ++) {
+	for (let i = 0; i < openTabs.length; i++) {
 		let openTab = openTabs[i];
 		openTab.classList.remove("open");
 	}
@@ -122,4 +98,18 @@ function openSidenav(sidenav) {
 
 function closeSidenav(sidenav) {
 	sidenav.classList.remove("open");
+}
+
+window.addEventListener("resize", putFloatingSidenavsInScreen);
+
+function putFloatingSidenavsInScreen() {
+	let floatingSidenavs = document.querySelectorAll(".sidenav.float");
+	
+	for (let i = 0; i < floatingSidenavs.length; i ++) {
+		let floatingSidenav = floatingSidenavs[i];
+		let rect = floatingSidenav.getBoundingClientRect();
+
+		floatingSidenav.style.top = tb.toRange(8, floatingSidenav.offsetTop, window.innerHeight - rect.height - 8) + "px";
+		floatingSidenav.style.left = tb.toRange(8, floatingSidenav.offsetLeft, window.innerWidth - rect.width - 8) + "px";
+	}
 }

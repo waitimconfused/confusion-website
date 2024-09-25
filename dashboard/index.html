@@ -16,15 +16,19 @@
 		<template from="/components" id="nav"></template>
 
 		<section style="height: min-content;">
-			<div id="panel-lables" class="column" style="background-color: color-mix(in srgb, var(--accent), transparent 75%); padding: 1rem; border-radius: 1rem;">
-				<button class="row v-center" panel="projects">
-					<span class="icon-lightbulb"></span>
+			<div id="panel-lables" class="column" style="background-color: color-mix(in srgb, var(--accent), transparent 50%); padding: 1rem; border-radius: 1rem;">
+				<a class="button row v-center" href="?panel=projects" style="color: var(--background);">
+					<span class="icon-lightbulb" style="background-color: var(--background);"></span>
 					Projects
-				</button>
-				<button class="row v-center" panel="preferences">
-					<span class="icon-gear"></span>
+				</a>
+				<a class="button row v-center" href="?panel=planning" style="color: var(--background);">
+					<span class="icon-clock" style="background-color: var(--background);"></span>
+					Planning
+				</a>
+				<a class="button row v-center" href="?panel=preferences" style="color: var(--background);">
+					<span class="icon-gear" style="background-color: var(--background);"></span>
 					Preferences
-				</button>
+				</a>
 			</div>
 			<div id="panel-holder" style="width: 100%;">
 				<div id="projects" class="column" style="width: 100%;">
@@ -50,17 +54,19 @@
 
 					<div id="project-list" sort="age-start"></div>
 				</div>
+				<div id="planning">
+					<div class="row v-center card constant" style="width: 100%; background-color: var(--primary); justify-content: space-between; padding: 1rem 3rem">
+						<h3 style="margin: 0px; color: var(--background);">Planning</h3>
+					</div>
+					<div>
+						<p>No Plannings found.</p>
+					</div>
+				</div>
 				<div id="preferences">
 					<div class="row v-center card constant" style="width: 100%; background-color: var(--primary); justify-content: space-between; padding: 1rem 3rem">
 						<h3 style="margin: 0px; color: var(--background);">Preferences</h3>
 					</div>
-					<div id="preferences-list">
-						<h4>Themes</h4>
-						<div>
-							<lable for="themeChangeAnimation">Theme Change Animation</lable>
-							<input type="checkbox" role="switch" id="themeChangeAnimation">
-						</div>
-					</div>
+					<div id="preferences-list"></div>
 				</div>
 			</div>
 		</section>
@@ -106,13 +112,18 @@
 				return urlParams.get("panel");
 			}
 
-			const panelLables = document.querySelectorAll("div#panel-lables button[panel]");
+			const panelLables = document.querySelectorAll("div#panel-lables [href^=\"?panel=\"]");
 			const URLspecifiedPanel = getSectionNameFromURL();
 			let URLspecifiedPanelExists = false;
 
 			for (let i = 0; i < panelLables.length; i ++) {
 				let currentPanel = panelLables[i];
-				let panelAttribute = currentPanel.getAttribute("panel");
+				let panelAttribute = currentPanel.getAttribute("href").replace(/^\?panel=/, "");
+
+				currentPanel.removeAttribute("href");
+				currentPanel.addEventListener("click", () => {
+					window.history.replaceState({}, '', '?panel='+panelAttribute);
+				});
 
 				if (panelAttribute == URLspecifiedPanel) {
 					URLspecifiedPanelExists = true;
@@ -122,14 +133,17 @@
 					panel.show(panelAttribute);
 				}
 			}
+			console.log({URLspecifiedPanelExists});
 			if (URLspecifiedPanelExists == false) {
-				panel.show(panelLables[0].getAttribute("panel"));
+				let defaultPanel = panelLables[0].getAttribute("href").replace(/^\?panel=/, "");
+				panel.show(defaultPanel);
 			}
 
 			const preferencesList = document.getElementById("preferences-list");
 			for ( let preference in window.preferences ) {
 				let preferenceValue = window.preferences.get(preference);
 				let preferenceOptions = window.preferences.getOptions(preference);
+				console.log(preference, preferenceValue, preferenceOptions);
 				let div = document.createElement("div");
 				preferencesList.appendChild(div);
 

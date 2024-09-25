@@ -39,11 +39,9 @@ actionCopy.addEventListener("click", () => {
 satLight.addEventListener("mousedown", move);
 document.documentElement.addEventListener("mousemove", move);
 
-dragElement(colourPicker, colourPickerHandle);
-
 colourPickerCollapseButton.addEventListener("click", () => {
 	colourPicker.classList.toggle("minimized");
-	putColourPickerInScreen();
+	window.onresize();
 });
 
 update();
@@ -95,7 +93,7 @@ function update() {
 
 	colourPicker.setAttribute("value", colour);
 
-	colourCode.value = colour;
+	colourCode.value = colour.replace(/^\w+\(|deg|%|\)$/g, "");
 	satLightHandle.style.backgroundColor = colour;
 	document.documentElement.style.setProperty('--colour-input-hue-selector-fill', `hsl(${Math.round(hsl[0] * 360)}deg, 100%, 50%)`);
 	actionPreview.style.backgroundColor = colour;
@@ -172,52 +170,4 @@ function hexToHsl(hex) {
 	h = Math.round(360 * h);
 
 	return [h, s, l]
-}
-
-function dragElement(elmnt, handle) {
-	var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-	if (handle) {
-		// if present, the header is where you move the DIV from:
-		handle.onmousedown = dragMouseDown;
-	} else {
-		// otherwise, move the DIV from anywhere inside the DIV:
-		elmnt.onmousedown = dragMouseDown;
-	}
-
-	function dragMouseDown(e) {
-		e = e || window.event;
-		e.preventDefault();
-		// get the mouse cursor position at startup:
-		pos3 = e.clientX;
-		pos4 = e.clientY;
-		document.onmouseup = closeDragElement;
-		// call a function whenever the cursor moves:
-		document.onmousemove = elementDrag;
-	}
-
-	function elementDrag(e) {
-		e = e || window.event;
-		e.preventDefault();
-		let elmntRect = elmnt.getBoundingClientRect();
-		let handleRect = handle.getBoundingClientRect();
-
-
-		elmnt.style.top = tb.toRange(8, e.clientY - handle.offsetTop - handleRect.height / 2, window.innerHeight - elmntRect.height - 8) + "px";
-		elmnt.style.left = tb.toRange(8, e.clientX - handle.offsetLeft - handleRect.width / 2, window.innerWidth - elmntRect.width - 8) + "px";
-	}
-
-	function closeDragElement() {
-		// stop moving when mouse button is released:
-		document.onmouseup = null;
-		document.onmousemove = null;
-	}
-}
-
-window.addEventListener("resize", putColourPickerInScreen);
-
-function putColourPickerInScreen() {
-	let colourPickerRect = colourPicker.getBoundingClientRect();
-
-	colourPicker.style.top = tb.toRange(8, colourPicker.offsetTop, window.innerHeight - colourPickerRect.height - 8) + "px";
-	colourPicker.style.left = tb.toRange(8, colourPicker.offsetLeft, window.innerWidth - colourPickerRect.width - 8) + "px";
 }

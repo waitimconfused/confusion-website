@@ -18,6 +18,15 @@
 	height: 24px;
 	padding: 0 0 0 0 !important;
 }
+.icon-clock {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/clock.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
 .icon-close,
 .icon-x {
 	background-color: var(--text);
@@ -211,6 +220,15 @@
 	height: 24px;
 	padding: 0 0 0 0 !important;
 }
+.icon-person {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/person.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
 .icon-php {
 	background-color: var(--text);
 	mask-image: url("/assets/icons/php.svg");
@@ -260,6 +278,15 @@
 .icon-light_mode {
 	background-color: var(--text);
 	mask-image: url("/assets/icons/sun.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
+.icon-symbol_right {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/symbol_right.svg");
 	mask-repeat: no-repeat;
 	display: inline-block;
 	width: 24px;

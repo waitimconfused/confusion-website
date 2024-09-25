@@ -13,109 +13,126 @@
 
 	<body>
 
-		<div class="sidenav column right open">
-			<div class="handle" tabindex="0">
-				<span class="icon-layers"></span>
-				<div class="dots"></div>
-			</div>
-			<h3>Layers</h3>
-			<div class="row">
-				<span class="icon-plus" id="add-layer"></span>
-			</div>
-			<div class="content column" id="layer-holder"></div>
-		</div>
-
-		<div class="sidenav column right">
-			<div class="handle" tabindex="0">
-				<span class="icon-squiggle"></span>
-				<div class="dots"></div>
-			</div>
-			<h3>Brushes</h3>
-			<div class="row">
-				<span class="icon-plus"></span>
-			</div>
-			<div class="content">
-				<div class="row">
-					<span class="preview icon-pencil"></span>
-					<h4>Pencil</h4>
-				</div>
-			</div>
-		</div>
-
-		<div id="colour-picker">
-
+		<div id="colour-picker" class="sidenav float">
 			<div class="popup-options">
 				<span class="icon-colour"></span>
 
-				<div class="drag" tabindex="0"></div>
+				<div class="drag"></div>
 
-				<svg class="minimize-button" width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg" tabindex="0">
+				<svg class="minimize-button" width="7" height="11" viewBox="0 0 7 11" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
 					<path d="M6.53857 7.23071L3.76934 9.99994L1.00011 7.23071" stroke="#0F0F0F" stroke-width="0.692308"
 						stroke-linecap="round" stroke-linejoin="round"></path>
 					<path d="M1 3.76929L3.76923 1.00006L6.53846 3.76929" stroke="#0F0F0F" stroke-width="0.692308"
 						stroke-linecap="round" stroke-linejoin="round"></path>
 				</svg>
 			</div>
-
-			<div class="sat-light">
-				<div class="white-overlay"></div>
-				<div class="black-overlay"></div>
-				<div class="colour-overlay"></div>
-				<div class="handle"></div>
-			</div>
-
-			<div class="hue">
-				<input min="0" max="360" value="0" type="range">
-			</div>
-
-			<div class="colour-code-holder">
-				<label class="colour-code-selector">
-					<svg width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M6.53857 7.23071L3.76934 9.99994L1.00011 7.23071" stroke="#0F0F0F"
-							stroke-width="0.692308" stroke-linecap="round" stroke-linejoin="round"></path>
-						<path d="M1 3.76929L3.76923 1.00006L6.53846 3.76929" stroke="#0F0F0F" stroke-width="0.692308"
-							stroke-linecap="round" stroke-linejoin="round"></path>
-					</svg>
-					<small data-options="HEX,RGB,HSL">HEX</small>
-				</label>
-
-				<input type="text" class="colour-code" maxlength="20">
-			</div>
-
-			<div class="actions">
-				<div class="copy">
-					<svg width="40" height="40" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"
-						data-astro-cid-nupsd6dd="">
-						<rect x="9.87119" y="9.05613" width="9.32564" height="11.0381" rx="1.41885" stroke="#0F0F0F"
-							stroke-width="0.7"></rect>
-						<path
-							d="M15.7695 7.54181V7.17542C15.7695 6.34699 15.0979 5.67542 14.2695 5.67542H8.01318C7.18476 5.67542 6.51318 6.34699 6.51318 7.17542V15.3738C6.51318 16.2022 7.18476 16.8738 8.01318 16.8738H8.36445"
-							stroke="#0F0F0F" stroke-width="0.7"></path>
-					</svg>
+			<div class="content">
+				<div class="sat-light">
+					<div class="white-overlay"></div>
+					<div class="black-overlay"></div>
+					<div class="colour-overlay"></div>
+					<div class="handle"></div>
 				</div>
-				<div class="eye-dropper">
-					<svg width="40" height="40" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<g clip-path="url(#clip0_549_1686)">
-							<rect x="17.3555" y="6.38252" width="2.8196" height="15.7478" rx="1.4098"
-								transform="rotate(45 17.3555 6.38252)" stroke="#0F0F0F"></rect>
-							<path
-								d="M18.3523 9.37316L15.7673 11.9582L13.7736 9.96442L16.3586 7.3794C16.9092 6.82884 17.8018 6.82884 18.3523 7.3794C18.9029 7.92996 18.9029 8.8226 18.3523 9.37316Z"
-								fill="#0F0F0F" stroke="#0F0F0F"></path>
-							<path d="M12.5132 9.17542L16.5132 13.1754" stroke="#0F0F0F"></path>
-							<path
-								d="M6.62842 17.6754L7.86346 18.9105L7.30594 19.468C6.99803 19.7759 6.4988 19.7759 6.19089 19.468L6.07089 19.348C5.76298 19.0401 5.76298 18.5409 6.07089 18.2329L6.62842 17.6754Z"
-								fill="#0F0F0F"></path>
-						</g>
-						<defs>
-							<clipPath id="clip0_549_1686">
-								<rect width="25.5707" height="25.5707" fill="white"></rect>
-							</clipPath>
-						</defs>
-					</svg>
-				</div>
-				<div class="preview"></div>
-			</div>
 
+				<div class="hue">
+					<input min="0" max="360" value="0" type="range">
+				</div>
+
+				<div class="colour-code-holder">
+					<label class="colour-code-selector">
+						<svg width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M6.53857 7.23071L3.76934 9.99994L1.00011 7.23071" stroke="#0F0F0F"
+								stroke-width="0.692308" stroke-linecap="round" stroke-linejoin="round"></path>
+							<path d="M1 3.76929L3.76923 1.00006L6.53846 3.76929" stroke="#0F0F0F"
+								stroke-width="0.692308" stroke-linecap="round" stroke-linejoin="round"></path>
+						</svg>
+						<small data-options="HEX,RGB,HSL">HEX</small>
+					</label>
+
+					<input type="text" class="colour-code" maxlength="20">
+				</div>
+
+				<div class="actions">
+					<div class="copy">
+						<svg width="40" height="40" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"
+							data-astro-cid-nupsd6dd="">
+							<rect x="9.87119" y="9.05613" width="9.32564" height="11.0381" rx="1.41885" stroke="#0F0F0F"
+								stroke-width="0.7"></rect>
+							<path
+								d="M15.7695 7.54181V7.17542C15.7695 6.34699 15.0979 5.67542 14.2695 5.67542H8.01318C7.18476 5.67542 6.51318 6.34699 6.51318 7.17542V15.3738C6.51318 16.2022 7.18476 16.8738 8.01318 16.8738H8.36445"
+								stroke="#0F0F0F" stroke-width="0.7"></path>
+						</svg>
+					</div>
+					<div class="eye-dropper">
+						<svg width="40" height="40" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_549_1686)">
+								<rect x="17.3555" y="6.38252" width="2.8196" height="15.7478" rx="1.4098"
+									transform="rotate(45 17.3555 6.38252)" stroke="#0F0F0F"></rect>
+								<path
+									d="M18.3523 9.37316L15.7673 11.9582L13.7736 9.96442L16.3586 7.3794C16.9092 6.82884 17.8018 6.82884 18.3523 7.3794C18.9029 7.92996 18.9029 8.8226 18.3523 9.37316Z"
+									fill="#0F0F0F" stroke="#0F0F0F"></path>
+								<path d="M12.5132 9.17542L16.5132 13.1754" stroke="#0F0F0F"></path>
+								<path
+									d="M6.62842 17.6754L7.86346 18.9105L7.30594 19.468C6.99803 19.7759 6.4988 19.7759 6.19089 19.468L6.07089 19.348C5.76298 19.0401 5.76298 18.5409 6.07089 18.2329L6.62842 17.6754Z"
+									fill="#0F0F0F"></path>
+							</g>
+							<defs>
+								<clipPath id="clip0_549_1686">
+									<rect width="25.5707" height="25.5707" fill="white"></rect>
+								</clipPath>
+							</defs>
+						</svg>
+					</div>
+					<div class="preview"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="sidenav right open">
+			<div class="popup-options">
+				<span class="icon-layers"></span>
+
+				<div class="drag"></div>
+
+				<svg class="minimize-button" width="7" height="11" viewBox="0 0 7 11" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M6.53857 7.23071L3.76934 9.99994L1.00011 7.23071" stroke="#0F0F0F" stroke-width="0.692308"
+						stroke-linecap="round" stroke-linejoin="round"></path>
+					<path d="M1 3.76929L3.76923 1.00006L6.53846 3.76929" stroke="#0F0F0F" stroke-width="0.692308"
+						stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</div>
+			<div class="content">
+				<h3>Layers</h3>
+				<div class="row">
+					<span class="icon-plus" id="add-layer"></span>
+				</div>
+				<div class="content column" id="layer-holder"></div>
+			</div>
+		</div>
+
+		<div class="sidenav right">
+			<div class="popup-options">
+				<span class="icon-squiggle"></span>
+
+				<div class="drag"></div>
+
+				<svg class="minimize-button" width="7" height="11" viewBox="0 0 7 11" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M6.53857 7.23071L3.76934 9.99994L1.00011 7.23071" stroke="#0F0F0F" stroke-width="0.692308"
+						stroke-linecap="round" stroke-linejoin="round"></path>
+					<path d="M1 3.76929L3.76923 1.00006L6.53846 3.76929" stroke="#0F0F0F" stroke-width="0.692308"
+						stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</div>
+			<div class="content">
+				<h3>Brushes</h3>
+				<div class="row">
+					<span class="icon-plus" id="add-layer"></span>
+				</div>
+				<div class="content column" id="layer-holder"></div>
+			</div>
 		</div>
 
 		<script src="/preferences.js"></script>

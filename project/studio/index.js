@@ -45,17 +45,21 @@ dot.script = () => {
 	dot.moveTo( engine.mouse.toWorld() );
 }
 
+let lastMousePos = { x: 0, y: 0 }; 
 mouse.addHook({
 	updateFunc: () => {
 		let canvasMouse = engine.mouse.toWorld();
 		let canvas = layers.getObject( currentLayer );
 		if (!canvas) return;
+		if (Math.round(canvasMouse.x) == lastMousePos.x && Math.round(canvasMouse.y) == lastMousePos.y) return;
 		if (engine.mouse.click_l && engine.canvas.matches(":active")) {
 			canvas.context.fillStyle = colourPicker.getAttribute("value");
 			canvas.context.beginPath();
 			canvas.context.arc(canvasMouse.x + canvas.display.w/2, canvasMouse.y + canvas.display.h/2, 10, 0, 2 * Math.PI);
 			canvas.context.closePath();
 			canvas.context.fill();
+			lastMousePos.x = Math.round(canvasMouse.x);
+			lastMousePos.y = Math.round(canvasMouse.y);
 			// saveProject();
 		}
 	}
