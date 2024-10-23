@@ -9,6 +9,15 @@
 	height: 24px;
 	padding: 0 0 0 0 !important;
 }
+.icon-brush {
+	background-color: var(--text);
+	mask-image: url("/assets/icons/brush.svg");
+	mask-repeat: no-repeat;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 0 0 0 0 !important;
+}
 .icon-burger_menu {
 	background-color: var(--text);
 	mask-image: url("/assets/icons/burger_menu.svg");
