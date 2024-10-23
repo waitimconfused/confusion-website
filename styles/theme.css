@@ -217,7 +217,7 @@ nav .sitename .img.animate::before {
 }
 
 nav .menu {
-	display: none;
+	display: none !important;
 }
 
 @media only screen and (width < 700px) {
@@ -226,15 +226,15 @@ nav .menu {
 	}
 
 	nav .links {
-		display: none;
+		display: none !important;
 	}
 
 	nav .menu {
-		display: flex;
+		display: flex !important;
 	}
 
 	nav .links.show {
-		display: flex;
+		display: flex !important;
 		position: fixed;
 		width: 100%;
 		flex-direction: column-reverse;
@@ -696,46 +696,47 @@ lable[for] {
 
 input[role=switch] {
 	--time: 1s;
-	--state-off: var(--primary);
-	--state-on: var(--secondary);
-	--dot-size: 13px;
-	--dot-margin: 3px;
-	--border-thickness: 0.1254em;
-	--border-color: var(--primary);
-	font-size: 1.5rem;
+	--state-off: var(--background);
+	--state-on: var(--text);
+	--dot-size: 1rem;
+	--dot-margin: 0.2rem;
+	--border-thickness: 0.2rem;
+	--border-color: var(--text);
+	;
+	position: relative;
 	appearance: none;
 	box-sizing: border-box;
-	border: var(--border-thickness) solid var(--border-color);
-	width: calc(var(--dot-margin) * 2 + var(--dot-size) * 3);
-	height: calc(var(--dot-margin) * 2 + var(--dot-size));
+	border: 3px solid var(--state-on);
 	box-sizing: content-box;
-	border-radius: calc(var(--dot-size) + var(--dot-margin));
-	position: relative;
+	width: calc(var(--dot-size) * 3);
+	height: var(--dot-size);
+	padding: var(--dot-margin);
+	border-radius: var(--dot-size);
 	overflow: hidden;
-	background: var(--background);
+	background: var(--state-off);
 	transition: background 200ms;
+	cursor: pointer;
 
 	&:before {
 		content: "";
-		border-radius: 50%;
-		position: absolute;
-		top: var(--dot-margin);
-		left: var(--dot-margin);
+		position: relative;
+		display: inline-block;
+		left: 0px;
 		width: var(--dot-size);
 		height: var(--dot-size);
-		background: var(--state-on);
+		background: var(--text);
 		border-radius: calc(var(--dot-size) / 2);
 		transition: width, left, background;
 		transition-duration: 200ms;
 	}
 
 	&:checked {
-		background: var(--state-on);
+		background: var(--text);
 
 		&:before {
 			z-index: 1;
-			left: calc(100% - var(--dot-size) - var(--dot-margin));
-			background: var(--state-off);
+			left: calc(100% - var(--dot-size));
+			background: var(--background);
 		}
 	}
 
@@ -745,19 +746,28 @@ input[role=switch] {
 		}
 
 		&:checked:before {
-			left: calc(100% - var(--dot-size) * 1.5 - var(--dot-margin));
+			left: calc(100% - var(--dot-size) * 1.5);
 		}
 	}
 
 	&[disabled] {
 		border-color: color-mix(in srgb, white 50%, var(--border-color));
+		cursor: not-allowed;
 
 		&:checked {
-			background: color-mix(in srgb, white 50%, var(--state-on));
+			background: color-mix(in srgb, white 50%, var(--text));
+		}
+
+		&:checked:before {
+			background: color-mix(in srgb, white 50%, var(--background));
+		}
+
+		&:not(:checked) {
+			background: color-mix(in srgb, white 50%, var(--background));
 		}
 
 		&:not(:checked):before {
-			background: color-mix(in srgb, white 50%, var(--state-on));
+			background: color-mix(in srgb, white 50%, var(--text));
 		}
 	}
 }
