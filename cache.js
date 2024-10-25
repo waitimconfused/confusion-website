@@ -8,6 +8,6 @@ window.addEventListener('load', function () {
 				console.error('Service Worker registration failed:', error);
 			});
 	} else {
-		console.warn("window.applicationCache does not exist.");
+		console.warn("navigator.serviceWorker does not exist. Cannot cache for offline use.");
 	}
 });
