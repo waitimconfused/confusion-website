@@ -1,0 +1,22 @@
+{
+	"cache": [
+		"/index.html",
+
+		"/index.js",
+		"/preferences.js",
+
+		"/styles/theme.css",
+		"https://fonts.googleapis.com/css?family=Poppins:700|Inter:400",
+		"https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap",
+		"https://fonts.googleapis.com/css2?family=Linefont:wght@4..1000&display=swap",
+
+		"/assets/favicon.png",
+		"/assets/favicon.png",
+		"/assets/favicon.svg",
+
+		
+		"/cache.js",
+		"/service-worker.js",
+		"/cache.json"
+	]
+}
