@@ -42,24 +42,25 @@ self.addEventListener("fetch", (event) => {
  */
 async function handleFetch(event) {
 	if (useCache) {
-		// Use cache if the flag is set
-		const cachedResponse = await caches.match(event.request);
+		const cachedResponse = await caches.match(event.request.url);
 		return cachedResponse || await caches.match("/404.html");
 	}
 
 	try {
-		const response = await fetch(request);
+		const response = await fetch(event.request);
 		if (response && response.status === 200 && response.type === 'basic') {
 			const responseClone = response.clone();
-			caches.open('my-cache').then((cache) => cache.put(event.request, responseClone));
+			caches.open('my-cache').then((cache) => {
+				cache.put(event.request.url, responseClone);
+			});
 		}
 		return response;
 	} catch (error) {
 		if (useCache == false) {
-			console.log(`Failed to fetch`, event.request.url, `. Switching to using cache.`);
+			console.error(`Failed to fetch`, event.request.url, `. Switching to using cache.`);
 		}
 		useCache = true;
-		const cachedResponse = await caches.match(event.request);
-		return cachedResponse || new Response('Service Unavailable', { status: 503 });
+		const cachedResponse = await caches.match(event.request.url);
+		return cachedResponse || new Response(error, { status: 503 });
 	}
 }
