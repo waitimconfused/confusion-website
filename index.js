@@ -1,5 +1,5 @@
 import packageJSON from "/package.json" with {type: "json"};
-import { reloadTemplateElements } from "https://waitimconfused.github.io/confusion-projects/components/index-async.js";
+import { reloadTemplateElements } from "/library/components/index-async.js";
 
 await reloadTemplateElements(false);
 
@@ -12,11 +12,22 @@ const themeToggleButton = document.getElementById("theme-toggle");
 const metaThemeColour = document.createElement("meta");
 
 const banner = new class Banner {
-	content = "";
-	colour = "accent";
+	#content = "";
+	/** @param {string} string */
+	set content(string) {
+		this.#content = `${string}`;
+	}
+	get content() { return this.#content; }
+
+	#colour = "accent";
+	/** @param {string} string */
+	set colour(string) {
+		this.#colour = `${string}`;
+	}
+	get colour() { return this.#colour; }
 
 	constructor() {
-		this.setColour("accent");
+		this.colour = "accent";
 	}
 
 	show(skipAnimation=false) {
@@ -32,31 +43,24 @@ const banner = new class Banner {
 		document.querySelector("nav .banner").classList.add("show");
 	}
 	hide() {
-		console.log("40");
 		document.querySelector("nav .banner").classList.remove("show");
 	}
 	toggle() {
 		if (this.content == "") return;
 		document.querySelector("nav .banner").classList.toggle("show");
 	}
-	setContent(text="") {
-		this.content = text;
-		document.querySelector("nav .banner").innerHTML = `<p>${this.content}</p>`;
-	}
-	setColour(colour="") {
-		document.querySelector("nav .banner").style.backgroundColor = `var(--${colour})`;
-		this.colour = colour;
-	}
 }
 
-if (packageJSON?.banner) {
+if (navigator.onLine == false) {
+	banner.content = "<strong>You're offline!</string> Don't worry, everything will work as usual!";
+	banner.show(true);
+} else if (packageJSON?.banner) {
 	let bannerText = packageJSON.banner;
 	bannerText = bannerText.replaceAll("\t", " <span style='margin-left: 1rem'></span> ");
 	bannerText = bannerText.replaceAll(/\*\*(.+?)\*\*/gm, "<strong>$1</strong>");
 	bannerText = bannerText.replaceAll("\n", " — ");
 	bannerText = bannerText.replaceAll(/\[(.+?)\]\((.+?)\)/gm, "<a href='$2'>$1</a>");
-	banner.setContent(bannerText);
-	banner.setColour("accent");
+	banner.content = bannerText;
 	banner.show(true);
 }
 

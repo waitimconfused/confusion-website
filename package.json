@@ -4,7 +4,7 @@
 		"serve": "node host.js"
 	},
 	"dependencies": {
-		"asterisk-server": "^1.0.6"
+		"asterisk-server": "^1.0.7"
 	},
 	"banner": "Hello World!"
 }

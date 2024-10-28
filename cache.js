@@ -1,12 +1,13 @@
-window.addEventListener('load', function () {
+window.addEventListener('load', async function () {
 	if ("serviceWorker" in navigator) {
-		navigator.serviceWorker.register('/service-worker.js')
-			.then((registration) => {
-				console.log('Service Worker registered with scope:', registration.scope);
-			})
-			.catch((error) => {
-				console.error('Service Worker registration failed:', error);
-			});
+		let registration = await navigator.serviceWorker.register('/service-worker.js');
+		if (registration.installing) {
+			console.debug("Service worker installing");
+		} else if (registration.waiting) {
+			console.debug("Service worker installed");
+		} else if (registration.active) {
+			console.debug("Service worker active with scope:", registration.scope);
+		}
 	} else {
 		console.warn("navigator.serviceWorker does not exist. Cannot cache for offline use.");
 	}

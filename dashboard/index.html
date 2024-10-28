@@ -73,6 +73,7 @@
 
 		<template from="/components" id="footer"></template>
 
+		<script src="/cache.js"></script>
 		<script src="/preferences.js"></script>
 		<script src="/index.js" type="module" defer></script>
 		<script src="./dashboard.js"></script>
@@ -116,6 +117,11 @@
 			const URLspecifiedPanel = getSectionNameFromURL();
 			let URLspecifiedPanelExists = false;
 
+			if (URLspecifiedPanelExists == false) {
+				let defaultPanel = panelLables[0].getAttribute("href").replace(/^\?panel=/, "");
+				panel.show(defaultPanel);
+			}
+
 			for (let i = 0; i < panelLables.length; i ++) {
 				let currentPanel = panelLables[i];
 				let panelAttribute = currentPanel.getAttribute("href").replace(/^\?panel=/, "");
@@ -133,17 +139,11 @@
 					panel.show(panelAttribute);
 				}
 			}
-			console.log({URLspecifiedPanelExists});
-			if (URLspecifiedPanelExists == false) {
-				let defaultPanel = panelLables[0].getAttribute("href").replace(/^\?panel=/, "");
-				panel.show(defaultPanel);
-			}
 
 			const preferencesList = document.getElementById("preferences-list");
 			for ( let preference in window.preferences ) {
 				let preferenceValue = window.preferences.get(preference);
 				let preferenceOptions = window.preferences.getOptions(preference);
-				console.log(preference, preferenceValue, preferenceOptions);
 				let div = document.createElement("div");
 				preferencesList.appendChild(div);
 

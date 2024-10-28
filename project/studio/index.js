@@ -1,5 +1,5 @@
-import { engine } from "https://waitimconfused.github.io/confusion-projects/game-engine/utils.js";
-import { ComponentGroup, Canvas, Circle } from "https://waitimconfused.github.io/confusion-projects/game-engine/components/index.js";
+import { engine, ComponentGroup } from "https://waitimconfused.github.io/confusion-projects/game-engine/utils.js";
+import { Canvas, Circle } from "https://waitimconfused.github.io/confusion-projects/game-engine/components/index.js";
 import { mouse } from "https://waitimconfused.github.io/confusion-projects/toolbelt/toolbelt.js";
 
 const projectName = (new URLSearchParams(window.location.search)).get("p");
@@ -94,7 +94,6 @@ function loadProject() {
 		projectWidth = project.width;
 		projectHeight = project.height;
 
-		console.log(project.layers);
 
 		if (project.layers.length == 0) {
 			project.layers.push("");
@@ -107,7 +106,6 @@ function loadProject() {
 			let layer = new Image(projectWidth, projectHeight);
 			layer.onload = () => {
 				canvas.context.drawImage(layer, 0, 0, projectWidth, projectHeight);
-				console.log("Loaded Layer " + (i+1));
 			}
 			layer.src = layerData;
 
